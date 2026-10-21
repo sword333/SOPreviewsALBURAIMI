@@ -2236,48 +2236,54 @@ function saveState() {
 
         // جلب التقييمات المجمعة مباشرة من Google Sheets إلى لوحة المشرف
         async function fetchFromGoogleSheets() {
-            const webhookUrl = getActiveWebhookUrl();
-            if (!webhookUrl) {
-                showToast("يرجى إدخال وحفظ رابط Google Apps Script أولاً.", "warning");
-                return;
-            }
+    const webhookUrl = getActiveWebhookUrl();
+    if (!webhookUrl) {
+        showToast("يرجى إدخال وحفظ رابط Google Apps Script أولاً.", "warning");
+        return;
+    }
 
-            const btn = document.getElementById("btnFetchCloud");
-            const originalHtml = btn ? btn.innerHTML : "";
-            if (btn) {
-                btn.disabled = true;
-                btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>جاري الجلب...</span>`;
-            }
+    const btn = document.getElementById("btnFetchCloud");
+    const originalHtml = btn ? btn.innerHTML : "";
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>جاري جلب وفلترة البيانات...</span>`;
+    }
 
             try {
-                const response = await fetch(webhookUrl, { method: "GET" });
-                const data = await response.json();
-                if (Array.isArray(data.submissions) && data.submissions.length > 0) {
-                    mergedSubmissions = data.submissions;
-                    mergedSubmissions.forEach(sub => {
-                        Object.keys(sub.evaluations || {}).forEach(sId => {
-                            if (!appState[sId] || !appState[sId].evaluated) {
-                                appState[sId] = sub.evaluations[sId];
-                            }
-                        });
-                    });
-                    saveState();
-                    updateDashboardStats();
-                    renderServices();
-                    renderLiveEvaluationSummary();
-                    showToast(`تم جلب ودمج (${data.submissions.length}) حزمة تقييم من Google Sheets بنجاح!`, "success");
-                } else {
-                    showToast("الجدول متصل بنجاح، ولا توجد تقييمات مسجلة فيه حتى الآن.", "info");
-                }
-            } catch (err) {
-                showToast("تأكد من نشر السكربت بصلاحية (Anyone / أي شخص) لتتمكن من جلب البيانات.", "warning");
-            } finally {
-                if (btn) {
-                    btn.disabled = false;
-                    btn.innerHTML = originalHtml;
-                }
-            }
+        const response = await fetch(webhookUrl, { 
+            method: "GET",
+            headers: { "Accept": "application/json" }
+        });
+        
+        if (!response.ok) {
+            throw new Error(`تعذر الاتصال بالخادم (رمز: ${response.status})`);
         }
+
+        const data = await response.json();
+        
+        if (data.status === "error") {
+            throw new Error(data.message || "حدث خطأ داخل جدول البيانات");
+        }
+
+        if (Array.isArray(data.submissions) && data.submissions.length > 0) {
+            // حفظ التقييمات المستوردة دون نسخها في appState لمنع الازدواجية
+            mergedSubmissions = data.submissions;
+            saveState();
+            renderLiveEvaluationSummary();
+            showToast(`تم جلب (${data.submissions.length}) موظف مشارك دون أي تكرار!`, "success");
+        } else {
+            showToast("الجدول متصل بنجاح، ولكن لا توجد أي تقييمات مرسلة حتى الآن.", "info");
+        }
+    } catch (err) {
+        console.error("Fetch Error:", err);
+        showToast(`فشل الجلب: ${err.message}`, "warning");
+    } finally {
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = originalHtml;
+        }
+    }
+}
 
         // نسخ كود Google Apps Script الجاهز للحافظة
         function copyGoogleAppsScriptCode() {
@@ -2929,96 +2935,115 @@ function doGet(e) {
 
         // بناء ملخص التقييمات المدخلة والمدمجة في النافذة المنبثقة
         function renderLiveEvaluationSummary() {
-            const container = document.getElementById("liveEvaluationSummary");
-            const badge = document.getElementById("mergedParticipantsBadge");
+    const container = document.getElementById("liveEvaluationSummary");
+    const badge = document.getElementById("mergedParticipantsBadge");
 
-            // تجميع كافة السجلات (الجلسة الحالية + التقييمات المستوردة من الموظفين)
-            const allRows = [];
+    const allRows = [];
+    const seenKeys = new Set(); // لمنع تكرار نفس الموظف ونفس الخدمة
+    const uniqueEmployees = new Set();
 
-            sopServices.forEach(s => {
-                const st = appState[s.id];
-                if (st && st.evaluated) {
-                    allRows.push({
-                        service: s,
-                        evalData: st,
-                        source: st.evaluatorName || "الجلسة الحالية"
-                    });
-                }
-            });
+    // أولاً: تفريغ التقييمات المستوردة من Google Sheets
+    (mergedSubmissions || []).forEach(sub => {
+        const empId = String(sub.employeeId || "").trim();
+        const empName = String(sub.participantName || "موظف").trim();
+        const empIdentifier = empId || empName;
+        uniqueEmployees.add(empIdentifier);
 
-            mergedSubmissions.forEach(sub => {
-                Object.keys(sub.evaluations || {}).forEach(sId => {
-                    const s = sopServices.find(item => item.id === Number(sId));
-                    const st = sub.evaluations[sId];
-                    if (s && st && st.evaluated) {
-                        allRows.push({
-                            service: s,
-                            evalData: st,
-                            source: `${sub.participantName} (${sub.department || ""})`
-                        });
-                    }
+        Object.keys(sub.evaluations || {}).forEach(sId => {
+            const s = sopServices.find(item => item.id === Number(sId));
+            const st = sub.evaluations[sId];
+            const uniqueKey = `${empIdentifier}_${sId}`;
+
+            // إذا لم يتم إضافة هذا التقييم لنفس الموظف ونفس الخدمة من قبل
+            if (s && st && st.evaluated && !seenKeys.has(uniqueKey)) {
+                seenKeys.add(uniqueKey);
+                allRows.push({
+                    service: s,
+                    evalData: st,
+                    empId: empId || "-",
+                    source: `${empName} (${sub.department || "غير محدد"})`
                 });
-            });
-
-            if (badge) {
-                badge.textContent = `إجمالي التقييمات المسجلة والمدمجة: ${allRows.length}`;
             }
+        });
+    });
 
-            if (allRows.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-6 bg-white rounded-xl border border-dashed border-slate-300">
-                        <i class="fa-regular fa-clipboard text-2xl text-slate-400 mb-2"></i>
-                        <p class="text-sm font-semibold text-slate-600">لم يتم حفظ أو استيراد تقييم لأي خدمة حتى الآن.</p>
-                        <p class="text-xs text-slate-400 mt-1">قم بتقييم الخدمات أو استيراد ملفات تقييم الموظفين (.json) من الأعلى لتظهر المؤشرات التفصيلية هنا.</p>
-                    </div>
-                `;
-                return;
-            }
+    // ثانياً: إضافة التقييمات المحلية للجلسة الحالية فقط إذا لم تكن موجودة مسبقاً من الشيت
+    sopServices.forEach(s => {
+        const st = appState[s.id];
+        const localEmpId = (document.getElementById("participantEmpId") ? document.getElementById("participantEmpId").value.trim() : "");
+        const localKey = localEmpId ? `${localEmpId}_${s.id}` : `LOCAL_${s.id}`;
 
-            let html = `
-                <div class="overflow-x-auto bg-white rounded-xl border border-slate-200">
-                    <table class="w-full text-right text-xs sm:text-sm">
-                        <thead class="bg-mohup-50 text-mohup-800 border-b border-slate-200">
-                            <tr>
-                                <th class="p-3">#</th>
-                                <th class="p-3">اسم الخدمة</th>
-                                <th class="p-3">القطاع</th>
-                                <th class="p-3">المقيّم / القسم</th>
-                                <th class="p-3">متوسط التقييم</th>
-                                <th class="p-3">التحديات المرصودة</th>
-                                <th class="p-3">الآراء والمقترحات</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-100">
-            `;
-
-            allRows.forEach(row => {
-                const s = row.service;
-                const st = row.evalData;
-                const vals = Object.values(st.ratings || {}).map(Number);
-                const avg = vals.length ? (vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(1) : "-";
-
-                html += `
-                    <tr class="hover:bg-slate-50">
-                        <td class="p-3 font-bold text-mohup-700">${s.id}</td>
-                        <td class="p-3 font-bold text-slate-800">${s.title}</td>
-                        <td class="p-3"><span class="px-2 py-0.5 rounded-full text-xs ${getSectorBadgeStyle(s.sector)}">${s.sector}</span></td>
-                        <td class="p-3 text-xs font-semibold text-mohup-700">${row.source}</td>
-                        <td class="p-3 font-bold text-emerald-700">${avg} / 5.0</td>
-                        <td class="p-3 text-xs text-slate-600">${(st.challenges && st.challenges.length) ? st.challenges.join(" ، ") : "لا يوجد"}</td>
-                        <td class="p-3 text-xs text-slate-700">${st.suggestions || "—"}</td>
-                    </tr>
-                `;
+        if (st && st.evaluated && !seenKeys.has(localKey)) {
+            seenKeys.add(localKey);
+            allRows.push({
+                service: s,
+                evalData: st,
+                empId: localEmpId || "محلي",
+                source: st.evaluatorName || "الجلسة المحلية الحالية"
             });
-
-            html += `
-                        </tbody>
-                    </table>
-                </div>
-            `;
-            container.innerHTML = html;
         }
+    });
 
+    // تحديث الشارة الإحصائية
+    if (badge) {
+        badge.textContent = `إجمالي التقييمات: ${allRows.length} | عدد الموظفين: ${uniqueEmployees.size}`;
+    }
+
+    if (allRows.length === 0) {
+        container.innerHTML = `
+            <div class="text-center py-6 bg-white rounded-xl border border-dashed border-slate-300">
+                <i class="fa-regular fa-clipboard text-2xl text-slate-400 mb-2"></i>
+                <p class="text-sm font-semibold text-slate-600">لم يتم حفظ أو استيراد أي تقييم حتى الآن.</p>
+            </div>
+        `;
+        return;
+    }
+
+    let html = `
+        <div class="overflow-x-auto bg-white rounded-xl border border-slate-200">
+            <table class="w-full text-right text-xs sm:text-sm">
+                <thead class="bg-mohup-50 text-mohup-800 border-b border-slate-200">
+                    <tr>
+                        <th class="p-3">#</th>
+                        <th class="p-3">اسم الخدمة</th>
+                        <th class="p-3">القطاع</th>
+                        <th class="p-3">الرقم الوظيفي</th>
+                        <th class="p-3">الموظف / القسم</th>
+                        <th class="p-3">التقييم</th>
+                        <th class="p-3">التحديات المرصودة</th>
+                        <th class="p-3">الآراء والمقترحات</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+    `;
+
+    allRows.forEach(row => {
+        const s = row.service;
+        const st = row.evalData;
+        const vals = Object.values(st.ratings || {}).map(Number);
+        const avg = vals.length ? (vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(1) : "-";
+
+        html += `
+            <tr class="hover:bg-slate-50">
+                <td class="p-3 font-bold text-mohup-700">${s.id}</td>
+                <td class="p-3 font-bold text-slate-800">${s.title}</td>
+                <td class="p-3"><span class="px-2 py-0.5 rounded-full text-xs ${getSectorBadgeStyle(s.sector)}">${s.sector}</span></td>
+                <td class="p-3 font-mono font-bold text-slate-700">${row.empId}</td>
+                <td class="p-3 text-xs font-semibold text-mohup-700">${row.source}</td>
+                <td class="p-3 font-bold text-emerald-700">${avg} / 5.0</td>
+                <td class="p-3 text-xs text-slate-600">${(st.challenges && st.challenges.length) ? st.challenges.join(" ، ") : "لا يوجد"}</td>
+                <td class="p-3 text-xs text-slate-700">${st.suggestions || "—"}</td>
+            </tr>
+        `;
+    });
+
+    html += `
+                </tbody>
+            </table>
+        </div>
+    `;
+    container.innerHTML = html;
+}
         // نسخ ملخص التقرير النصي للحافظة
         function copySummaryReport() {
             const evaluatedServices = sopServices.filter(s => appState[s.id] && appState[s.id].evaluated);
