@@ -335,100 +335,92 @@
         </div>
     </div>
 
-    <!-- نافذة إرسال التقييمات من قبل المشاركين (Participant Submit Modal) -->
-    <div id="submitModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-200 overflow-hidden my-8">
-            <div class="bg-emerald-800 text-white px-6 py-4 flex items-center justify-between border-b-2 border-gold-400">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-gold-400 text-lg">
-                        <i class="fa-solid fa-paper-plane"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-base sm:text-lg font-bold">إرسال ومشاركة تقييماتك مع المشرف (نقطة الاتصال)</h3>
-                        <p class="text-xs text-emerald-100">اختر الطريقة المناسبة لإرسال تقييماتك ليتم تجميعها في التقرير الموحد</p>
-                    </div>
+<!-- نافذة إرسال التقييمات المبسطة للموظف (Google Sheets فقط) -->
+<div id="submitModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden my-8 animate-fadeIn">
+        <div class="bg-mohup-800 text-white px-6 py-4 flex items-center justify-between border-b-2 border-gold-400">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gold-500/20 border border-gold-400/40 flex items-center justify-center text-gold-400 text-lg">
+                    <i class="fa-solid fa-paper-plane"></i>
                 </div>
-                <button onclick="closeSubmitModal()" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-
-            <div class="p-6 space-y-5">
-                <!-- بيانات المشارك -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-200">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">اسم الموظف المشارك:</label>
-                        <input type="text" id="participantNameGlobal" placeholder="اكتب اسمك الثلاثي والقبيلة..."
-                            class="w-full p-2.5 rounded-xl bg-white border border-slate-300 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">الدائرة / القسم:</label>
-                        <input type="text" id="participantDeptGlobal" placeholder="مثال: قسم الخدمة الموحدة / التخطيط..."
-                            class="w-full p-2.5 rounded-xl bg-white border border-slate-300 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600">
-                    </div>
-                </div>
-
-                <!-- ملخص سريع لإنجاز المشارك -->
-                <div id="participantStatsBox" class="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-xs sm:text-sm text-emerald-900 font-semibold flex items-center justify-between">
-                    <!-- يتم تعبئته ديناميكياً -->
-                </div>
-
-                <!-- طرق الإرسال المتاحة للمشارك -->
-                <div class="space-y-3">
-                    <h4 class="text-xs sm:text-sm font-bold text-mohup-800">اختر إحدى الطرق التالية لإرسال تقييماتك إلى جامع التقييمات:</h4>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <!-- خيار 1: تنزيل ملف التقييم الموحد لإرساله -->
-                        <button onclick="downloadParticipantJSON()" class="p-4 rounded-2xl border-2 border-mohup-200 hover:border-mohup-600 bg-mohup-50/50 hover:bg-mohup-50 text-right transition flex flex-col justify-between gap-2 group">
-                            <div class="flex items-center justify-between">
-                                <span class="w-9 h-9 rounded-xl bg-mohup-700 text-white flex items-center justify-center text-sm">
-                                    <i class="fa-solid fa-file-arrow-down"></i>
-                                </span>
-                                <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-mohup-100 text-mohup-800">الطريقة الموصى بها</span>
-                            </div>
-                            <div>
-                                <div class="font-bold text-mohup-900 text-sm">1. تنزيل ملف التقييم (.json)</div>
-                                <p class="text-xs text-slate-600 mt-0.5 leading-relaxed">حفظ ملف تقييماتك لإرساله عبر البريد الرسمي أو الواتساب لنقطة الاتصال لدمجه بضغطة زر.</p>
-                            </div>
-                        </button>
-
-                        <!-- خيار 2: نسخ كود التقييم الذكي -->
-                        <button onclick="copyParticipantCode()" class="p-4 rounded-2xl border-2 border-emerald-200 hover:border-emerald-600 bg-emerald-50/50 hover:bg-emerald-50 text-right transition flex flex-col justify-between gap-2 group">
-                            <div class="flex items-center justify-between">
-                                <span class="w-9 h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center text-sm">
-                                    <i class="fa-solid fa-code"></i>
-                                </span>
-                                <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">سريع للمحادثات</span>
-                            </div>
-                            <div>
-                                <div class="font-bold text-emerald-900 text-sm">2. نسخ كود التقييم الذكي</div>
-                                <p class="text-xs text-slate-600 mt-0.5 leading-relaxed">ينسخ حزمة بيانات تقييمك الكاملة لإرسالها كرسالة نصية للمشرف ليقوم بلصقها في لوحة التجميع.</p>
-                            </div>
-                        </button>
-                    </div>
-
-                    <!-- خيار 3: إرسال عبر البريد الإلكتروني أو السحابة -->
-                    <div class="flex flex-col sm:flex-row gap-2.5 pt-1">
-                        <button onclick="sendEvaluationByEmail()" class="flex-1 py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-envelope text-mohup-600"></i>
-                            <span>إرسال التقرير عبر البريد الإلكتروني (Outlook/Mail)</span>
-                        </button>
-                        <button onclick="sendToCloudWebhook()" id="cloudSubmitBtn" class="flex-1 py-2.5 px-4 rounded-xl bg-gold-500 hover:bg-gold-600 text-white text-xs font-bold transition flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-cloud-arrow-up"></i>
-                            <span>إرسال مباشر للسحابة المركزية</span>
-                        </button>
-                    </div>
+                <div>
+                    <h3 class="text-base sm:text-lg font-bold">إرسال التقييمات للمشرفين</h3>
+                    <p class="text-xs text-slate-300">يتم إرسال التقييمات لمرة واحدة وحفظها في قاعدة البيانات</p>
                 </div>
             </div>
+            <button onclick="closeSubmitModal()" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
 
-            <div class="bg-slate-100 px-6 py-3 flex justify-end">
-                <button onclick="closeSubmitModal()" class="px-5 py-2 bg-slate-700 hover:bg-slate-800 text-white text-xs font-bold rounded-xl transition">
-                    إغلاق
+        <div class="p-6 space-y-4">
+            <!-- صندوق التحذير في حال تم الإرسال مسبقاً -->
+            <div id="alreadySubmittedAlert" class="hidden p-4 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-xs leading-relaxed">
+                <div class="flex items-center gap-2 font-bold mb-1">
+                    <i class="fa-solid fa-triangle-exclamation text-amber-600"></i>
+                    <span>تنبيه: تم إرسال تقييمات هذا الجهاز مسبقاً!</span>
+                </div>
+                <p id="alreadySubmittedDetails">لقد قمت بإرسال تقييماتك بنجاح ولا يمكن إعادة الإرسال من هذا الجهاز.</p>
+            </div>
+
+            <!-- إحصائية الإنجاز -->
+            <div id="participantStatsBox" class="p-3.5 rounded-xl bg-mohup-50 border border-mohup-200 text-xs text-mohup-900 font-semibold flex items-center justify-between">
+                <!-- ديناميكي -->
+            </div>
+
+            <!-- بيانات الموظف الأساسية -->
+            <div id="submitFormFields" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">
+                        الرقم الوظيفي / المدني <span class="text-red-500">* (إلزامي للتحقق)</span>:
+                    </label>
+                    <div class="relative">
+                        <i class="fa-solid fa-id-card absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" id="participantEmpId" placeholder="أدخل رقمك الوظيفي أو المدني..."
+                            class="w-full pr-10 pl-3 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs sm:text-sm font-bold focus:outline-none focus:ring-2 focus:ring-mohup-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">
+                        اسم الموظف الثلاثي والقبيلة <span class="text-red-500">*</span>:
+                    </label>
+                    <div class="relative">
+                        <i class="fa-solid fa-user absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" id="participantNameGlobal" placeholder="الاسم الكامل..."
+                            class="w-full pr-10 pl-3 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-mohup-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">الدائرة / القسم:</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-building absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" id="participantDeptGlobal" placeholder="مثال: قسم الخدمة الموحدة..."
+                            class="w-full pr-10 pl-3 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-mohup-500">
+                    </div>
+                </div>
+
+                <!-- زر الإرسال المباشر -->
+                <button onclick="submitReviewsOnce()" id="cloudSubmitBtn"
+                    class="w-full mt-2 py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold transition flex items-center justify-center gap-2 shadow-lg">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span>تأكيد واعتماد إرسال التقييمات للمشرف</span>
                 </button>
             </div>
         </div>
-    </div>
 
+        <div class="bg-slate-100 px-6 py-3 flex justify-between items-center">
+            <button onclick="confirmResetAllUserReviews()" class="text-xs text-red-600 hover:text-red-800 font-semibold flex items-center gap-1.5">
+                <i class="fa-solid fa-rotate-left"></i>
+                <span>إعادة تعيين كافة تقييماتي</span>
+            </button>
+            <button onclick="closeSubmitModal()" class="px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white text-xs font-bold rounded-xl transition">
+                إغلاق
+            </button>
+        </div>
+    </div>
+</div>
     <!-- نافذة ملخص التقييمات ومقارنة نتائج الورشة الحصرية للمشرفين (Modal) -->
     <div id="reportModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4 overflow-y-auto">
         <div class="bg-white rounded-3xl max-w-5xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden my-8">
@@ -485,13 +477,20 @@
                             <label class="block text-xs font-bold text-mohup-800">
                                 <i class="fa-solid fa-paste ml-1 text-emerald-600"></i>أو لصق «كود التقييم الذكي» المرسل من الموظف:
                             </label>
-                            <div class="flex gap-2">
-                                <input type="text" id="pasteEvalCodeInput" placeholder="الصق الكود الذي يبدأ بـ SOP_EVAL_... هنا"
-                                    class="flex-1 p-2 rounded-lg bg-slate-50 border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-mohup-500">
-                                <button onclick="importPastedCode()" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition shrink-0">
-                                    دمج التقييم
-                                </button>
-                            </div>
+                            // استبدل زر الحفظ القديم بهذا الزوج من الأزرار (حفظ + إعادة تعيين هذه الخدمة):
+<div class="flex gap-2">
+    <button onclick="saveServiceEvaluation(${service.id})"
+        class="flex-1 py-3 px-3 bg-mohup-700 hover:bg-mohup-800 text-white font-bold rounded-xl shadow-md transition flex items-center justify-center gap-1.5 text-xs sm:text-sm">
+        <i class="fa-solid fa-floppy-disk"></i>
+        <span>حفظ التقييم</span>
+    </button>
+    ${isRead || isEvaluated ? `
+    <button onclick="resetSingleServiceEvaluation(${service.id})" title="إلغاء التأكيد وإعادة ضبط التقييم"
+        class="px-3 py-3 bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 rounded-xl transition flex items-center justify-center text-xs font-semibold">
+        <i class="fa-solid fa-rotate-left ml-1"></i>إعادة ضبط
+    </button>
+    ` : ''}
+</div>
                         </div>
                     </div>
 
@@ -3143,6 +3142,172 @@ function doGet(e) {
             updateDashboardStats();
             renderServices();
         });
+        const SUBMITTED_LOCK_KEY = "mohup_buraimi_submitted_lock";
+
+// فحص هل سبق لهذا الجهاز/المستخدم الإرسال
+function getSubmissionLock() {
+    try {
+        const lock = localStorage.getItem(SUBMITTED_LOCK_KEY);
+        return lock ? JSON.parse(lock) : null;
+    } catch (e) {
+        return null;
+    }
+}
+        function openSubmitModal() {
+    const readCount = sopServices.filter(s => appState[s.id] && appState[s.id].readConfirmed).length;
+    const evalCount = sopServices.filter(s => appState[s.id] && appState[s.id].evaluated).length;
+
+    const statsBox = document.getElementById("participantStatsBox");
+    if (statsBox) {
+        statsBox.innerHTML = `
+            <span><i class="fa-solid fa-circle-check ml-1.5 text-emerald-600"></i>اطلعت على <strong>(${readCount})</strong> خدمة، وقيمت <strong>(${evalCount})</strong> خدمة</span>
+            <span class="text-xs bg-white px-2.5 py-1 rounded-lg border border-slate-200 font-bold">${Math.round((evalCount / sopServices.length) * 100)}%</span>
+        `;
+    }
+
+    const lock = getSubmissionLock();
+    const alertBox = document.getElementById("alreadySubmittedAlert");
+    const formFields = document.getElementById("submitFormFields");
+    const alertDetails = document.getElementById("alreadySubmittedDetails");
+
+    if (lock && lock.submitted) {
+        // تم الإرسال مسبقاً من هذا الجهاز
+        alertBox.classList.remove("hidden");
+        alertDetails.textContent = `تم إرسال التقييمات بنجاح في: (${lock.date}) برقم وظيفي: [${lock.employeeId}] باسم: [${lock.name}]. لا يسمح بتكرار الإرسال.`;
+        if (formFields) formFields.classList.add("opacity-50", "pointer-events-none");
+    } else {
+        alertBox.classList.add("hidden");
+        if (formFields) formFields.classList.remove("opacity-50", "pointer-events-none");
+    }
+
+    const modal = document.getElementById("submitModal");
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+}
+        async function submitReviewsOnce() {
+    // 1. تحقق من منع التكرار
+    const existingLock = getSubmissionLock();
+    if (existingLock && existingLock.submitted) {
+        showToast("عفواً، لقد قمت بإرسال تقييماتك مسبقاً من هذا الجهاز!", "warning");
+        return;
+    }
+
+    // 2. التحقق من المدخلات
+    const empId = (document.getElementById("participantEmpId").value || "").trim();
+    const name = (document.getElementById("participantNameGlobal").value || "").trim();
+    const dept = (document.getElementById("participantDeptGlobal").value || "").trim() || "غير محدد";
+
+    if (!empId) {
+        showToast("يرجى إدخال الرقم الوظيفي أو المدني (إلزامي للتحقق).", "warning");
+        document.getElementById("participantEmpId").focus();
+        return;
+    }
+    if (!name) {
+        showToast("يرجى إدخال اسم الموظف كاملاً.", "warning");
+        document.getElementById("participantNameGlobal").focus();
+        return;
+    }
+
+    // 3. التحقق من وجود تقييمات
+    const evaluatedEntries = {};
+    sopServices.forEach(s => {
+        if (appState[s.id] && appState[s.id].evaluated) {
+            const st = appState[s.id];
+            const r = st.ratings || {};
+            const vals = Object.values(r).map(Number);
+            const avg = vals.length ? Number((vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(2)) : "";
+
+            evaluatedEntries[s.id] = {
+                ...st,
+                serviceId: s.id,
+                serviceTitle: s.title,
+                sector: s.sector,
+                duration: s.duration,
+                avgScore: avg,
+                employeeId: empId,
+                evaluatorName: `${name} (${dept})`
+            };
+        }
+    });
+
+    if (Object.keys(evaluatedEntries).length === 0) {
+        showToast("يرجى تقييم خدمة واحدة على الأقل قبل الإرسال.", "warning");
+        return;
+    }
+
+    const webhookUrl = getActiveWebhookUrl();
+    if (!webhookUrl) {
+        showToast("يرجى ضبط رابط Google Apps Script أولاً من لوحة المشرف.", "warning");
+        return;
+    }
+
+    const payload = {
+        employeeId: empId,
+        participantName: name,
+        department: dept,
+        submittedAt: new Date().toLocaleString("ar-OM"),
+        evaluations: evaluatedEntries
+    };
+
+    const btn = document.getElementById("cloudSubmitBtn");
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>جاري الإرسال والاعتماد...</span>`;
+
+    try {
+        await fetch(webhookUrl, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify(payload)
+        });
+
+        // قفل الجهاز ومنع تكرار الإرسال
+        const lockData = {
+            submitted: true,
+            employeeId: empId,
+            name: name,
+            date: new Date().toLocaleString("ar-OM")
+        };
+        localStorage.setItem(SUBMITTED_LOCK_KEY, JSON.stringify(lockData));
+
+        showToast("تم إرسال تقييماتك بنجاح واعتمادها في النظام!", "success");
+        closeSubmitModal();
+    } catch (err) {
+        showToast("حدث خطأ أثناء الاتصال بالخادم. يرجى التحقق من اتصال الإنترنت.", "warning");
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+    }
+}
+        // إعادة ضبط تقييم خدمة واحدة فقط
+function resetSingleServiceEvaluation(serviceId) {
+    const service = sopServices.find(s => s.id === serviceId);
+    if (!service) return;
+
+    if (!confirm(`هل أنت متأكد من رغبتك في إعادة ضبط وحذف تقييم خدمة "${service.title}"؟`)) {
+        return;
+    }
+
+    delete appState[serviceId];
+    saveState();
+    updateDashboardStats();
+    renderServices();
+    showToast(`تمت إعادة ضبط تقييم خدمة "${service.title}".`, "info");
+}
+
+// إعادة ضبط جميع تقييمات المستخدم (مع خيار مسح قفل الإرسال للمشرف إذا استدعى)
+function confirmResetAllUserReviews() {
+    if (!confirm("تحذير: سيتم مسح جميع التقييمات التي أدخلتها والبدء من جديد. هل أنت متأكد؟")) {
+        return;
+    }
+    appState = {};
+    saveState();
+    updateDashboardStats();
+    renderServices();
+    closeSubmitModal();
+    showToast("تمت إعادة ضبط كافة التقييمات بنجاح.", "info");
+}
     </script>
 </body>
 </html>
