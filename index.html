@@ -131,7 +131,10 @@
                         </div>
                     </div>
                 </div>
-
+<button onclick="startFreshReview()" class="px-3.5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl shadow-md transition flex items-center gap-1.5 text-xs sm:text-sm" title="مسح التقييمات الحالية والبدء من جديد">
+    <i class="fa-solid fa-arrows-rotate"></i>
+    <span>مستخدم جديد / تصفير</span>
+</button>
                 <!-- أزرار التحكم والمشاركة السريعة -->
                 <div class="flex flex-wrap items-center gap-2.5 no-print w-full lg:w-auto justify-start lg:justify-end border-t lg:border-t-0 border-white/10 pt-3 lg:pt-0">
                     <button onclick="openSubmitModal()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-md transition flex items-center gap-2 text-xs sm:text-sm">
@@ -2043,7 +2046,7 @@
         ];
 
         const STORAGE_KEY = "mohup_buraimi_sop_evaluations_v2";
-        const MERGED_STORAGE_KEY = "mohup_buraimi_sop_merged_list_v2";
+const MERGED_STORAGE_KEY = "mohup_buraimi_sop_merged_list_v2";
         const ADMIN_PIN_KEY = "mohup_buraimi_admin_pin";
         const WEBHOOK_URL_KEY = "mohup_buraimi_webhook_url";
         // ضع رابط Google Apps Script هنا بين علامتي التنصيص ليعمل تلقائياً لدى جميع الموظفين عند مشاركة الملف
@@ -2057,34 +2060,27 @@
             return (localStorage.getItem(WEBHOOK_URL_KEY) || DEFAULT_WEBHOOK_URL || "").trim();
         }
 
-        // تحميل التقييمات المحفوظة في المتصفح
-        function loadState() {
-            try {
-                const saved = localStorage.getItem(STORAGE_KEY);
-                if (saved) {
-                    appState = JSON.parse(saved);
-                }
-                const savedMerged = localStorage.getItem(MERGED_STORAGE_KEY);
-                if (savedMerged) {
-                    mergedSubmissions = JSON.parse(savedMerged);
-                }
-            } catch (err) {
-                console.error("خطأ في تحميل البيانات المحفوظة:", err);
-                appState = {};
-                mergedSubmissions = [];
-            }
+       // استخدام sessionStorage بدلاً من localStorage ليتم تفريغ الصفحة تلقائياً عند إغلاق المتصفح أو فتحه من جهاز جديد
+function loadState() {
+    try {
+        const saved = sessionStorage.getItem(STORAGE_KEY);
+        if (saved) {
+            appState = JSON.parse(saved);
+        } else {
+            appState = {};
         }
+    } catch (err) {
+        appState = {};
+    }
+}
 
-        // حفظ التقييمات في المتصفح
-        function saveState() {
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
-                localStorage.setItem(MERGED_STORAGE_KEY, JSON.stringify(mergedSubmissions));
-            } catch (err) {
-                console.error("خطأ في حفظ البيانات:", err);
-            }
-        }
-
+function saveState() {
+    try {
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+    } catch (err) {
+        console.error("خطأ في حفظ البيانات:", err);
+    }
+}
         // الحصول على الرقم السري المعتمد للمشرف (الافتراضي 2025)
         function getAdminPin() {
             return localStorage.getItem(ADMIN_PIN_KEY) || "2025";
@@ -2532,7 +2528,7 @@ function doGet(e) {
                 const state = appState[service.id] || {
                     readConfirmed: false,
                     evaluated: false,
-                    ratings: { q1: 5, q2: 5, q3: 4, q4: 4, q5: 4 },
+                    ratings: {},
                     challenges: [],
                     suggestions: "",
                     evaluatorName: "",
@@ -2697,7 +2693,7 @@ function doGet(e) {
                                 <h5 class="text-sm font-bold text-mohup-700">أولاً: قياس مستوى وضوح وجاهزية الإجراء التشغيلي:</h5>
                                 <div class="space-y-3">
                                     ${evaluationQuestions.map(q => {
-                                        const currentVal = (state.ratings && state.ratings[q.id]) ? Number(state.ratings[q.id]) : 5;
+                                        const currentVal = (state.ratings && state.ratings[q.id]) ? Number(state.ratings[q.id]) : null;
                                         return `
                                         <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex flex-col lg:flex-row lg:items-center justify-between gap-3">
                                             <p class="text-xs sm:text-sm font-semibold text-slate-800">${q.text}</p>
@@ -3307,6 +3303,17 @@ function confirmResetAllUserReviews() {
     renderServices();
     closeSubmitModal();
     showToast("تمت إعادة ضبط كافة التقييمات بنجاح.", "info");
+}
+        function startFreshReview() {
+    if (confirm("هل تريد تصفير الصفحة والبدء كموظف جديد؟ سيتم مسح التقييمات غير المرسلة.")) {
+        sessionStorage.clear();
+        localStorage.removeItem("mohup_buraimi_sop_evaluations_v2");
+        localStorage.removeItem("mohup_buraimi_submitted_lock");
+        appState = {};
+        updateDashboardStats();
+        renderServices();
+        showToast("تم تصفير الصفحة بنجاح للبدء من جديد.", "info");
+    }
 }
     </script>
 </body>
