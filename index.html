@@ -1,0 +1,3148 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة تحليل وتقييم دليل الإجراءات التشغيلية القياسية (SOP) - وزارة الإسكان والتخطيط العمراني</title>
+    <!-- استدعاء خط تجوال وكايرو من جوجل -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <!-- استدعاء Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- استدعاء أيقونات Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Tajawal', 'Cairo', 'sans-serif'],
+                        heading: ['Cairo', 'Tajawal', 'sans-serif'],
+                    },
+                    colors: {
+                        mohup: {
+                            50: '#f0f5fa',
+                            100: '#e1ebf5',
+                            200: '#c3d7eb',
+                            500: '#1e4e79',
+                            600: '#163d61',
+                            700: '#0f2c48',
+                            800: '#0a1e32',
+                            900: '#06121e',
+                        },
+                        gold: {
+                            50: '#fbf8f1',
+                            100: '#f5efe0',
+                            400: '#d4af37',
+                            500: '#c59b27',
+                            600: '#a37e1b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f4f7fa;
+            color: #1e293b;
+        }
+        h1, h2, h3, h4, .font-heading {
+            font-family: 'Cairo', sans-serif;
+        }
+        /* تأثيرات الانتقال السلس */
+        .smooth-collapse {
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .rating-btn input:checked + div {
+            background-color: #163d61;
+            color: #ffffff;
+            border-color: #163d61;
+            box-shadow: 0 4px 12px rgba(22, 61, 97, 0.25);
+            transform: translateY(-2px);
+        }
+        .challenge-chip input:checked + div {
+            background-color: #fef3c7;
+            color: #92400e;
+            border-color: #f59e0b;
+            font-weight: 700;
+        }
+        /* تخصيص شريط التمرير */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .print-break {
+                page-break-inside: avoid;
+            }
+            body {
+                background-color: #fff;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- إشعار منبثق (Toast Notification) بديل عن alert -->
+    <div id="toastContainer" class="fixed top-5 left-5 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
+
+    <!-- الترويسة الرئيسية (Header) -->
+    <header class="bg-gradient-to-l from-mohup-800 via-mohup-700 to-mohup-600 text-white shadow-lg border-b-4 border-gold-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5">
+                <div class="flex items-start sm:items-center gap-4">
+                    <div class="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm border border-gold-400/40 flex items-center justify-center text-gold-400 text-3xl shadow-inner shrink-0 mt-1 sm:mt-0">
+                        <i class="fa-solid fa-building-shield"></i>
+                    </div>
+                    <div>
+                        <div class="flex flex-wrap items-center gap-2 text-gold-400 text-xs sm:text-sm font-semibold mb-1">
+                            <span>سلطنة عُمان</span>
+                            <span>•</span>
+                            <span>وزارة الإسكان والتخطيط العمراني</span>
+                        </div>
+                        <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight">
+                            منصة تحليل وتقييم دليل الإجراءات التشغيلية القياسية (SOP)
+                        </h1>
+                        <p class="text-slate-200 text-xs sm:text-sm mt-1">
+                            ملخص شامل للخدمات المعتمدة (إصدار ديسمبر 2025) ونظام تقييم سير الإجراءات ومقترحات التطوير
+                        </p>
+                        <!-- شارة اسم المنشئ في الهيدر متطابقة مع الفوتر بشكل متناسق -->
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-xl bg-mohup-900/50 border border-gold-400/30 text-gold-100 text-xs font-semibold mt-2.5 shadow-sm">
+                            <i class="fa-solid fa-landmark text-gold-400"></i>
+                            <span>قسم الخدمة الموحدة بالمديرية العامة للاسكان والتخطيط العمراني بمحافظة البريمي</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- أزرار التحكم والمشاركة السريعة -->
+                <div class="flex flex-wrap items-center gap-2.5 no-print w-full lg:w-auto justify-start lg:justify-end border-t lg:border-t-0 border-white/10 pt-3 lg:pt-0">
+                    <button onclick="openSubmitModal()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-md transition flex items-center gap-2 text-xs sm:text-sm">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>إرسال تقييماتي للمشرف</span>
+                    </button>
+                    <button onclick="requestAdminAccess()" class="px-4 py-2.5 bg-gold-500 hover:bg-gold-600 text-white font-bold rounded-xl shadow-md transition flex items-center gap-2 text-xs sm:text-sm">
+                        <i class="fa-solid fa-lock"></i>
+                        <span>ملخص التقييمات ونتائج الورشة</span>
+                    </button>
+                    <button onclick="window.print()" class="px-3.5 py-2.5 bg-white/10 hover:bg-white/20 text-white border border-white/20 rounded-xl transition text-xs sm:text-sm" title="طباعة الصفحة أو حفظها كملف PDF">
+                        <i class="fa-solid fa-print"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- لوحة المؤشرات الإحصائية (KPI Cards) -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-5 z-10 relative">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- إجمالي الخدمات -->
+            <div class="bg-white rounded-2xl p-4 shadow-md border border-slate-100 flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-mohup-50 text-mohup-600 flex items-center justify-center text-xl shrink-0">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-slate-500 font-semibold">إجمالي الخدمات المسجلة بالدليل</p>
+                    <div class="flex items-baseline gap-2">
+                        <span id="statTotalServices" class="text-2xl font-bold text-mohup-800 font-heading">67</span>
+                        <span class="text-xs text-slate-500">خدمة (6 قطاعات)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الخدمات التي تم الاطلاع عليها -->
+            <div class="bg-white rounded-2xl p-4 shadow-md border border-slate-100 flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl shrink-0">
+                    <i class="fa-solid fa-eye"></i>
+                </div>
+                <div class="w-full">
+                    <p class="text-xs text-slate-500 font-semibold">تم تأكيد الاطلاع على إجراءاتها</p>
+                    <div class="flex items-center justify-between">
+                        <span id="statReadServices" class="text-2xl font-bold text-blue-700 font-heading">0</span>
+                        <span id="statReadPercent" class="text-xs font-bold px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الخدمات التي تم تقييمها -->
+            <div class="bg-white rounded-2xl p-4 shadow-md border border-slate-100 flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl shrink-0">
+                    <i class="fa-solid fa-clipboard-check"></i>
+                </div>
+                <div class="w-full">
+                    <p class="text-xs text-slate-500 font-semibold">الخدمات المكتمل تقييمها</p>
+                    <div class="flex items-center justify-between">
+                        <span id="statEvaluatedServices" class="text-2xl font-bold text-emerald-700 font-heading">0</span>
+                        <span id="statEvaluatedPercent" class="text-xs font-bold px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- مؤشر وضوح وجاهزية الإجراءات -->
+            <div class="bg-white rounded-2xl p-4 shadow-md border border-slate-100 flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl shrink-0">
+                    <i class="fa-solid fa-star-half-stroke"></i>
+                </div>
+                <div class="w-full">
+                    <p class="text-xs text-slate-500 font-semibold">متوسط مؤشر الجاهزية والوضوح</p>
+                    <div class="flex items-center justify-between">
+                        <span id="statAvgScore" class="text-2xl font-bold text-amber-600 font-heading">-</span>
+                        <span class="text-xs text-slate-400">من 5.0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
+
+        <!-- نبذة سريعة وإرشادات الاستخدام -->
+        <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80 mb-6">
+            <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+                <div class="flex items-start gap-3">
+                    <div class="w-9 h-9 rounded-lg bg-mohup-100 text-mohup-700 flex items-center justify-center shrink-0 mt-0.5">
+                        <i class="fa-solid fa-circle-info"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-base font-bold text-mohup-800">آلية استعراض وتقييم الخدمات المسجلة في الدليل:</h2>
+                        <p class="text-sm text-slate-600 mt-0.5 leading-relaxed">
+                            اختر القطاع أو ابحث عن الخدمة للاطلاع على <strong>ملخص الإجراء التشغيلي والمستندات وخطوات العمل</strong>، ثم اضغط على زر التأكيد <span class="text-mohup-700 font-semibold">«تم الاطلاع على سير الإجراءات بخدمة...»</span> ليظهر لك نموذج التقييم المعمول به وإضافة الآراء والمقترحات.
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 shrink-0 w-full lg:w-auto justify-end no-print">
+                    <button onclick="expandAllCards(true)" class="px-3 py-1.5 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition">
+                        <i class="fa-solid fa-angles-down ml-1"></i>فتح جميع التفاصيل
+                    </button>
+                    <button onclick="expandAllCards(false)" class="px-3 py-1.5 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition">
+                        <i class="fa-solid fa-angles-up ml-1"></i>طي الجميع
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- شريط البحث والتصفية حسب القطاع والحالة -->
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 mb-6 sticky top-2 z-20 no-print">
+            <div class="flex flex-col md:flex-row gap-3 items-center justify-between">
+                <!-- حقل البحث -->
+                <div class="relative w-full md:w-80">
+                    <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    <input type="text" id="searchInput" oninput="renderServices()" placeholder="ابحث باسم الخدمة أو القسم أو المستند..."
+                        class="w-full pr-10 pl-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-mohup-500 focus:bg-white transition">
+                </div>
+
+                <!-- أزرار القطاعات -->
+                <div class="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto pb-1 md:pb-0" id="sectorTabs">
+                    <button onclick="setSectorFilter('الكل')" data-sector="الكل" class="sector-tab px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition bg-mohup-700 text-white shadow-sm">
+                        الكل (67)
+                    </button>
+                    <button onclick="setSectorFilter('الأراضي')" data-sector="الأراضي" class="sector-tab px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition bg-slate-100 text-slate-700 hover:bg-slate-200">
+                        الأراضي (1)
+                    </button>
+                    <button onclick="setSectorFilter('الإسكان الاجتماعي')" data-sector="الإسكان الاجتماعي" class="sector-tab px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition bg-slate-100 text-slate-700 hover:bg-slate-200">
+                        الإسكان الاجتماعي (8)
+                    </button>
+                    <button onclick="setSectorFilter('التطوير العقاري')" data-sector="التطوير العقاري" class="sector-tab px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition bg-slate-100 text-slate-700 hover:bg-slate-200">
+                        التطوير العقاري (4)
+                    </button>
+                    <button onclick="setSectorFilter('الوساطة العقارية')" data-sector="الوساطة العقارية" class="sector-tab px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition bg-slate-100 text-slate-700 hover:bg-slate-200">
+                        الوساطة العقارية (6)
+                    </button>
+                    <button onclick="setSectorFilter('التخطيط العمراني')" data-sector="التخطيط العمراني" class="sector-tab px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition bg-slate-100 text-slate-700 hover:bg-slate-200">
+                        التخطيط العمراني (23)
+                    </button>
+                    <button onclick="setSectorFilter('السجل العقاري')" data-sector="السجل العقاري" class="sector-tab px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition bg-slate-100 text-slate-700 hover:bg-slate-200">
+                        السجل العقاري (25)
+                    </button>
+                </div>
+
+                <!-- فلتر حالة التقييم -->
+                <div class="w-full md:w-auto shrink-0">
+                    <select id="statusFilter" onchange="renderServices()" class="w-full md:w-auto px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-mohup-500">
+                        <option value="all">جميع الحالات</option>
+                        <option value="unread">لم يتم الاطلاع عليها</option>
+                        <option value="read_not_eval">تم الاطلاع (بانتظار التقييم)</option>
+                        <option value="evaluated">تم تقييمها ✓</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- حاوية بطاقات الخدمات -->
+        <div id="servicesContainer" class="space-y-4"></div>
+
+    </main>
+
+    <!-- نافذة التحقق من الرقم السري لفتح ملخص التقييمات الحصري (Password Modal) -->
+    <div id="passwordModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full shadow-2xl border border-slate-200 overflow-hidden animate-fadeIn">
+            <div class="bg-mohup-800 text-white px-6 py-4 flex items-center justify-between border-b-2 border-gold-500">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-gold-500/20 border border-gold-400/40 flex items-center justify-center text-gold-400">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold">دخول حصري للمشرفين</h3>
+                        <p class="text-[11px] text-slate-300">صفحة ملخص التقييمات وتجميع نتائج الورشة محمية برقم سري</p>
+                    </div>
+                </div>
+                <button onclick="closePasswordModal()" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div>
+                    <label for="adminPasswordInput" class="block text-xs font-bold text-slate-700 mb-2">
+                        أدخل الرقم السري للمشرف (نقطة الاتصال):
+                    </label>
+                    <div class="relative">
+                        <i class="fa-solid fa-key absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="password" id="adminPasswordInput" onkeydown="if(event.key==='Enter') verifyAdminPassword()" placeholder="أدخل الرقم السري هنا..."
+                            class="w-full pr-10 pl-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-sm font-bold tracking-widest text-center focus:outline-none focus:ring-2 focus:ring-mohup-600 focus:bg-white transition">
+                    </div>
+                    <p id="passwordErrorMsg" class="text-xs text-red-600 font-bold mt-2 hidden">
+                        <i class="fa-solid fa-circle-exclamation ml-1"></i>الرقم السري غير صحيح، يرجى المحاولة مرة أخرى.
+                    </p>
+                </div>
+                <div class="flex items-center justify-end gap-2 pt-2">
+                    <button onclick="closePasswordModal()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition">
+                        إلغاء
+                    </button>
+                    <button onclick="verifyAdminPassword()" class="px-5 py-2.5 bg-mohup-700 hover:bg-mohup-800 text-white text-xs font-bold rounded-xl shadow transition flex items-center gap-2">
+                        <i class="fa-solid fa-unlock-keyhole"></i>
+                        <span>فتح ملخص التقييمات</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة إرسال التقييمات من قبل المشاركين (Participant Submit Modal) -->
+    <div id="submitModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-200 overflow-hidden my-8">
+            <div class="bg-emerald-800 text-white px-6 py-4 flex items-center justify-between border-b-2 border-gold-400">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-gold-400 text-lg">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base sm:text-lg font-bold">إرسال ومشاركة تقييماتك مع المشرف (نقطة الاتصال)</h3>
+                        <p class="text-xs text-emerald-100">اختر الطريقة المناسبة لإرسال تقييماتك ليتم تجميعها في التقرير الموحد</p>
+                    </div>
+                </div>
+                <button onclick="closeSubmitModal()" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="p-6 space-y-5">
+                <!-- بيانات المشارك -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">اسم الموظف المشارك:</label>
+                        <input type="text" id="participantNameGlobal" placeholder="اكتب اسمك الثلاثي والقبيلة..."
+                            class="w-full p-2.5 rounded-xl bg-white border border-slate-300 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">الدائرة / القسم:</label>
+                        <input type="text" id="participantDeptGlobal" placeholder="مثال: قسم الخدمة الموحدة / التخطيط..."
+                            class="w-full p-2.5 rounded-xl bg-white border border-slate-300 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600">
+                    </div>
+                </div>
+
+                <!-- ملخص سريع لإنجاز المشارك -->
+                <div id="participantStatsBox" class="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-xs sm:text-sm text-emerald-900 font-semibold flex items-center justify-between">
+                    <!-- يتم تعبئته ديناميكياً -->
+                </div>
+
+                <!-- طرق الإرسال المتاحة للمشارك -->
+                <div class="space-y-3">
+                    <h4 class="text-xs sm:text-sm font-bold text-mohup-800">اختر إحدى الطرق التالية لإرسال تقييماتك إلى جامع التقييمات:</h4>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <!-- خيار 1: تنزيل ملف التقييم الموحد لإرساله -->
+                        <button onclick="downloadParticipantJSON()" class="p-4 rounded-2xl border-2 border-mohup-200 hover:border-mohup-600 bg-mohup-50/50 hover:bg-mohup-50 text-right transition flex flex-col justify-between gap-2 group">
+                            <div class="flex items-center justify-between">
+                                <span class="w-9 h-9 rounded-xl bg-mohup-700 text-white flex items-center justify-center text-sm">
+                                    <i class="fa-solid fa-file-arrow-down"></i>
+                                </span>
+                                <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-mohup-100 text-mohup-800">الطريقة الموصى بها</span>
+                            </div>
+                            <div>
+                                <div class="font-bold text-mohup-900 text-sm">1. تنزيل ملف التقييم (.json)</div>
+                                <p class="text-xs text-slate-600 mt-0.5 leading-relaxed">حفظ ملف تقييماتك لإرساله عبر البريد الرسمي أو الواتساب لنقطة الاتصال لدمجه بضغطة زر.</p>
+                            </div>
+                        </button>
+
+                        <!-- خيار 2: نسخ كود التقييم الذكي -->
+                        <button onclick="copyParticipantCode()" class="p-4 rounded-2xl border-2 border-emerald-200 hover:border-emerald-600 bg-emerald-50/50 hover:bg-emerald-50 text-right transition flex flex-col justify-between gap-2 group">
+                            <div class="flex items-center justify-between">
+                                <span class="w-9 h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center text-sm">
+                                    <i class="fa-solid fa-code"></i>
+                                </span>
+                                <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">سريع للمحادثات</span>
+                            </div>
+                            <div>
+                                <div class="font-bold text-emerald-900 text-sm">2. نسخ كود التقييم الذكي</div>
+                                <p class="text-xs text-slate-600 mt-0.5 leading-relaxed">ينسخ حزمة بيانات تقييمك الكاملة لإرسالها كرسالة نصية للمشرف ليقوم بلصقها في لوحة التجميع.</p>
+                            </div>
+                        </button>
+                    </div>
+
+                    <!-- خيار 3: إرسال عبر البريد الإلكتروني أو السحابة -->
+                    <div class="flex flex-col sm:flex-row gap-2.5 pt-1">
+                        <button onclick="sendEvaluationByEmail()" class="flex-1 py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-envelope text-mohup-600"></i>
+                            <span>إرسال التقرير عبر البريد الإلكتروني (Outlook/Mail)</span>
+                        </button>
+                        <button onclick="sendToCloudWebhook()" id="cloudSubmitBtn" class="flex-1 py-2.5 px-4 rounded-xl bg-gold-500 hover:bg-gold-600 text-white text-xs font-bold transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            <span>إرسال مباشر للسحابة المركزية</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-100 px-6 py-3 flex justify-end">
+                <button onclick="closeSubmitModal()" class="px-5 py-2 bg-slate-700 hover:bg-slate-800 text-white text-xs font-bold rounded-xl transition">
+                    إغلاق
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة ملخص التقييمات ومقارنة نتائج الورشة الحصرية للمشرفين (Modal) -->
+    <div id="reportModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-5xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden my-8">
+            <!-- رأس النافذة -->
+            <div class="bg-mohup-800 text-white px-6 py-4 flex items-center justify-between border-b-2 border-gold-500">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-chart-column text-gold-400 text-xl"></i>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 class="text-base sm:text-lg font-bold">لوحة المشرف: ملخص التقييمات المجمّعة ونتائج الورشة</h3>
+                            <span class="px-2 py-0.5 text-[10px] font-bold bg-gold-500 text-white rounded-full">خاص وحصري 🔒</span>
+                        </div>
+                        <p class="text-xs text-slate-300">تجميع ودمج تقييمات المشاركين وتحليل مستوى الجاهزية والتحديات في دليل الإجراءات (SOP)</p>
+                    </div>
+                </div>
+                <button onclick="closeReportModal()" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- محتوى النافذة -->
+            <div class="p-6 overflow-y-auto space-y-6">
+
+                <!-- صندوق تجميع واستيراد تقييمات المشاركين (للمشرف / نقطة الاتصال) -->
+                <div class="bg-mohup-50/70 rounded-2xl p-5 border-2 border-mohup-200 space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div>
+                            <h4 class="font-bold text-mohup-900 flex items-center gap-2 text-sm sm:text-base">
+                                <i class="fa-solid fa-users-gear text-mohup-600"></i>
+                                <span>مركز تجميع ودمج تقييمات المشاركين (خاص بنقطة الاتصال)</span>
+                            </h4>
+                            <p class="text-xs text-slate-600 mt-0.5">
+                                يمكنك هنا رفع ملفات التقييم (<code>.json</code>) المستلمة من الموظفين أو لصق «كود التقييم الذكي» لدمج جميع التقييمات في تقرير موحد وتصديرها لملف Excel.
+                            </p>
+                        </div>
+                        <span id="mergedParticipantsBadge" class="px-3 py-1 bg-mohup-700 text-white rounded-xl text-xs font-bold shrink-0 self-start sm:self-center">
+                            إجمالي التقييمات المدمجة: 0
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 items-start">
+                        <!-- استيراد ملفات JSON -->
+                        <div class="lg:col-span-5 bg-white p-3.5 rounded-xl border border-slate-200 space-y-2">
+                            <label class="block text-xs font-bold text-mohup-800">
+                                <i class="fa-solid fa-file-import ml-1 text-gold-500"></i>استيراد ملفات تقييم الموظفين (.json):
+                            </label>
+                            <input type="file" id="importJsonFile" accept=".json" multiple onchange="handleFileImport(event)"
+                                class="block w-full text-xs text-slate-600 file:ml-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-mohup-100 file:text-mohup-800 hover:file:bg-mohup-200 cursor-pointer">
+                            <p class="text-[11px] text-slate-400">يدعم اختيار عدة ملفات دفعة واحدة ودمجها تلقائياً.</p>
+                        </div>
+
+                        <!-- لصق كود التقييم الذكي -->
+                        <div class="lg:col-span-7 bg-white p-3.5 rounded-xl border border-slate-200 space-y-2">
+                            <label class="block text-xs font-bold text-mohup-800">
+                                <i class="fa-solid fa-paste ml-1 text-emerald-600"></i>أو لصق «كود التقييم الذكي» المرسل من الموظف:
+                            </label>
+                            <div class="flex gap-2">
+                                <input type="text" id="pasteEvalCodeInput" placeholder="الصق الكود الذي يبدأ بـ SOP_EVAL_... هنا"
+                                    class="flex-1 p-2 rounded-lg bg-slate-50 border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-mohup-500">
+                                <button onclick="importPastedCode()" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition shrink-0">
+                                    دمج التقييم
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- إعدادات الربط السحابي وتغيير الرقم السري (قابلة للطي) -->
+                    <details class="bg-white rounded-xl border border-slate-200 p-3 text-xs">
+                        <summary class="font-bold text-mohup-800 cursor-pointer select-none flex items-center justify-between">
+                            <span><i class="fa-solid fa-sliders ml-1.5 text-gold-500"></i>إعدادات متقدمة للمشرف (الربط السحابي Google Sheets وتغيير الرقم السري)</span>
+                            <i class="fa-solid fa-chevron-down text-slate-400"></i>
+                        </summary>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3 pt-3 border-t border-slate-100">
+                            <div class="space-y-2">
+                                <label class="block font-bold text-slate-700">رابط تطبيق الويب (Google Apps Script Web App URL):</label>
+                                <div class="flex gap-2">
+                                    <input type="url" id="webhookUrlInput" dir="ltr" placeholder="https://script.google.com/macros/s/.../exec"
+                                        class="flex-1 p-2 rounded-lg bg-slate-50 border border-slate-200 text-xs text-left">
+                                    <button onclick="saveWebhookUrl()" class="px-3 py-1.5 bg-mohup-700 hover:bg-mohup-800 text-white rounded-lg font-bold transition">حفظ الرابط</button>
+                                </div>
+                                <div class="flex flex-wrap gap-2 pt-1">
+                                    <button onclick="copyGoogleAppsScriptCode()" class="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-lg font-bold transition flex items-center gap-1.5">
+                                        <i class="fa-solid fa-code"></i>
+                                        <span>نسخ كود Google Apps Script الجاهز</span>
+                                    </button>
+                                    <button onclick="fetchFromGoogleSheets()" id="btnFetchCloud" class="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 rounded-lg font-bold transition flex items-center gap-1.5">
+                                        <i class="fa-solid fa-cloud-arrow-down"></i>
+                                        <span>جلب التقييمات من Google Sheets</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="block font-bold text-slate-700">تغيير الرقم السري لصفحة الملخص (الافتراضي: 2025):</label>
+                                <div class="flex gap-2">
+                                    <input type="text" id="newAdminPinInput" placeholder="أدخل الرقم السري الجديد..."
+                                        class="flex-1 p-2 rounded-lg bg-slate-50 border border-slate-200 text-xs">
+                                    <button onclick="changeAdminPin()" class="px-3 py-1.5 bg-gold-500 hover:bg-gold-600 text-white rounded-lg font-bold transition">تحديث الرقم</button>
+                                </div>
+                                <p class="text-[11px] text-slate-500 leading-relaxed">
+                                    💡 <strong>ملاحظة للمشرف:</strong> لتعميم رابط Google Sheets على جميع الموظفين تلقائياً دون الحاجة لإدخاله في كل جهاز، يمكنك لصق الرابط في المتغير <code>DEFAULT_WEBHOOK_URL</code> داخل الكود قبل مشاركة الملف.
+                                </p>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- قسم 1: نتائج التقييم الحالية والمدمجة على المنصة -->
+                <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+                        <h4 class="font-bold text-mohup-800 flex items-center gap-2">
+                            <i class="fa-solid fa-square-poll-vertical text-mohup-600"></i>
+                            <span>أولاً: جدول التقييمات التفصيلي (الجلسة الحالية + التقييمات المدمجة)</span>
+                        </h4>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <button onclick="exportEvaluationsCSV()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                                <i class="fa-solid fa-file-csv"></i>
+                                <span>تصدير الكل (Excel/CSV)</span>
+                            </button>
+                            <button onclick="copySummaryReport()" class="px-3 py-1.5 bg-mohup-600 hover:bg-mohup-700 text-white rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
+                                <i class="fa-regular fa-copy"></i>
+                                <span>نسخ التقرير النصي</span>
+                            </button>
+                            <button onclick="clearAllEvaluations()" class="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-trash-can"></i>
+                                <span>مسح البيانات</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="liveEvaluationSummary" class="space-y-4">
+                        <!-- يتم تعبئته ديناميكياً -->
+                    </div>
+                </div>
+
+                <!-- قسم 2: نتائج الورشة المرجعية في الملف رقم 2 -->
+                <div class="bg-white rounded-2xl p-5 border border-slate-200">
+                    <h4 class="font-bold text-mohup-800 flex items-center gap-2 mb-3">
+                        <i class="fa-solid fa-award text-gold-500"></i>
+                        <span>ثانياً: المؤشرات المرجعية لورشة بناء قدرات الموظفين في دليل الإجراءات التشغيلية (الملف رقم 2)</span>
+                    </h4>
+                    <p class="text-xs text-slate-500 mb-4">
+                        البيانات المرجعية المستخلصة من استبانة قياس مستوى المعرفة والجاهزية (38 مشاركاً) واستبانة قياس أثر الورشة والتحديات المرصودة:
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+                        <div class="p-4 rounded-xl bg-blue-50/60 border border-blue-100">
+                            <h5 class="text-sm font-bold text-blue-900 mb-3">نتائج الاستبانة (1): المعرفة والجاهزية قبل الورشة</h5>
+                            <ul class="space-y-2 text-xs text-slate-700">
+                                <li class="flex justify-between items-center">
+                                    <span>• فهم واضح بإجراءات العمل المرتبطة بالدور الحالي:</span>
+                                    <span class="font-bold text-blue-800">87% (موافق بشدة 50% / موافق 37%)</span>
+                                </li>
+                                <li class="flex justify-between items-center">
+                                    <span>• القدرة على تطبيق خطوات الإجراء التشغيلي بسهولة:</span>
+                                    <span class="font-bold text-blue-800">74% (موافق بشدة 34% / موافق 40%)</span>
+                                </li>
+                                <li class="flex justify-between items-center">
+                                    <span>• وجود نقاط في الدليل تحتاج إلى توضيح أو تحسين:</span>
+                                    <span class="font-bold text-amber-700">67% (موافق بشدة 23% / موافق 44%)</span>
+                                </li>
+                                <li class="flex justify-between items-center">
+                                    <span>• معرفة مكان وجود دليل الإجراءات التشغيلية المطلوب:</span>
+                                    <span class="font-bold text-blue-800">83% (موافق بشدة 33% / موافق 50%)</span>
+                                </li>
+                                <li class="flex justify-between items-center">
+                                    <span>• تغطية الإجراء التشغيلي لأغلب الحالات المتعامل معها:</span>
+                                    <span class="font-bold text-blue-800">64% (موافق بشدة 20% / موافق 44%)</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-emerald-50/60 border border-emerald-100">
+                            <h5 class="text-sm font-bold text-emerald-900 mb-3">نتائج الاستبانة (2): قياس الأثر بعد الورشة</h5>
+                            <ul class="space-y-2 text-xs text-slate-700">
+                                <li class="flex justify-between items-center">
+                                    <span>• ازدياد المعرفة بالإجراءات المرتبطة بالعمل:</span>
+                                    <span class="font-bold text-emerald-800">94% (موافق بشدة 65% / موافق 29%)</span>
+                                </li>
+                                <li class="flex justify-between items-center">
+                                    <span>• دقة أعلى في تنفيذ دليل الإجراءات التشغيلية:</span>
+                                    <span class="font-bold text-emerald-800">94% (موافق بشدة 65% / موافق 29%)</span>
+                                </li>
+                                <li class="flex justify-between items-center">
+                                    <span>• زيادة الوعي بأهمية تطبيق وتحسين الإجراءات:</span>
+                                    <span class="font-bold text-emerald-800">94% (موافق بشدة 71% / موافق 23%)</span>
+                                </li>
+                                <li class="flex justify-between items-center">
+                                    <span>• القدرة على تطبيق الدليل في العمل:</span>
+                                    <span class="font-bold text-emerald-800">94% (موافق بشدة 65% / موافق 29%)</span>
+                                </li>
+                                <li class="flex justify-between items-center">
+                                    <span>• توقع أثر إيجابي مباشر على جودة العمل:</span>
+                                    <span class="font-bold text-emerald-800">94% (موافق بشدة 71% / موافق 23%)</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- أبرز التحديات المرصودة في الملف 2 -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                            <div class="font-bold text-mohup-700 mb-1"><i class="fa-solid fa-user-lock ml-1 text-gold-500"></i>الحوكمة والصلاحيات والمسارات</div>
+                            <p class="text-slate-600 leading-relaxed">تعدد الصلاحيات لمهندس التنفيذ، غياب صلاحية رئيس القسم في بعض الاعتمادات (كالدمج)، وبقاء المعاملة معلقة في حال إجازة الموظف المخصص له الطلب.</p>
+                        </div>
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                            <div class="font-bold text-mohup-700 mb-1"><i class="fa-solid fa-file-signature ml-1 text-gold-500"></i>المرفقات والتوقيع الإلكتروني</div>
+                            <p class="text-slate-600 leading-relaxed">ظهور المرفقات تحت مسمى (أخرى)، عدم فتح المرفقات إلا بعد التخصيص، وعدم ظهور التوقيع والختم أثناء اعتماد الخرائط التعميرية.</p>
+                        </div>
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                            <div class="font-bold text-mohup-700 mb-1"><i class="fa-solid fa-file-lines ml-1 text-gold-500"></i>المذكرات التخطيطية والاعتماد</div>
+                            <p class="text-slate-600 leading-relaxed">عدم إمكانية تعديل أو حذف مسودة الاعتماد، وعودة المعاملة للقسم بدلاً من منشئ المذكرة عند وجود ملاحظات مما قد يؤخر الإنجاز.</p>
+                        </div>
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                            <div class="font-bold text-mohup-700 mb-1"><i class="fa-solid fa-Coins ml-1 text-gold-500"></i>البيانات والرسوم</div>
+                            <p class="text-slate-600 leading-relaxed">عدم ظهور كافة بيانات القطعة في المعاملة، واقتصار الاحتساب الآلي على رسوم التقسيم دون رسوم تغيير الاستعمال للقطع التجارية الناتجة.</p>
+                        </div>
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                            <div class="font-bold text-mohup-700 mb-1"><i class="fa-solid fa-network-wired ml-1 text-gold-500"></i>التكامل مع الجهات الخارجية</div>
+                            <p class="text-slate-600 leading-relaxed">الحاجة لربط نظام مراسلات لمخاطبة الجهات الخارجية من المنصة مباشرة مع خيار حفظ المعاملة لحين ورود الرد، وتفعيل جميع خدمات الإسكان الاجتماعي بالنظام.</p>
+                        </div>
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                            <div class="font-bold text-mohup-700 mb-1"><i class="fa-solid fa-arrows-rotate ml-1 text-gold-500"></i>نقطة الاتصال وتحديث الدليل</div>
+                            <p class="text-slate-600 leading-relaxed">أهمية ترشيح نقطة اتصال بكل مديرية لحصر الملاحظات والمقترحات ورفعها للفريق المختص ونشر الوعي بالتحديثات المعتمدة.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ذيل النافذة -->
+            <div class="bg-slate-100 px-6 py-3 flex justify-end">
+                <button onclick="closeReportModal()" class="px-5 py-2 bg-mohup-700 hover:bg-mohup-800 text-white text-sm font-bold rounded-xl transition">
+                    إغلاق
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- التذييل (Footer) مع اسم منشئ الصفحة المطلوب -->
+    <footer class="bg-mohup-900 text-white border-t-4 border-gold-500 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-right">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-xl bg-gold-500/20 border border-gold-400/40 flex items-center justify-center text-gold-400 text-lg shrink-0">
+                        <i class="fa-solid fa-landmark"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gold-400 font-semibold">إعداد وتصميم الصفحة التفاعلية</p>
+                        <p class="text-base sm:text-lg font-bold text-white tracking-wide">
+                            قسم الخدمة الموحدة بالمديرية العامة للاسكان والتخطيط العمراني بمحافظة البريمي
+                        </p>
+                    </div>
+                </div>
+                <div class="text-xs text-slate-400 space-y-1">
+                    <p>دليل الإجراءات التشغيلية القياسية (SOP) - وزارة الإسكان والتخطيط العمراني</p>
+                    <p>نعمل معاً بجودة • تنمية عمرانية مستدامة لمجتمعات مزدهرة</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- الأكواد البرمجية والبيانات المستخرجة من الملفين -->
+    <script>
+        /**
+         * قاعدة بيانات جميع الخدمات المسجلة في الملف الأول:
+         * دليل الإجراءات التشغيلية القياسية (SOP) - إصدار ديسمبر 2025 (42 خدمة وإجراءً تشغيلياً)
+         */
+        const sopServices = [
+            // ==================== أولاً: قطاع الأراضي (1 خدمة) ====================
+            {
+                id: 1,
+                title: "طلب إثبات وتسجيل الملك",
+                sector: "الأراضي",
+                department: "المديرية العامة للأراضي / دائرة الأراضي وإثبات الملك - قسم مراجعة قرارات إثبات وتسجيل الملك",
+                duration: "5 أسابيع",
+                platforms: ["منصة أملاك"],
+                summary: "خدمة تتيح للمواطنين التقدم بطلب إثبات وتسجيل الملك للأراضي ودراستها فنياً وقانونياً ومعاينتها ميدانياً للتحقق من الإشغالات القائمة قبل الأول من يناير 1970م وعرضها على اللجنة المختصة.",
+                documents: [
+                    "أصل الإثبات الشخصي صادر من شرطة عمان السلطانية",
+                    "صور جوية قديمة أو حديثة موضحة للموقع من جهات مختلفة (4 صور على الأقل)",
+                    "استمارة طلب الخدمة لإثبات وتسجيل الملك",
+                    "الرسم المساحي المرفق من المكاتب الاستشارية المعتمدة"
+                ],
+                steps: [
+                    "تقديم الطلب في منصة أملاك وإحالته للمكتب الاستشاري المعتمد ثم إرساله إلكترونياً إلى قسم الرسم (3 أيام).",
+                    "مراجعة الرسم المساحي والتأكد من خلو الموقع من الموانع التخطيطية وإعداد تقرير فني وإحالته لقسم الدراسة وتنفيذ القرارات (أسبوع).",
+                    "دراسة الطلب وزيارة الموقع لتحديد الإشغالات وعرضه على اللجنة لإصدار التوصية؛ الطلبات المرفوضة والأقل من 5000م² تعتمد من المدير العام، والأكثر من 5000م² تحال لدائرة الأراضي وإثبات الملك (أسبوعان).",
+                    "دراسة الطلب من الباحث القانوني للتأكد من موافقته للقانون وثبوت الإشغالات قبل 1 يناير 1970م وإحالته لرئيس القسم (أسبوع).",
+                    "مراجعة الطلب من رئيس القسم وإحالته لمدير الدائرة ثم رفعه إلى سعادة الوكيل لاعتماده (أسبوع)."
+                ]
+            },
+
+            // ==================== ثانياً: قطاع الإسكان الاجتماعي (8 خدمات) ====================
+            {
+                id: 2,
+                title: "طلب مساعدة سكنية",
+                sector: "الإسكان الاجتماعي",
+                department: "دائرة الإسكان الاجتماعي والمشاريع / قسم المساعدات السكنية",
+                duration: "ساعة واحدة",
+                platforms: ["منصة أملاك"],
+                summary: "استلام ومراجعة طلبات المساعدة السكنية الجديدة إلكترونياً عبر منصة أملاك والتحقق من استيفاء المستندات والشروط الأساسية لتسجيل الطلب.",
+                documents: [
+                    "نسخة من البطاقة الشخصية أو جواز السفر لمقدم الطلب",
+                    "نسخة من عقد الزواج وشهادات ميلاد الأبناء والشهادات الدراسية",
+                    "شهادة راتب معتمدة لمقدم الطلب ولجميع أفراد أسرته العاملين (أو إفادة عدم عمل للباحثين عن عمل)",
+                    "نسخة من عقد إيجار ساري المفعول إذا كان مستأجراً",
+                    "نسخة من شهادة إثبات الطلاق أو الترمل وفصل دعوى بالحضانة وحصر الورثة (إن تطلب)"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك وتخصيصه ومراجعة البيانات والمستندات المرفقة، وإعادته للمستفيد في حال وجود نواقص (30 دقيقة).",
+                    "التحقق من استيفاء متطلبات وشروط المساعدة السكنية، واعتماد تسجيل الطلب أو إشعار مقدم الطلب بالرفض عبر رسالة نصية مع توضيح السبب (30 دقيقة)."
+                ]
+            },
+            {
+                id: 3,
+                title: "طلب مساعدة سكنية - مرحلة وصول الدور",
+                sector: "الإسكان الاجتماعي",
+                department: "دائرة الإسكان الاجتماعي والمشاريع / قسم المساعدات السكنية",
+                duration: "10 أيام عمل",
+                platforms: ["منصة أملاك"],
+                summary: "استكمال الدراسة الاجتماعية والفنية لطلبات المساعدة السكنية عند وصول الدور للتحقق من الشروط (الدخل الشهري لا يتجاوز 300 ريال وعدم ملكية مسكن صالح) وعرضها على لجنة المساعدات.",
+                documents: [
+                    "نسخة من البطاقة الشخصية أو جواز السفر وعقد الزواج وشهادات ميلاد الأبناء",
+                    "شهادة راتب معتمدة لجميع العاملين بالأسرة (ألا يتجاوز إجمالي الدخل 300 ريال عماني)",
+                    "نسخة من عقد الإيجار والشهادات الدراسية للأبناء",
+                    "إثبات الطلاق أو الترمل وحكم الحضانة وحصر الورثة وإفادة عدم عمل (إن تطلب)"
+                ],
+                steps: [
+                    "استلام الطلب بمنصة أملاك من الباحث الاجتماعي ومراجعة الاشتراطات والضوابط (يومان).",
+                    "مراجعة الطلب من رئيس قسم المساعدات السكنية وتحويله لقسم متابعة تنفيذ المشاريع الإسكانية (يومان).",
+                    "إعداد التقرير الفني عن مكونات المسكن وحالته من المهندس المختص وتحويله لمدير الدائرة ثم للجنة المساعدات (5 أيام).",
+                    "بت لجنة المساعدات في الطلب؛ وفي حال القبول يتم تحديد نوع المساعدة (شراء أو بناء دون قيود) أو الإشعار بالرفض مع الأسباب (يوم واحد)."
+                ]
+            },
+            {
+                id: 4,
+                title: "طلب مساعدة سكنية - مرحلة الشراء",
+                sector: "الإسكان الاجتماعي",
+                department: "دائرة الإسكان الاجتماعي والمشاريع / قسم المساعدات السكنية وقسم المتابعة والتنفيذ",
+                duration: "4 أسابيع",
+                platforms: ["منصة أملاك"],
+                summary: "إجراءات تقييم وشراء عقار جاهز للمستفيدين الحاصلين على موافقة المساعدة السكنية، بدءاً من الفحص الهندسي للمسكن وحتى توثيق عقد البيع وإيداع المبلغ للبائع.",
+                documents: [
+                    "نسخة من البطاقة الشخصية وجواز السفر للمستفيد والبائع",
+                    "نسخة إباحة البناء، خريطة المسكن، وشهادة إتمام البناء",
+                    "سند الملكية والرسم المساحي للمسكن المراد شراؤه",
+                    "ضمان حماية ضد تسريب المياه (10 سنوات) وضمان مكافحة الرمة (10 سنوات)"
+                ],
+                steps: [
+                    "استلام الطلب من رئيس قسم المتابعة والتنفيذ واستعراض بيانات العقار وتحويله للمهندس للتقييم الهندسي.",
+                    "تحديد موعد زيارة العقار وإدخال بيانات التقرير الهندسي والقرار الفني (صالح / غير صالح) في منصة أملاك.",
+                    "الاعتماد النهائي للتقييم من رئيس القسم، وإعداد اتفاقية البيع المبدئي وتوقيعها إلكترونياً من الأطراف واعتمادها من مدير الدائرة.",
+                    "إدخال وتأكيد الارتباط المالي واعتماده في قسم ودائرة الموازنة وتحويل الطلب إلى دائرة السجل العقاري.",
+                    "تدقيق المعاملة بالسجل العقاري وموافقة المخول بالتوقيع، ثم إنشاء عقد البيع المالي وتوقيعه، وحجز العقار لمدة 10 سنوات، وطباعة سند الملكية وإحالته للمالية لإيداع المبلغ."
+                ]
+            },
+            {
+                id: 5,
+                title: "طلب مساعدة سكنية - البناء",
+                sector: "الإسكان الاجتماعي",
+                department: "دائرة الإسكان الاجتماعي والمشاريع / قسم المساعدات السكنية وقسم التنفيذ",
+                duration: "7 أيام عمل",
+                platforms: ["منصة أملاك"],
+                summary: "إجراءات تنفيذ بناء مسكن للمستفيد من المساعدة السكنية، وتشمل معاينة صلاحية الأرض، واعتماد الاستشاري والمقاول، وتوقيع عقد البناء وإصدار أمر التشغيل.",
+                documents: [
+                    "بيانات الأرض وسند الملكية والرسم المساحي",
+                    "توفير الخرائط وإباحة البناء خلال 60 يوماً",
+                    "اتفاقية البناء الموقعة من قبل الأطراف وعرض أسعار المقاول"
+                ],
+                steps: [
+                    "استلام الطلب وتحديد موعد زيارة ميدانية وإعداد التقرير الفني حول مدى صلاحية الأرض للبناء (يومان).",
+                    "اعتماد التقرير الفني من رئيس قسم تنفيذ المشاريع وإشعار المواطن لاختيار المكتب الاستشاري عبر المنصة (يوم واحد).",
+                    "مراجعة واعتماد بيانات المكتب الاستشاري والمقاول وعرض الأسعار من مهندس القسم (يوم واحد).",
+                    "إعداد اتفاقية البناء وتحديد المراحل والدفعات وتوقيعها إلكترونياً أو يدوياً وتحويلها للموازنة (يوم واحد).",
+                    "إدخال ومراجعة الارتباط المالي في قسم الموازنة (يوم واحد).",
+                    "الاعتماد النهائي للارتباط المالي، وتحويل الطلب للسجل العقاري لحجز العقار 10 سنوات، وإصدار أمر التشغيل (يوم واحد)."
+                ]
+            },
+            {
+                id: 6,
+                title: "طلب التظلم في طلب المساعدة السكنية",
+                sector: "الإسكان الاجتماعي",
+                department: "دائرة الإسكان الاجتماعي والمشاريع / قسم الشؤون القانونية",
+                duration: "5 أيام عمل",
+                platforms: ["منصة أملاك"],
+                summary: "دراسة طلبات التظلم المقدمة من المواطنين بشأن قرارات المساعدات السكنية من الناحية القانونية والبت فيها.",
+                documents: [
+                    "البطاقة الشخصية لمقدم الطلب",
+                    "إثباتات ومرفقات تفيد التظلم (إن وجدت)"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك من الباحث القانوني، ومراجعة المستندات ودراسة التظلم وإعداد مسودة الرأي القانوني (يوم عمل).",
+                    "مراجعة الدراسة القانونية من رئيس قسم الشؤون القانونية؛ إما برفض التظلم وتأييد القرار السابق مع إشعار المواطن، أو الاعتماد ورفع الدراسة لسعادة وكيل الوزارة للإسكان (3 أيام عمل).",
+                    "اعتماد القرار النهائي بالقبول وإشعار مقدم الطلب وتحديث المسار وتصحيح البيانات (يوم عمل)."
+                ]
+            },
+            {
+                id: 7,
+                title: "نقل مساعدة سكنية من محافظة لأخرى",
+                sector: "الإسكان الاجتماعي",
+                department: "دائرة الإسكان الاجتماعي والمشاريع / قسم المساعدات السكنية",
+                duration: "5 أيام عمل",
+                platforms: ["منصة أملاك"],
+                summary: "خدمة تتيح للمستفيد طلب نقل معاملة المساعدة السكنية الخاصة به من محافظة إلى محافظة أخرى وفق مبررات النقل وإثباتات السكن والدراسة.",
+                documents: [
+                    "نسخة من البطاقة الشخصية أو جواز السفر لمقدم الطلب",
+                    "رسالة من مقدم الطلب مع ذكر أسباب النقل",
+                    "إثبات دراسة الأبناء في المحافظة المراد النقل إليها"
+                ],
+                steps: [
+                    "استلام الطلب في منصة أملاك بالجهة الحالية، والتحقق من المستندات ودراسة إمكانية النقل واعتماده من مدير الدائرة وتحويله للجهة المستقبلة أو الإشعار بالرفض (5 أيام).",
+                    "استلام الطلب إلكترونياً من قبل الجهة المراد نقل الطلب إليها، وإشعار مقدم الطلب بالموافقة وتحديث بياناته (5 دقائق)."
+                ]
+            },
+            {
+                id: 8,
+                title: "طلب تغيير المقاول لأصحاب المساعدات السكنية",
+                sector: "الإسكان الاجتماعي",
+                department: "دائرة الإسكان الاجتماعي والمشاريع / قسم متابعة تنفيذ المشاريع الإسكانية",
+                duration: "10 أيام عمل",
+                platforms: ["منصة أملاك"],
+                summary: "إجراءات استبدال المقاول المنفذ لمسكن المساعدة السكنية بمقاول بديل بعد حصر الأعمال المنفذة وتحديد المبالغ المتبقية وتعديل الارتباط المالي.",
+                documents: [
+                    "نسخة من البطاقة الشخصية أو جواز السفر لمقدم الطلب والمقاول البديل",
+                    "رسالة الطلب من المستفيد متضمنة أسباب تغيير المقاول",
+                    "تقرير حصر أعمال من الاستشاري يحدد نسبة الإنجاز والمراحل والمبلغ المتبقي",
+                    "رسالة تنازل من المقاول السابق ورسالة التزام من المقاول البديل باستكمال المشروع بالمبلغ المتبقي",
+                    "نسخة من السجل التجاري للمقاول البديل"
+                ],
+                steps: [
+                    "استلام الطلب بمنصة أملاك من المهندس المختص ومراجعة المستندات ودراسة الطلب وإصدار الموافقة المبدئية (يوم عمل).",
+                    "معالجة الطلب من رئيس القسم ومدير الدائرة والمدير العام لاعتماد المقاول الجديد وتحضير واعتماد العقد الجديد وتحويله للموازنة الإنمائية (8 أيام عمل).",
+                    "تغيير الارتباط المالي باسم المقاول الجديد بقسم الموازنة الإنمائية وإصدار أمر التشغيل وإشعار المستفيد والاستشاري والمقاول (يوم عمل)."
+                ]
+            },
+            {
+                id: 9,
+                title: "طلب تغيير شركة الاستشارات الهندسية لأصحاب المساعدات السكنية",
+                sector: "الإسكان الاجتماعي",
+                department: "دائرة الإسكان الاجتماعي والمشاريع / قسم متابعة تنفيذ المشاريع الإسكانية",
+                duration: "10 أيام عمل",
+                platforms: ["منصة أملاك"],
+                summary: "إجراءات تغيير المكتب الاستشاري المشرف على مشروع بناء المساعدة السكنية واعتماد استشاري جديد.",
+                documents: [
+                    "نسخة من البطاقة الشخصية أو جواز السفر لمقدم الطلب",
+                    "رسالة عدم ممانعة من شركة الاستشارات الهندسية السابقة",
+                    "تقرير مراحل تنفيذ المشروع ومرفقات ثبوتية لأسباب الطلب"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك ومراجعة المستندات ودراسة أسباب التنازل والموافقة المبدئية على الاستشاري الجديد وتحويله لرئيس القسم (يومان عمل).",
+                    "مراجعة الطلب في قسم الموازنة الإنمائية وتحديث البيانات وإحالته لقسم متابعة تنفيذ المشاريع لإصدار أمر التشغيل وإشعار الأطراف (8 أيام عمل)."
+                ]
+            },
+
+            // ==================== ثالثاً: قطاع التطوير العقاري (4 خدمات) ====================
+            {
+                id: 10,
+                title: "تسجيل جمعيات الملاك",
+                sector: "التطوير العقاري",
+                department: "المديرية العامة للتطوير العقاري / دائرة جمعيات الملاك - قسم الإشراف على جمعيات الملاك",
+                duration: "30 دقيقة",
+                platforms: ["منصة أملاك"],
+                summary: "تسجيل وإشهار جمعيات الملاك للوحدات العقارية المشتركة (سواء كان مقدم الطلب فرداً أو شركة) وإصدار شهادة وبطاقة الجمعية.",
+                documents: [
+                    "نسخة من البطاقة الشخصية (ونسخة من السجل التجاري وبطاقة المفوض في حال كانت شركة)",
+                    "نسخة من الرسم المساحي وملكية الوحدة وشهادة إتمام البناء",
+                    "نسخة من شهادة عدم محكومية وصورة شخصية ملونة",
+                    "نسخة من شهادة مسمى المبنى الصادرة من البلدية ونسخة من محضر الاجتماع"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك وتخصيصه باسم الموظف المختص.",
+                    "مراجعة بيانات المعاملة والتحقق من اكتمال المستندات المرفقة (أو إرجاعها لاستكمال النواقص).",
+                    "دفع رسوم المعاملة وإصدار شهادة وبطاقة جمعية الملاك (زمن العملية 7 دقائق)."
+                ]
+            },
+            {
+                id: 11,
+                title: "تجديد بطاقة جمعية الملاك",
+                sector: "التطوير العقاري",
+                department: "المديرية العامة للتطوير العقاري / دائرة جمعيات الملاك - قسم الإشراف على جمعيات الملاك",
+                duration: "30 دقيقة",
+                platforms: ["منصة أملاك"],
+                summary: "تجديد بطاقة وشهادة جمعية الملاك للأفراد أو الشركات بعد التحقق من المستندات المحدثة ومحضر الاجتماع.",
+                documents: [
+                    "نسخة من البطاقة الشخصية (والسجل التجاري للشركات)",
+                    "نسخة من الرسم المساحي وملكية الوحدة وشهادة إتمام البناء",
+                    "نسخة من شهادة عدم محكومية وصورة شخصية ملونة",
+                    "نسخة من شهادة مسمى المبنى الصادرة من البلدية ونسخة من محضر الاجتماع"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك وتخصيصه باسم الموظف.",
+                    "التدقيق على البيانات والمستندات المرفقة والتأكد من عدم وجود نواقص.",
+                    "دفع الرسوم المقررة وإصدار شهادة وبطاقة الجمعية المجددة (زمن العملية 7 دقائق)."
+                ]
+            },
+            {
+                id: 12,
+                title: "طلب تغيير مدير الجمعية",
+                sector: "التطوير العقاري",
+                department: "المديرية العامة للتطوير العقاري / دائرة جمعيات الملاك - قسم الإشراف على جمعيات الملاك",
+                duration: "20 دقيقة",
+                platforms: ["منصة أملاك"],
+                summary: "اعتماد تحديث بيانات مدير جمعية الملاك بناءً على محضر اجتماع الملاك وكشف التدقيق المحاسبي.",
+                documents: [
+                    "نسخة من البطاقة الشخصية للمدير الجديد أو المفوض عن الشركة",
+                    "نسخة من شهادة عدم محكومية وصورة شخصية ملونة",
+                    "نسخة من محضر الاجتماع موقع من الملاك بتعيين مدير جديد",
+                    "كشف تدقيق محاسبي عن حساب البنك الخاص بالجمعية"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك وتخصيصه للموظف المختص.",
+                    "مراجعة بيانات المعاملة والتحقق من محضر الاجتماع وكشف التدقيق المحاسبي.",
+                    "دفع رسوم المعاملة وإصدار شهادة وبطاقة الجمعية بالبيانات الجديدة (زمن العملية 3 دقائق)."
+                ]
+            },
+            {
+                id: 13,
+                title: "استخراج بدل فاقد لجمعية الملاك",
+                sector: "التطوير العقاري",
+                department: "المديرية العامة للتطوير العقاري / دائرة جمعيات الملاك - قسم الإشراف على جمعيات الملاك",
+                duration: "30 دقيقة",
+                platforms: ["منصة أملاك"],
+                summary: "إصدار شهادة وبطاقة بدل فاقد لجمعية الملاك المسجلة للأفراد أو الشركات.",
+                documents: [
+                    "نسخة من البطاقة الشخصية (والسجل التجاري للشركات)",
+                    "نسخة من الرسم المساحي وملكية الوحدة وشهادة إتمام البناء",
+                    "شهادة عدم محكومية وصورة شخصية ملونة",
+                    "شهادة مسمى المبنى ومحضر الاجتماع"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك وتخصيصه للموظف المختص.",
+                    "مراجعة بيانات المعاملة والتحقق من المرفقات.",
+                    "دفع رسوم المعاملة وإصدار شهادة وبطاقة الجمعية (بدل فاقد) (زمن العملية 7 دقائق)."
+                ]
+            },
+
+            // ==================== رابعاً: قطاع الوساطة العقارية (6 خدمات) ====================
+            {
+                id: 14,
+                title: "إصدار ترخيص شركات ومكاتب الوساطة العقارية",
+                sector: "الوساطة العقارية",
+                department: "أمانة السجل العقاري / دائرة تنظيم المكاتب والوسطاء العقاريين - قسم التراخيص العقارية",
+                duration: "8 - 10 دقائق",
+                platforms: ["منصة أملاك", "محطة الخدمة الموحدة"],
+                summary: "إصدار ترخيص مزاولة نشاط الوساطة العقارية للشركات والمكاتب العقارية عبر منصة أملاك وطباعته عبر محطة الخدمة الموحدة.",
+                documents: [
+                    "المرفقات المطلوبة لترخيص الوساطة العقارية في منصة أملاك",
+                    "رقم المعاملة الذي يبدأ بـ (RD24...)"
+                ],
+                steps: [
+                    "اختيار معاملات التطوير العقاري في منصة أملاك وتخصيص المعاملة والتحقق من اكتمال المرفقات وتحويلها للدفع للمرحلة الثانية (5 دقائق).",
+                    "الدخول على محطة الخدمة الموحدة واختيار (طباعة ترخيص الوسيط) وإدخال رقم المعاملة (RD24...) وطباعة البطاقة/الترخيص وتسليمها لصاحب الطلب (3 - 5 دقائق)."
+                ]
+            },
+            {
+                id: 15,
+                title: "تجديد ترخيص شركات ومكاتب الوساطة العقارية",
+                sector: "الوساطة العقارية",
+                department: "أمانة السجل العقاري / دائرة تنظيم المكاتب والوسطاء العقاريين - قسم التراخيص العقارية",
+                duration: "8 - 10 دقائق",
+                platforms: ["منصة أملاك", "محطة الخدمة الموحدة"],
+                summary: "تجديد ترخيص شركات ومكاتب الوساطة العقارية إلكترونياً وطباعة الترخيص المجدد.",
+                documents: [
+                    "مرفقات طلب التجديد في منصة أملاك",
+                    "رقم المعاملة (RD24...)"
+                ],
+                steps: [
+                    "استلام الطلب وتخصيصه في منصة أملاك والتحقق من اكتمال المرفقات وتحويل الطلب للوسيط لاستكمال عملية الدفع (5 دقائق).",
+                    "الدخول على محطة الخدمة الموحدة واختيار طباعة ترخيص الوسيط برقم المعاملة وطباعته وتسليمه لصاحب الطلب (3 - 5 دقائق)."
+                ]
+            },
+            {
+                id: 16,
+                title: "بدل فاقد لترخيص شركات ومكاتب الوساطة العقارية",
+                sector: "الوساطة العقارية",
+                department: "أمانة السجل العقاري / دائرة تنظيم المكاتب والوسطاء العقاريين - قسم التراخيص العقارية",
+                duration: "8 - 10 دقائق",
+                platforms: ["منصة أملاك", "محطة الخدمة الموحدة"],
+                summary: "إصدار ترخيص بدل فاقد لشركات ومكاتب الوساطة العقارية.",
+                documents: [
+                    "طلب بدل فاقد مكتمل المرفقات في منصة أملاك",
+                    "رقم المعاملة (RD24...)"
+                ],
+                steps: [
+                    "استلام الطلب في منصة أملاك والتحقق من المرفقات وتحويل الطلب لاستكمال عملية الدفع (5 دقائق).",
+                    "الدخول على محطة الخدمة الموحدة واختيار طباعة ترخيص الوسيط وإعادة طباعة البطاقة وتسليمها لصاحب الطلب (3 - 5 دقائق)."
+                ]
+            },
+            {
+                id: 17,
+                title: "إصدار بطاقة الوسيط العقاري لأول مرة",
+                sector: "الوساطة العقارية",
+                department: "أمانة السجل العقاري / دائرة تنظيم المكاتب والوسطاء العقاريين - قسم التراخيص العقارية",
+                duration: "8 - 10 دقائق",
+                platforms: ["منصة أملاك", "محطة الخدمة الموحدة"],
+                summary: "إصدار بطاقة وسيط عقاري معتمد لأول مرة بعد التدقيق على المرفقات وسداد الرسوم.",
+                documents: [
+                    "المرفقات المطلوبة لإصدار بطاقة الوسيط العقاري في منصة أملاك",
+                    "رقم المعاملة (RD24...)"
+                ],
+                steps: [
+                    "استلام الطلب في منصة أملاك (معاملات التطوير العقاري) والتحقق من اكتمال المرفقات وتحويله للدفع (5 دقائق).",
+                    "الدخول على محطة الخدمة الموحدة واختيار طباعة ترخيص الوسيط وتحديد البطاقة المراد طباعتها وتسليمها لصاحب العلاقة (3 - 5 دقائق)."
+                ]
+            },
+            {
+                id: 18,
+                title: "تجديد بطاقة الوسيط العقاري",
+                sector: "الوساطة العقارية",
+                department: "أمانة السجل العقاري / دائرة تنظيم المكاتب والوسطاء العقاريين - قسم التراخيص العقارية",
+                duration: "8 - 10 دقائق",
+                platforms: ["منصة أملاك", "محطة الخدمة الموحدة"],
+                summary: "تجديد بطاقة الوسيط العقاري المنتهية عبر منصة أملاك ومحطة الخدمة الموحدة.",
+                documents: [
+                    "مرفقات تجديد بطاقة الوسيط العقاري في منصة أملاك",
+                    "رقم المعاملة (RD24...)"
+                ],
+                steps: [
+                    "استلام الطلب وتخصيصه في منصة أملاك والتحقق من المرفقات وتحويله لاستكمال الدفع (5 دقائق).",
+                    "طباعة بطاقة الوسيط العقاري المجددة من محطة الخدمة الموحدة وتسليمها لصاحب الطلب (3 - 5 دقائق)."
+                ]
+            },
+            {
+                id: 19,
+                title: "إصدار بدل فاقد لبطاقة الوسيط العقاري",
+                sector: "الوساطة العقارية",
+                department: "أمانة السجل العقاري / دائرة تنظيم المكاتب والوسطاء العقاريين - قسم التراخيص العقارية",
+                duration: "8 - 10 دقائق",
+                platforms: ["منصة أملاك", "محطة الخدمة الموحدة"],
+                summary: "استخراج بطاقة وسيط عقاري بدل فاقد وتسليمها للمستفيد.",
+                documents: [
+                    "طلب بدل فاقد مكتمل في منصة أملاك",
+                    "رقم المعاملة (RD24...)"
+                ],
+                steps: [
+                    "استلام الطلب وتخصيصه في منصة أملاك والتحقق من المرفقات وتحويله للدفع (5 دقائق).",
+                    "الدخول على محطة الخدمة الموحدة وإدخال رقم المعاملة وطباعة البطاقة وتسليمها لصاحب الطلب (3 - 5 دقائق)."
+                ]
+            },
+
+            // ==================== خامساً: قطاع التخطيط العمراني (23 خدمة وإجراءً تشغيلياً) ====================
+            {
+                id: 20,
+                title: "تغيير استعمال قطعة أرض إلى سياحي",
+                sector: "التخطيط العمراني",
+                department: "دائرة التخطيط العمراني / قسم إعداد المخططات التفصيلية",
+                duration: "41 يوم عمل",
+                platforms: ["نظام سلاسة", "نظام OPIS", "منصة أملاك"],
+                summary: "دراسة طلبات تغيير استعمال قطع الأراضي إلى الاستعمال السياحي ومطابقتها مع السياسات الاستراتيجية العمرانية (OPIS) واعتماد الخرائط التعميرية.",
+                documents: [
+                    "الخرائط التعميرية للمشروع ومخطط الموقع من مكتب استشاري",
+                    "دراسة جدوى للمشروع (في حال كانت القطعة زراعي / سكني)",
+                    "سند الملكية، الرسم المساحي، ورسالة الطلب",
+                    "موافقة وزارة التراث والسياحة"
+                ],
+                steps: [
+                    "استلام الطلب بقاعة الخدمة الموحدة وتسجيله في نظام سلاسة وتحويله عبر مكتب التنسيق إلى المدير العام/مدير الدائرة ثم رئيس قسم إعداد المخططات التفصيلية (3 أيام).",
+                    "دراسة الموقع من المهندس المختص وإحالته لقسم نظم المعلومات الجغرافية (GIS) للتأكد من توافقه مع سياسات الاستراتيجية العمرانية OPIS (10 أيام).",
+                    "زيارة الموقع إذا تطلب الأمر وإعداد مخطط توضيحي ودراسة تفصيلية للطلب (10 أيام).",
+                    "مراجعة الدراسة بالتسلسل من رئيس القسم، مدير دائرة التخطيط، المدير العام، ورفعها لسعادة الوكيل للتخطيط العمراني للاعتماد (14 يوماً).",
+                    "اعتماد الخرائط التعميرية؛ فإذا كان المبنى قائماً يصدر الرسم المساحي وسند الملكية الجديدين، وإذا كان غير قائم تسلم الخرائط كموافقة مبدئية لحين البناء وإحضار شهادة إتمام البناء (4 - 5 أيام)."
+                ]
+            },
+            {
+                id: 21,
+                title: "تغيير استعمال قطعة أرض زراعية إلى سكني / سكني تجاري",
+                sector: "التخطيط العمراني",
+                department: "دائرة التخطيط العمراني / قسم إعداد المخططات التفصيلية",
+                duration: "4 - 5 أسابيع",
+                platforms: ["نظام سلاسة", "نظام OPIS"],
+                summary: "دراسة طلبات تغيير استعمال الأراضي الزراعية إلى سكني أو سكني تجاري مع التحقق من خلوها من الأفلاج والآبار وتوافقها مع الاستراتيجية العمرانية.",
+                documents: [
+                    "نسخة من سند الملكية، الرسم المساحي، والبطاقة الشخصية (والوكالة إن وجد)",
+                    "رسالة طلب بتغيير الاستعمال أو تغيير الاستعمال والتقسيم",
+                    "خارطة ورقية A3 مختومة من مكتب استشاري + ملف أوتوكاد (في حالة التقسيم أو التغيير الجزئي)",
+                    "موافقة الشركة التشغيلية وموافقة وزارة التجارة المبدئية (في حالة محطة وقود)"
+                ],
+                steps: [
+                    "استلام الطلب بقاعة الخدمة الموحدة وتسجيله في نظام سلاسة وإحالته عبر التنسيق ومدير الدائرة ورئيس القسم إلى المهندس المختص (7 أيام).",
+                    "دراسة الموقع وإحالته لقسم نظم المعلومات الجغرافية للتأكد من توافقه مع سياسات الاستراتيجية العمرانية OPIS (8 أيام).",
+                    "التأكد من خلو الأرض الزراعية من الأفلاج والعيون والآبار بالتنسيق مع وزارة الثروة الزراعية والسمكية وموارد المياه، وزيارة الموقع للتأكد من المنفذ المباشر وإعداد الدراسة التفصيلية (3 أيام).",
+                    "مراجعة الطلب واعتماده بالتسلسل من رئيس القسم، مدير الدائرة، المدير العام، وسعادة الوكيل (13 يوماً).",
+                    "إصدار الرسم المساحي الجديد وإلزام صاحب العلاقة بإزالة الإشغالات وتنفيذ الطرق المستحدثة بالتنسيق مع البلدية، ثم إحالته للسجل العقاري وتسليم الملكية والرسم المساحي للمستفيد (6 أيام)."
+                ]
+            },
+            {
+                id: 22,
+                title: "تغيير استعمال قطعة أرض زراعية إلى سكنية",
+                sector: "التخطيط العمراني",
+                department: "دائرة التخطيط العمراني / قسم إعداد المخططات التفصيلية",
+                duration: "4 - 5 أسابيع",
+                platforms: ["نظام سلاسة", "نظام OPIS"],
+                summary: "دراسة طلبات تغيير استعمال الأراضي الزراعية إلى الاستعمال السكني وفق ضوابط تخطيط الأراضي والسياسات الاستراتيجية العمرانية.",
+                documents: [
+                    "نسخة من سند الملكية، الرسم المساحي، والبطاقة الشخصية (والوكالة إن وجد)",
+                    "رسالة طلب بتغيير الاستعمال أو تغيير الاستعمال والتقسيم",
+                    "خارطة ورقية A3 مختومة من المكتب الاستشاري وملف أوتوكاد 2010 (في حال التقسيم)"
+                ],
+                steps: [
+                    "استلام الطلب بقاعة الخدمة الموحدة وتسجيله في نظام سلاسة وتحويله للمهندس المختص بقسم إعداد المخططات التفصيلية (7 أيام).",
+                    "دراسة الموقع والتحقق من توافقه مع السياسات الاستراتيجية العمرانية OPIS عبر قسم نظم المعلومات الجغرافية (8 أيام).",
+                    "التأكد من خلو الأرض من الأفلاج والعيون والآبار من الجهة المختصة، والتحقق من وجود منفذ مباشر وإعداد الدراسة التفصيلية (3 أيام).",
+                    "مراجعة واعتماد الطلب من رئيس القسم، مدير الدائرة، والمدير العام (وقد يتطلب اعتماد الوكيل في بعض الحالات) (12 يوماً).",
+                    "إصدار الرسم المساحي الجديد والتأكد من إزالة الإشغالات وتنفيذ الطرق المستحدثة، ثم إصدار سند الملكية وتسليمه بقاعة الخدمة الموحدة (يومان)."
+                ]
+            },
+            {
+                id: 23,
+                title: "تغيير استعمال قطعة أرض سكنية إلى سكني تجاري / تجاري",
+                sector: "التخطيط العمراني",
+                department: "دائرة التخطيط العمراني / قسم إعداد المخططات التفصيلية",
+                duration: "42 يوم عمل",
+                platforms: ["نظام سلاسة", "نظام OPIS"],
+                summary: "دراسة طلبات تحويل الأراضي السكنية إلى سكني تجاري أو تجاري ومطابقتها مع مخرجات الاستراتيجية العمرانية.",
+                documents: [
+                    "نسخة من سند الملكية، الرسم المساحي، ورسالة الطلب",
+                    "مقترح الخرائط من مكتب استشاري (في حال التغيير الجزئي)",
+                    "موافقة الشركة التشغيلية وموافقة وزارة التجارة المبدئية (في حال التغيير لمحطة وقود)"
+                ],
+                steps: [
+                    "استلام الطلب بقاعة الخدمة الموحدة وتسجيله بنظام سلاسة وتحويله لرئيس قسم إعداد المخططات التفصيلية ثم المهندس المختص (5 أيام).",
+                    "دراسة الموقع وإحالته لمحلل نظم المعلومات الجغرافية للتأكد من توافقه مع سياسات الاستراتيجية العمرانية OPIS (8 أيام).",
+                    "زيارة الموقع إن تطلب وإعداد مخطط توضيحي ودراسة تفصيلية للطلب (3 أيام).",
+                    "مراجعة الرأي التخطيطي بالتسلسل من رئيس القسم، مدير الدائرة، المدير العام، ورفعه لسعادة وكيل الوزارة للتخطيط العمراني للاعتماد (22 يوماً).",
+                    "إصدار الرسم المساحي الجديد بقسم المساحة والخرائط، وإنهاء إجراءات سند الملكية بالسجل العقاري وتسليمهما بقاعة الخدمة الموحدة (4 أيام)."
+                ]
+            },
+            {
+                id: 24,
+                title: "طلب اعتماد تقسيم مبنى قائم (تقسيم شقق وطبقات)",
+                sector: "التخطيط العمراني",
+                department: "دائرة التخطيط العمراني / قسم المساحة والخرائط وقسم تنفيذ المخططات",
+                duration: "2 - 4 أسابيع",
+                platforms: ["منصة أملاك", "نظام التوقيع الإلكتروني", "نظام RN"],
+                summary: "فرز وتقسيم الوحدات العقارية في المباني القائمة بنظام الشقق والطبقات وتحديد الأنصبة المشتركة وإصدار الرسومات المساحية لكل وحدة.",
+                documents: [
+                    "طلب إلكتروني مقدم عن طريق أحد المكاتب الاستشارية الهندسية المعتمدة + رسالة تعهد من الاستشاري",
+                    "شهادة إكمال بناء وخرائط الموقع للوحدات مصدقة ومختومة من البلدية المعنية",
+                    "نسخة من سند الملكية والرسم المساحي للقطعة الأم وصور الموقع في الطبيعة",
+                    "مقترح الرسومات المساحية للوحدات المقسمة (ورقياً وملف AutoCAD)",
+                    "نسخة من البطاقة الشخصية لصاحب العلاقة وشهادة توصيل خدمات الكهرباء"
+                ],
+                steps: [
+                    "استلام الطلب في المنصة والتأكد من المرفقات وتحويله للمهندس المختص (15 دقيقة).",
+                    "مراجعة ملف الأوتوكاد وإجراء العمليات الحسابية لتقسيم الأنصبة والترقيم ومطابقتها مع شهادة إكمال البناء وخرائط البلدية، وطباعة الرسومات والمذكرة التخطيطية (يومان).",
+                    "التدقيق والاعتماد من رئيس قسم تنفيذ المخططات ومدير دائرة التخطيط العمراني (واعتماد المدير العام إذا كان أكثر من 10 وحدات أو سكني تجاري/سياحي/صناعي).",
+                    "تحويل المعاملة بنظام RN ويدوياً إلى السجل العقاري لاستكمال إجراءات إصدار الملكيات في القاعة الموحدة."
+                ]
+            },
+            {
+                id: 25,
+                title: "طلب إعداد رفع تفصيلي",
+                sector: "التخطيط العمراني",
+                department: "دائرة التخطيط العمراني / قسم المساحة والخرائط",
+                duration: "22 - 30 يوماً",
+                platforms: ["منصة أملاك", "AutoCAD"],
+                summary: "الوقوف الميداني على الطبيعة من قبل فنيي المساحة لتجميع البيانات التفصيلية للموقع وتحديث الرسومات المساحية.",
+                documents: [
+                    "صلاحية تقديم الطلب عبر المكاتب الاستشارية في منصة أملاك",
+                    "نسخة من سند الملكية والرسم المساحي",
+                    "نسخة من البطاقة الشخصية وملف أوتوكاد محدث للموقع"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك ومراجعة وتدقيق البيانات والمرفقات (15 دقيقة).",
+                    "تحديد أولوية الأعمال وتعيين المساحين لزيارة الموقع وتنفيذ الرفع التفصيلي على الطبيعة وإعداد تقرير فني معتمد (1 - 10 أيام).",
+                    "تحديث الرسومات المساحية للموقع من قبل الرسام وموظف الإسقاط وموظف التدقيق بقسم المساحة والخرائط (10 - 14 يوماً).",
+                    "إحالة الأراضي السكنية والحكومية لقسم تنفيذ المخططات، والسكني تجاري والصناعي لقسم إعداد المخططات للاعتماد النهائي ثم للسجل العقاري (يوم واحد)."
+                ]
+            },
+            {
+                id: 26,
+                title: "طلب اعتماد مسار خدمات",
+                sector: "التخطيط العمراني",
+                department: "دائرة التخطيط العمراني / قسم المساحة والخرائط - قسم المعلومات الجغرافية",
+                duration: "5 - 11 يوماً",
+                platforms: ["منصة اعتمد", "نظم المعلومات الجغرافية"],
+                summary: "مراجعة واعتماد مسارات خطوط الخدمات المقترحة والتأكد من عدم تداخلها مع قطع الأراضي وإصدار تصاريح الحفر.",
+                documents: [
+                    "نسخة PDF من سند الملكية والرسم المساحي",
+                    "نسخة PDF من خريطة المسار المقترح ورسالة الطلب مع الوثائق الداعمة"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً (في منصة اعتمد بمحافظة مسقط أو عبر رسالة الطلب بالمحافظات) والتأكد من اكتمال الوثائق.",
+                    "مراجعة وتدقيق البيانات من المهندس المختص للتأكد من أن المسار المقترح خارج حدود أي قطع أراضٍ، وإبلاغ الاستشاري في حال وجود تداخل.",
+                    "البت في المعاملة بإسقاط المقترح واعتماد تصريح الحفر وإرسال الاعتماد النهائي لرئيس قسم المعلومات الجغرافية وصاحب العلاقة."
+                ]
+            },
+            {
+                id: 27,
+                title: "طلب تسليم العلائم للجهات الحكومية (الجهات المختصة)",
+                sector: "التخطيط العمراني",
+                department: "دائرة التخطيط العمراني / قسم المساحة والخرائط",
+                duration: "حسب الموعد من الجهة المعنية",
+                platforms: ["منصة أملاك"],
+                summary: "تحديد وتسليم علائم وحدود قطع الأراضي الحكومية أو المخصصة للجهات المختصة ميدانياً.",
+                documents: [
+                    "خطاب الجهة الحكومية المعنية",
+                    "نسخة من سند الملكية والرسم المساحي",
+                    "نسخة من البطاقة الشخصية لممثل الجهة"
+                ],
+                steps: [
+                    "استلام الخطاب وتخصيصه باسم الموظف المختص في قسم المساحة والخرائط.",
+                    "مراجعة وتدقيق بيانات المعاملة والمستندات المرفقة والتأكد من عدم وجود نواقص.",
+                    "الانتقال لاستكمال إجراءات تسليم العلائم ميدانياً حسب الموعد المحدد مع الجهة المعنية."
+                ]
+            },
+            {
+                id: 28,
+                title: "طلب تعديل الاشتراطات التخطيطية",
+                sector: "التخطيط العمراني",
+                department: "دائرة التخطيط العمراني / قسم المساحة والخرائط",
+                duration: "13 - 30 يوماً",
+                platforms: ["منصة أملاك"],
+                summary: "دراسة طلبات تعديل الاشتراطات التخطيطية لقطع الأراضي (مثل عمل خط بناء، أو زيادة الارتفاع أسوة بالجيران، أو تعديلات تخطيطية أخرى).",
+                documents: [
+                    "نسخة من سند الملكية والرسم المساحي",
+                    "نسخة من البطاقة الشخصية",
+                    "تعبئة استمارة خدمات التخطيط العمراني بالمنصة"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك وتخصيصه ومراجعة المستندات المرفقة (15 دقيقة).",
+                    "الحالة 1 (عمل خط بناء): دراسة المهندس وإعداد رسم مساحي جديد واعتماده من رئيس القسم (يوم واحد).",
+                    "الحالة 2 (زيادة ارتفاع أسوة بالجيران): إعداد مقترح من المهندس ومراجعته واعتماده من رئيس القسم وإعداد واعتماد الرسم المساحي الجديد (7 - 16 يوماً).",
+                    "الحالة 3 (حالات أخرى): إعداد مقترح التعديل واعتماده من رئيس القسم ومدير الدائرة والمدير العام، ثم إعداد واعتماد الرسم المساحي الجديد (7 - 30 يوماً)."
+                ]
+            },
+            {
+                id: 29,
+                title: "طلب شراء خرائط رقمية",
+                sector: "التخطيط العمراني",
+                department: "دائرة التخطيط العمراني / قسم المساحة والخرائط - قسم المعلومات الجغرافية",
+                duration: "2 - 7 أيام",
+                platforms: ["منصة أملاك", "AutoCAD"],
+                summary: "توفير وبيع الخرائط الرقمية والبيانات المكانية بصيغة أوتوكاد للمستفيدين والمكاتب الاستشارية بعد سداد الرسوم المقررة.",
+                documents: [
+                    "نسخة من سند الملكية والرسم المساحي",
+                    "نسخة من البطاقة الشخصية",
+                    "ملف أوتوكاد للموقع المطلوب"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك ومراجعة وتدقيق بيانات المعاملة والمرفقات (15 دقيقة).",
+                    "دراسة الطلب والوثائق المرفقة (يوم واحد).",
+                    "إحالة الملف للمهندس المختص لإضافة الخرائط في ملف أوتوكاد وتحديد المبلغ المطلوب للدفع من قبل رئيس القسم بناءً على حجم المشروع (2 - 5 أيام).",
+                    "دفع المبلغ المقرر واستلام الخرائط الرقمية عبر المنصة أو يدوياً (يوم واحد)."
+                ]
+            },
+            {
+                id: 30,
+                title: "اعتماد خريطة موقع عام",
+                sector: "التخطيط العمراني",
+                department: "دائرة التخطيط العمراني / قسم تنفيذ المخططات وقسم المساحة والخرائط",
+                duration: "2 - 7 أسابيع",
+                platforms: ["منصة أملاك"],
+                summary: "مراجعة واعتماد خرائط الموقع العام للمشاريع المختلفة بعد التحقق من مطابقتها للضوابط التخطيطية والمساحية.",
+                documents: [
+                    "نسخة من سند الملكية والرسم المساحي والبطاقة الشخصية",
+                    "خريطة الموقع العام بصيغة PDF وبصيغة DWG",
+                    "إرفاق موافقات سابقة (إن وجد)"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك (25 دقيقة).",
+                    "مراجعة وتدقيق بيانات المعاملة ودراسة الطلب من قبل المهندس المختص (7 أيام).",
+                    "في حال اكتمال الطلب وعدم وجود ملاحظات فنية، يحال لرئيس القسم ثم مدير الدائرة (أو بمذكرة للمدير العام/الوكيل إن استدعى) لاستكمال التوقيع والاعتماد للخريطة (10 أيام)."
+                ]
+            },
+            {
+                id: 31,
+                title: "تأثير قطعة أرض - تعويض للمنفعة العامة",
+                sector: "التخطيط العمراني",
+                department: "دائرة التخطيط العمراني / قسم تنفيذ المخططات ودائرة الأراضي",
+                duration: "65 يوماً (وقد تزيد حسب توفر الأراضي)",
+                platforms: ["نظام سلاسة", "نظام التوقيع الإلكتروني", "نظام معلومات الأراضي"],
+                summary: "إجراءات دراسة واعتماد تأثير قطع الأراضي المنزوعة ملكيتها للمنفعة العامة بموجب مرسوم سلطاني وإحالتها للجنة التعويضات لتخصيص أراضٍ بديلة أو تثمينها.",
+                documents: [
+                    "نسخة المرسوم السلطاني (نزع الملكية للمنفعة العامة)",
+                    "رسالة رسمية من جهة الاختصاص ومستندات ملاك الأراضي"
+                ],
+                steps: [
+                    "استلام المستندات الرسمية وتسجيلها في نظام سلاسة وتوجيهها عبر المدير العام ومدير دائرة التخطيط ورئيس قسم تنفيذ المخططات إلى المهندس المختص.",
+                    "دراسة الطلب تخطيطياً، معاينة الموقع واستلام الرفع التفصيلي، وإعداد التقرير ومذكرة اعتماد التأثير (15 يوماً).",
+                    "مراجعة واعتماد مذكرة التأثير من رئيس القسم ومدير الدائرة والمدير العام (6 - 14 يوماً).",
+                    "إحالة الطلب لقسم المساحة والخرائط لإصدار الرسم المساحي الجديد وتوقيعه إلكترونياً من الرسام والمدقق ومهندس الإسقاط ومدير التخطيط (4 أيام).",
+                    "إعداد خطاب للبلدية لإيقاف إباحة البناء وخطاب للسجل العقاري لوقف التصرف، وإحالة المعاملة لدائرة الأراضي ولجنة التعويضات لتثمين العقار واقتراح أراضي التعويض وتسجيل القطعة البديلة."
+                ]
+            },
+            {
+                id: 32,
+                title: "طلب تعديل قطعة أرض",
+                sector: "التخطيط العمراني",
+                department: "دائرة التخطيط العمراني / قسم تنفيذ المخططات التفصيلية",
+                duration: "من أسبوعين إلى شهر",
+                platforms: ["منصة أملاك", "نظام سلاسة"],
+                summary: "دراسة طلبات تعديل شكل أو أبعاد قطعة الأرض وفق المخططات المعتمدة والضوابط التخطيطية وإصدار رسم مساحي معدل.",
+                documents: [
+                    "نسخة من سند الملكية والرسم المساحي",
+                    "نسخة من البطاقة الشخصية"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك وتخصيصه ومراجعة المرفقات (15 دقيقة).",
+                    "البحث عن خلفيات القطعة في معلومات الأراضي أو سلاسة ودراسة الطلب من المهندس المختص ومخاطبة الجهات المعنية إن تطلب (2 - 19 يوماً).",
+                    "إعداد واعتماد المذكرة التخطيطية والرسم التوضيحي من رئيس القسم ومدير الدائرة (والمـدير العام في بعض الحالات) وتوقيع الرسم المساحي من المدقق والمسقط والمخطط (2 - 4 أيام).",
+                    "إحالة المعاملة للسجل العقاري لاستكمال الإجراءات، ومخاطبة البلدية في حال وجود اشتراطات أو تعديل يشمل عدة قطع."
+                ]
+            },
+            {
+                id: 33,
+                title: "طلب تعويض عن قطعة أرض",
+                sector: "التخطيط العمراني",
+                department: "دائرة التخطيط العمراني / قسم تنفيذ المخططات التفصيلية",
+                duration: "من شهر إلى 3 أشهر",
+                platforms: ["منصة أملاك", "نظام سلاسة"],
+                summary: "دراسة طلبات التعويض عن قطع الأراضي المتأثرة تخطيطياً أو فنياً وإعداد المذكرة التخطيطية وإحالتها للجنة التعويضات.",
+                documents: [
+                    "نسخة من سند الملكية والرسم المساحي",
+                    "نسخة من البطاقة الشخصية",
+                    "تقرير مسح من إحدى الشركات المعتمدة"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك وتخصيصه ومراجعة المستندات المرفقة (15 دقيقة).",
+                    "البحث عن خلفيات القطعة ودراسة الموقع من المهندس المختص ومخاطبة الدوائر أو الجهات الخارجية إن تطلب (2 - 19 يوماً).",
+                    "إعداد واعتماد المذكرة التخطيطية والرسم التوضيحي من رئيس القسم ومدير الدائرة، وإصدار الرسم المساحي الجديد وتوقيعه من المدقق والمسقط والمخطط.",
+                    "إحالة المعاملة لدائرة الأراضي (لجنة التعويضات) للنظر في القطع البديلة للأراضي المتأثرة، ومخاطبة البلدية بوقف إباحات البناء على القطعة المتأثرة."
+                ]
+            },
+            {
+                id: 34,
+                title: "طلب رفع التأثير عن قطعة أرض متأثرة",
+                sector: "التخطيط العمراني",
+                department: "دائرة التخطيط العمراني / قسم تنفيذ المخططات التفصيلية",
+                duration: "من شهر إلى 3 أشهر",
+                platforms: ["منصة أملاك", "نظام سلاسة"],
+                summary: "دراسة إمكانية رفع التأثير التخطيطي عن قطعة أرض متأثرة وإصدار رسم مساحي جديد وإشعار البلدية والسجل العقاري.",
+                documents: [
+                    "نسخة من سند الملكية والرسم المساحي",
+                    "نسخة من البطاقة الشخصية"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك ومراجعة وتدقيق البيانات والمرفقات (15 دقيقة).",
+                    "البحث عن خلفيات المعاملة ودراسة الموقع ومخاطبة الجهات المعنية عند الحاجة (2 - 19 يوماً).",
+                    "اعتماد المذكرة التخطيطية والرسم التوضيحي من رئيس القسم ومدير الدائرة وإصدار الرسم المساحي الجديد وتوقيعه من المدقق والمسقط والمخطط.",
+                    "إحالة المعاملة للأراضي لرفع التأثير إذا كانت محجوزة بالنظام، وإشعار البلدية برفع التأثير عن الموقع، وتحويلها للسجل العقاري لاستخراج سند التملك."
+                ]
+            },
+            {
+                id: 35,
+                title: "اعتماد مشروع تقسيم",
+                sector: "التخطيط العمراني",
+                department: "دائرة التخطيط العمراني / قسم المساحة والخرائط وقسم تنفيذ المخططات",
+                duration: "من شهر إلى شهرين",
+                platforms: ["منصة أملاك"],
+                summary: "دراسة واعتماد مشاريع تقسيم وتجزئة الأراضي وفق المعايير التخطيطية واللائحة التنظيمية لضوابط تخطيط الأراضي.",
+                documents: [
+                    "نسخة من سند الملكية والرسم المساحي",
+                    "نسخة من البطاقة الشخصية",
+                    "نسخة من المقترح التخطيطي للتقسيم من المكتب الاستشاري"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك وتخصيصه وتدقيق المرفقات (25 دقيقة).",
+                    "دراسة الطلب من مهندس المنطقة للتأكد من عدم وجود موانع تخطيطية وتحديد استقطاعات الخدمات والطرق، وتحويله للرسام ثم المسقط ثم المدقق ثم المخطط للاعتماد (تجزئة حتى 21000م² من اختصاص مدير دائرة التخطيط العمراني) (30 - 60 يوماً).",
+                    "ملاحظة: إذا تطلب التقسيم إنشاء طرق، يحفظ الموضوع لحين شق وتنفيذ الطرق من صاحب العلاقة ثم تصرف الرسومات المساحية وسندات التملك عبر السجل العقاري (يوم واحد)."
+                ]
+            },
+            {
+                id: 36,
+                title: "تقسيم قطعة الأرض",
+                sector: "التخطيط العمراني",
+                department: "دائرة التخطيط العمراني / قسم المساحة والخرائط وقسم تنفيذ المخططات",
+                duration: "من شهر إلى شهرين",
+                platforms: ["منصة أملاك"],
+                summary: "تجزئة قطعة أرض إلى أكثر من قطعة وفق الضوابط التخطيطية وإصدار الرسومات المساحية والملكيات للقطع الناتجة.",
+                documents: [
+                    "نسخة من سند الملكية والرسم المساحي",
+                    "نسخة من البطاقة الشخصية",
+                    "نسخة من المقترح التخطيطي من المكتب الاستشاري"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك ومراجعة وتدقيق المستندات المرفقة (25 دقيقة).",
+                    "دراسة الطلب من مهندس المنطقة وتحويله للرسام والمسقط والمدقق والمخطط لاستكمال إجراءات الاعتماد وفق الصلاحيات المعتمدة (30 - 60 يوماً).",
+                    "تحويل المعاملة إلى السجل العقاري لتسليم الرسومات المساحية مع الملكيات بمساحات التقسيم المعتمدة للمستفيد (يوم واحد)."
+                ]
+            },
+            {
+                id: 37,
+                title: "دمج قطعة أرض مع أرض أخرى",
+                sector: "التخطيط العمراني",
+                department: "دائرة التخطيط العمراني / قسم المساحة والخرائط وقسم تنفيذ المخططات",
+                duration: "من شهر إلى شهرين",
+                platforms: ["منصة أملاك"],
+                summary: "دمج قطعتي أرض أو أكثر متجاورة في قطعة واحدة وإصدار رسم مساحي وسند ملكية بالمساحة الإجمالية.",
+                documents: [
+                    "نسخة من سند الملكية والرسم المساحي للقطع المراد دمجها",
+                    "نسخة من البطاقة الشخصية",
+                    "نسخة من المقترح التخطيطي للقطع المدمجة من المكتب الاستشاري"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك وتخصيصه وتدقيق المرفقات (25 دقيقة).",
+                    "دراسة الطلب من مهندس المنطقة وتحويله للرسام والمسقط والمدقق والمخطط (اعتماد دمج حتى 5 قطع بدون زيادة مساحة من اختصاص رئيس قسم تنفيذ المخططات، وحتى 10 قطع من اختصاص مدير دائرة التخطيط العمراني) (30 - 60 يوماً).",
+                    "تحويل المعاملة إلى السجل العقاري لتسليم الرسم المساحي للمستفيد مع الملكية بالمساحة الإجمالية بالدمج (يوم واحد)."
+                ]
+            },
+            {
+                id: 38,
+                title: "فصل أو استقطاع جزء من قطعة أرض",
+                sector: "التخطيط العمراني",
+                department: "دائرة التخطيط العمراني / قسم المساحة والخرائط وقسم تنفيذ المخططات",
+                duration: "من شهر إلى شهرين",
+                platforms: ["منصة أملاك"],
+                summary: "استقطاع جزء من مساحة قطعة أرض وضمها أو فصلها بموافقة الأطراف ووفق مقترح تخطيطي معتمد.",
+                documents: [
+                    "نسخ من سندات الملكية والرسومات المساحية للأراضي المراد استقطاع المساحة منها",
+                    "نسخ من البطاقة الشخصية لجميع الأطراف الخاضعين لطلب الاستقطاع",
+                    "رسالة موافقة من صاحب الأرض المتنازل عن المساحة للأرض المجاورة",
+                    "مقترح تخطيطي من مكتب استشاري للاستقطاع (نسخة ورقية مختومة وموقعة + ملف أوتوكاد)"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك ومراجعة وتدقيق المستندات المرفقة (25 دقيقة).",
+                    "دراسة الطلب من قبل مهندس المنطقة للتأكد من عدم وجود موانع تخطيطية، وتحويله للرسام والمسقط والمدقق والمخطط لاستكمال الإجراءات (30 - 60 يوماً).",
+                    "تحويل المعاملة للسجل العقاري لتسليم الرسم المساحي والملكية بالمساحة المعتمدة (يوم واحد)."
+                ]
+            },
+            {
+                id: 39,
+                title: "طلب تجديد الرسم المساحي داخل المخططات ((مطابق))",
+                sector: "التخطيط العمراني",
+                department: "دائرة التخطيط العمراني / قسم المساحة والخرائط",
+                duration: "1 - 5 أيام عمل",
+                platforms: ["نظام معلومات الأراضي LIS", "نظام التوقيع الإلكتروني", "منصة أملاك"],
+                summary: "تجديد الرسم المساحي لقطعة أرض تقع داخل المخططات ومطابقة لخرائط النظام دون وجود إزاحة أو تغيير في المساحة.",
+                documents: [
+                    "طلب إلكتروني لخدمة تجديد الرسم المساحي ودفع الرسوم إلكترونياً",
+                    "نسخة من البطاقة الشخصية لصاحب الطلب",
+                    "نسخة من سند الملكية والرسم المساحي",
+                    "نسخة الرفع التفصيلي من المكتب الاستشاري (في حالة وجود تغيير في الوضع القائم)"
+                ],
+                steps: [
+                    "الدخول لنظام معلومات الأراضي أو منصة أملاك والتأكد من المرفقات وتحويل الطلب للرسام عبر نظام التوقيع الإلكتروني (15 دقيقة).",
+                    "فتح الخرائط ببرنامج الأوتوكاد وإعداد الرسم المساحي الجديد والتوقيع الإلكتروني عليه من الرسام ثم المسقط ثم المدقق ثم المخطط.",
+                    "تحويل الرسم المساحي الجديد إلى برنامج معلومات الأراضي (LIS) والسجل العقاري وتسليمه لصاحب الطلب في المحطة الواحدة."
+                ]
+            },
+            {
+                id: 40,
+                title: "طلب تجديد الرسم المساحي داخل المخططات ((غير مطابق))",
+                sector: "التخطيط العمراني",
+                department: "دائرة التخطيط العمراني / قسم المساحة والخرائط",
+                duration: "لا يزيد عن 90 يوماً",
+                platforms: ["نظام معلومات الأراضي LIS", "نظام التوقيع الإلكتروني", "منصة أملاك"],
+                summary: "تجديد الرسم المساحي لقطعة أرض داخل المخططات يتضح وجود عدم تطابق فيها (نقص أو زيادة مساحة، اختلاف الشكل، إزاحة، أو تداخل) مما يتطلب زيارة ميدانية وإعادة مسح.",
+                documents: [
+                    "طلب إلكتروني لخدمة تجديد الرسم المساحي ودفع الرسوم",
+                    "نسخة من البطاقة الشخصية، سند الملكية، والرسم المساحي",
+                    "نسخة الرفع التفصيلي من المكتب الاستشاري في حالة وجود تغيير في الوضع القائم"
+                ],
+                steps: [
+                    "التأكد من المرفقات في نظام معلومات الأراضي أو منصة أملاك وتحديد الحاجة لزيارة ميدانية للمساح بسبب عدم التطابق (30 دقيقة).",
+                    "إعداد الرسم المساحي الجديد عبر برنامج الأوتوكاد ونقله لنظام التوقيع الإلكتروني وتوقيعه من الرسام (يومان).",
+                    "التدقيق على بيانات القطعة وشروط البناء وعدم وقوعها في مخططات موقوفة وتوقيع المدقق (يومان).",
+                    "التأكد من نقاط الإسقاط وتوقيع مهندس الإسقاط والمخطط، وتحويل الرسم الجديد لنظام معلومات الأراضي (LIS) والسجل العقاري لتسليمه في المحطة الواحدة (يومان)."
+                ]
+            },
+            {
+                id: 41,
+                title: "طلب تجديد الرسم المساحي خارج المخططات (إحداثيات غير حقيقية) مطابق (إعادة مسح)",
+                sector: "التخطيط العمراني",
+                department: "دائرة التخطيط العمراني / قسم المساحة والخرائط",
+                duration: "1 - 5 أيام عمل",
+                platforms: ["نظام معلومات الأراضي LIS", "نظام التوقيع الإلكتروني", "منصة أملاك"],
+                summary: "تجديد الرسم المساحي للأراضي الواقعة خارج المخططات (ذات الإحداثيات غير الحقيقية) من خلال إعادة مسح الموقع ميدانياً أو عبر رفع تفصيلي معتمد.",
+                documents: [
+                    "طلب إلكتروني لخدمة تجديد الرسم المساحي ودفع الرسوم",
+                    "نسخة من البطاقة الشخصية، سند الملكية، والرسم المساحي",
+                    "نسخة الرفع التفصيلي من المكتب الاستشاري المعتمد (ضروري في حال وجود تغيير أو اختلاف مساحة)"
+                ],
+                steps: [
+                    "التأكد من المرفقات في نظام معلومات الأراضي أو منصة أملاك وتحويل الطلب للمساح لإعادة المسح (30 دقيقة).",
+                    "تنفيذ زيارة ميدانية وإعادة مسح للموقع وإعداد تقرير بالزيارة والمسح وتحويل المعاملة للرسم (يومان).",
+                    "مراجعة تفاصيل المسح والرفع التفصيلي ورسم الخرائط ببرنامج الأوتوكاد ونقل الرسم الجديد لنظام التوقيع الإلكتروني وتوقيعه من الرسام والمسقط والمدقق والمخطط وتحويله لنظام LIS والسجل العقاري للتسليم في المحطة الواحدة (15 دقيقة)."
+                ]
+            },
+            {
+                id: 42,
+                title: "طلب تسجيل المكاتب الهندسية ومكاتب الاستشارات الهندسية لتقديم بعض خدمات التخطيط والمساحة",
+                sector: "التخطيط العمراني",
+                department: "المديرية العامة للمعلومات الجغرافية",
+                duration: "يعتمد على اكتمال المتطلبات واجتماعات اللجان",
+                platforms: ["منصة أملاك"],
+                summary: "تسجيل وتأهيل المكاتب الهندسية ومكاتب الاستشارات الهندسية في منصة أملاك لتمكينها من تقديم خدمات التخطيط والمساحة وفق دليل الإجراءات الموحدة.",
+                documents: [
+                    "نسخة من السجل التجاري للمكتب سارية المفعول",
+                    "نسخة من الترخيص البلدي ساري المفعول",
+                    "ملف الشركة بجميع خلفياته ومتطلبات التأهيل"
+                ],
+                steps: [
+                    "التأكد من اكتمال جميع البيانات والمرفقات في منصة أملاك من قبل منسق اللجنة، وإحالة الطلب لأعضاء اللجنة المساندة للتقييم (أو إعادته لاستكمال النواقص).",
+                    "إحالة تقرير اللجنة المساندة إلى العضو المقرر لاعتماد التقييم.",
+                    "عرض الطلب على اللجنة الرئيسية للاعتماد النهائي أو الرفض؛ وفي حال الاعتماد تصل رسالة لمفوض الشركة لاستكمال إجراءات الدفع واستخراج الشهادة."
+                ]
+            },
+
+            // ==================== سادساً: قطاع السجل العقاري (25 خدمة وإجراءً تشغيلياً) ====================
+            {
+                id: 43,
+                title: "طلب إصدار سند ملكية بموجب عقد البيع",
+                sector: "السجل العقاري",
+                department: "دائرة السجل العقاري / قسم التصرفات القانونية",
+                duration: "75 دقيقة",
+                platforms: ["منصة أملاك", "قاعة الخدمة الموحدة"],
+                summary: "إجراءات توثيق عقد البيع العقاري المبرم عبر مكاتب الوساطة العقارية المعتمدة ونقل الملكية للمشتري وإصدار سند الملكية الجديد (مع إعفاء البنوك الإسلامية من رسوم الإسكان).",
+                documents: [
+                    "أصل ونسخة عقد بيع من مكاتب الوساطة العقارية المعتمدة",
+                    "أصل ونسخة سند الملكية والرسم المساحي",
+                    "الإثباتات الشخصية للبائع والمشتري (وللوكيل والموكل مع أصل سند التوكيل الصريح في حال وجود وكالة)",
+                    "أصل ونسخة من شيك أو تحويل بنكي للعقارات التي تزيد قيمتها عن (6000) ريال عماني"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك من مكتب الوساطة العقارية وتخصيصه للمدقق لمراجعة المستندات والتحقق آلياً من عدم وجود موانع قانونية وتحويله للمفوض (30 دقيقة).",
+                    "مراجعة المعاملة والمرفقات من قبل الموظف المختص (المفوض) واعتماد الطلب وتحويله للموثق مع إرسال إشعار تلقائي لمقدم الطلب بالحضور إلى قاعة الخدمة الموحدة (30 دقيقة).",
+                    "حضور الطرفين أمام الموثق، استلام الملكية القديمة، دفع رسوم الخدمة آلياً، توقيع العقد النهائي، وإصدار وتسليم سند الملكية الجديد (15 دقيقة)."
+                ]
+            },
+            {
+                id: 44,
+                title: "تسجيل عقد البيع للشركات",
+                sector: "السجل العقاري",
+                department: "دائرة السجل العقاري / قسم التصرفات القانونية ودائرة التشريعات والقوانين",
+                duration: "3 أيام عمل",
+                platforms: ["منصة أملاك", "قاعة الخدمة الموحدة"],
+                summary: "إجراءات دراسة واعتماد وتوثيق عقود شراء وتملك الشركات للعقارات بعد التحقق القانوني والتخطيطي وموافقة أمين السجل العقاري.",
+                documents: [
+                    "عقد بيع من مكاتب الوساطة العقارية، وسند الملكية، والرسم المساحي للعقار المراد شراؤه",
+                    "الإثباتات الشخصية للبائع والمشتري، وشيك أو تحويل بنكي للعقارات التي تزيد عن (6000) ريال عماني",
+                    "محضر اجتماع من الشركاء مصدق من غرفة تجارة وصناعة عمان يوضح رغبة الشركة في الشراء والغرض من التملك وبيانات العقار وتفويض الموقّع",
+                    "بيانات السجل التجاري، وشهادة انتساب لغرفة تجارة وصناعة عمان، والترخيص البلدي",
+                    "موافقة الجهة المختصة في المشاريع ذات الطبيعة الخاصة (في حالة الشراء بداعي التطوير العقاري)"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك من موظف دائرة التشريعات والقوانين ومراجعة المستندات والتحقق من عدم وجود موانع قانونية وإحالته لدائرة التخطيط العمراني (30 دقيقة).",
+                    "مراجعة الطلب بدائرة التخطيط العمراني للتأكد من عدم وجود موانع تخطيطية على العقار (متأثر / ضمن المناطق المحظورة / الأحياء القديمة) وإعادته لدائرة التشريعات (ساعة واحدة).",
+                    "دراسة الطلب قانونياً من الباحث القانوني واعتماده من أمين السجل العقاري أو من ينوب عنه وتحويله لقاعة الخدمة الموحدة (15 دقيقة).",
+                    "تدقيق المعاملة من قبل المدقق (30 دقيقة) ثم مراجعتها واعتمادها من المفوض وإرسال إشعار الحضور (30 دقيقة).",
+                    "حضور الطرفين أمام الموثق، استلام الملكية القديمة، سداد الرسوم آلياً، توقيع العقد النهائي وإصدار سند الملكية الجديد (10 دقائق)."
+                ]
+            },
+            {
+                id: 45,
+                title: "طلب تملك عقار لمواطني مجلس التعاون الخليجي في سلطنة عمان",
+                sector: "السجل العقاري",
+                department: "دائرة السجل العقاري / قسم تنظيم دول مجلس التعاون",
+                duration: "5 - 10 أيام عمل",
+                platforms: ["منصة أملاك", "منصة جيوعمان"],
+                summary: "إجراءات تملك مواطني دول مجلس التعاون الخليجي للعقارات في سلطنة عمان بعد المراجعة التخطيطية عبر منصة جيوعمان واستكمال إجراءات التحقق.",
+                documents: [
+                    "نسخة وأصل عقد بيع من مكاتب الوساطة العقارية أو استمارة الطلب",
+                    "سند الملكية والرسم المساحي للعقار",
+                    "الإثباتات الشخصية للبائع والمشتري (وسند التوكيل الصريح وإثباتات الوكيل في حال وجود وكالة)",
+                    "شيك أو تحويل بنكي للعقارات التي تزيد عن (6000) ريال عماني، ونتيجة التحقق الأمني"
+                ],
+                steps: [
+                    "استلام الطلب في منصة أملاك من مكتب الوساطة العقارية، ومراجعته تخطيطياً عبر منصة (جيوعمان) والتأكد من عدم وجود موانع قانونية وإرساله للجهات المختصة (يومان).",
+                    "إجراء التحقق الأمني من الجهات المختصة وإرسال النتيجة للمكتب العقاري لإعداد العقد النهائي (6 أيام عمل).",
+                    "إعداد العقد النهائي بمكتب الوساطة العقارية وإرساله آلياً إلى قاعة الخدمة الموحدة عبر منصة أملاك (يوم عمل واحد).",
+                    "استلام الطلب والتدقيق عليه من المدقق (30 دقيقة) ثم مراجعته واعتماده من المفوض وإشعار مقدم الطلب بالحضور (30 دقيقة).",
+                    "حضور الطرفين أمام الموثق، استلام الملكية القديمة، دفع الرسوم آلياً، توقيع العقد النهائي وتسليم سند الملكية الجديد (15 دقيقة)."
+                ]
+            },
+            {
+                id: 46,
+                title: "طلب إصدار سند ملكية حق الإرث",
+                sector: "السجل العقاري",
+                department: "دائرة السجل العقاري / قسم التصرفات القانونية",
+                duration: "75 دقيقة",
+                platforms: ["منصة أملاك", "قاعة الخدمة الموحدة"],
+                summary: "تسجيل حق الإرث ونقل ملكية العقار باسم الورثة الشرعيين بموجب الإعلام الشرعي (حصر الورثة) وإصدار سند الملكية الجديد.",
+                documents: [
+                    "أصل ونسخة سند الملكية والرسم المساحي",
+                    "أصل ونسخة الإعلام الشرعي (حصر الورثة)",
+                    "الإثباتات الشخصية للورثة",
+                    "أصل ونسخة الوكالة الشرعية وبها ذكر (تسجيل حصر الإرث) في حال تقديم الطلب من أحد الورثة أو وكيل"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك من المدقق ومراجعة المستندات والتحقق آلياً من عدم وجود موانع قانونية وتحويله للمفوض (30 دقيقة).",
+                    "مراجعة واعتماد الطلب من المفوض وإرسال إشعار تلقائي لمقدم الطلب بدفع الرسوم آلياً (40 ريالاً عمانياً) في المنصة ثم الحضور لقاعة الخدمة الموحدة (30 دقيقة).",
+                    "حضور مقدم الطلب أمام الموثق، استلام سند الملكية القديم، وإصدار وتسليم سند الملكية الجديد باسم الورثة (15 دقيقة)."
+                ]
+            },
+            {
+                id: 47,
+                title: "طلب إصدار شهادة بيانات عقارية",
+                sector: "السجل العقاري",
+                department: "دائرة السجل العقاري / قسم تسجيل الإجراءات العقارية إلكترونياً",
+                duration: "45 دقيقة",
+                platforms: ["منصة أملاك"],
+                summary: "خدمة إلكترونية بالكامل لإصدار شهادة رسمية معتمدة ببيانات العقارات المملوكة لمقدم الطلب عبر منصة أملاك دون الحاجة للحضور.",
+                documents: [
+                    "نسخة الإثباتات الشخصية لمقدم الطلب",
+                    "نسخة الإثباتات الشخصية للوكيل والموكل ونسخة الوكالة الشرعية وبها ذكر (طلب إصدار شهادة بيانات عقارية) في حال وجود وكالة",
+                    "ملاحظة: في حال كان مقدم الطلب لا يمتلك أي عقار، يتطلب حضوره لقاعة الخدمة الموحدة لإصدار خطاب/شهادة بعدم ملكية عقار"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك من المدقق ومراجعة وتدقيق البيانات والمرفقات وتحويله للمفوض (30 دقيقة).",
+                    "مراجعة واعتماد الطلب من المفوض وإرسال إشعار لمقدم الطلب لدفع الرسوم آلياً واستخراج شهادة البيانات العقارية المعتمدة مباشرة من المنصة (15 دقيقة)."
+                ]
+            },
+            {
+                id: 48,
+                title: "طلب تسجيل عقد الرهن",
+                sector: "السجل العقاري",
+                department: "دائرة السجل العقاري / قسم التصرفات القانونية",
+                duration: "ساعة و 15 دقيقة",
+                platforms: ["منصة أملاك", "قاعة الخدمة الموحدة"],
+                summary: "تسجيل وتوثيق عقود رهن العقارات لصالح الجهات المرتهنة (الجهات الحكومية أو البنوك التجارية والإسلامية) وإصدار سند الملكية المحمل بالرهن.",
+                documents: [
+                    "أصل ونسخة سند الملكية والرسم المساحي",
+                    "الإثباتات الشخصية للراهن (مالك العقار) والمرتهن المفوض من الجهة المرتهنة",
+                    "رسالة تفويض معتمدة للمفوض بالتوقيع وعقد الرهن أو رسالة رسمية من الجهة المرتهنة تتضمن الشروط ونوع وقيمة الرهن",
+                    "السجل التجاري (للشركات الفردية) أو محضر اجتماع الشركاء مصدق من غرفة تجارة وصناعة عمان (للشركات المملوكة لأكثر من فرد)"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك من المدقق، والتحقق من عدم وجود موانع قانونية على العقار ومراجعة المرفقات وتحويله للمفوض (30 دقيقة).",
+                    "مراجعة بيانات المعاملة والمرفقات من المفوض واعتماد تحويلها إلى الموثق (30 دقيقة).",
+                    "حضور الأطراف (الراهن والمرتهن) لقاعة الخدمة الموحدة، استلام سند الملكية، دفع الرسوم، توقيع عقد الرهن أمام الموثق، والتوقيع الإلكتروني لسند الملكية المحمل بالرهن وتسليمه لمندوب الجهة المرتهنة (15 دقيقة)."
+                ]
+            },
+            {
+                id: 49,
+                title: "طلب نقل رهن العقار (من جهة إلى جهة أخرى)",
+                sector: "السجل العقاري",
+                department: "دائرة السجل العقاري / قسم التصرفات القانونية",
+                duration: "ساعة و 15 دقيقة",
+                platforms: ["منصة أملاك", "قاعة الخدمة الموحدة"],
+                summary: "نقل التزامات وعقد رهن العقار المسجل من جهة مرتهنة إلى جهة مرتهنة أخرى بنفس الشروط وقيمة الرهن.",
+                documents: [
+                    "أصل ونسخة سند الملكية والرسم المساحي",
+                    "رسالة عدم ممانعة لنقل الرهن من الجهتين بنفس الشروط وقيمة الرهن",
+                    "البطاقة الشخصية لمقدم الطلب (والوكالة الشرعية المتضمنة طلب نقل رهن العقار وبطاقة الوكيل إن وجد)"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك من المدقق والتحقق من عدم وجود موانع قانونية ومراجعة المرفقات (30 دقيقة).",
+                    "مراجعة المعاملة والمستندات من المفوض وتحويل الطلب إلى الموثق لاستكمال الإجراءات (30 دقيقة).",
+                    "حضور الأطراف (الراهن ومندوب الجهة المرتهنة) إلى قاعة الخدمة الموحدة، استلام الملكية، دفع الرسوم، توقيع العقد أمام الموثق، وتسليم سند الملكية المحمل بالرهن لمندوب الجهة المرتهنة (15 دقيقة)."
+                ]
+            },
+            {
+                id: 50,
+                title: "طلب نقل رهن العقار (من عقار إلى عقار آخر)",
+                sector: "السجل العقاري",
+                department: "دائرة السجل العقاري / قسم التصرفات القانونية",
+                duration: "ساعة و 15 دقيقة",
+                platforms: ["منصة أملاك", "قاعة الخدمة الموحدة"],
+                summary: "نقل الرهن المسجل من عقار حالي إلى عقار آخر بموافقة الجهة المرتهنة وتحديث سندات الملكية للعقارين.",
+                documents: [
+                    "أصل ونسخة سند الملكية والرسم المساحي للعقارين (العقار المرهون والعقار المراد نقل الرهن إليه)",
+                    "رسالة عدم ممانعة من الجهة المرتهنة بنقل رهن العقار إلى عقار آخر",
+                    "البطاقة الشخصية لمقدم الطلب (وأصل الوكالة الشرعية المتضمنة طلب نقل رهن العقار وبطاقة الوكيل إن وجد)"
+                ],
+                steps: [
+                    "استلام الطلب في منصة أملاك من المدقق والتحقق من خلو العقارين من الموانع القانونية ومراجعة المرفقات (30 دقيقة).",
+                    "مراجعة بيانات المعاملة من المفوض وتحويلها إلى الموثق لاستكمال الإجراءات (30 دقيقة).",
+                    "حضور الأطراف إلى قاعة الخدمة الموحدة، استلام الملكيات، سداد الرسوم، توقيع العقد أمام الموثق، وتسليم سند الملكية المحمل بالرهن لمندوب الجهة المرتهنة (15 دقيقة)."
+                ]
+            },
+            {
+                id: 51,
+                title: "طلب فك رهن العقار",
+                sector: "السجل العقاري",
+                department: "دائرة السجل العقاري / قسم التصرفات القانونية",
+                duration: "ساعة واحدة",
+                platforms: ["منصة أملاك", "قاعة الخدمة الموحدة"],
+                summary: "إنهاء وفك إشارة الرهن المسجلة على العقار بموجب خطاب عدم ممانعة من الجهة المرتهنة وإصدار سند الملكية خالياً من الرهن.",
+                documents: [
+                    "أصل ونسخة سند الملكية والرسم المساحي",
+                    "رسالة عدم ممانعة بفك الرهن المسجل على العقار صادرة من الجهة المرتهنة",
+                    "البطاقة الشخصية لمقدم الطلب (وأصل الوكالة الشرعية المتضمنة فك رهن العقار وبطاقة الوكيل إن وجد)"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك من المدقق والتحقق من المستندات وعدم وجود موانع قانونية (30 دقيقة).",
+                    "مراجعة بيانات المعاملة والمستندات من المفوض وتحويل الطلب إلى الموثق (30 دقيقة).",
+                    "حضور الأطراف لقاعة الخدمة الموحدة، استلام سند الملكية، دفع الرسوم المستحقة، وتسليم سند الملكية بعد فك الرهن (15 دقيقة)."
+                ]
+            },
+            {
+                id: 52,
+                title: "طلب إصدار سند ملكية بموجب عقد المبادلة (الملاك عمانيين)",
+                sector: "السجل العقاري",
+                department: "دائرة السجل العقاري / قسم التصرفات القانونية",
+                duration: "ساعة و 15 دقيقة",
+                platforms: ["منصة أملاك", "قاعة الخدمة الموحدة"],
+                summary: "توثيق عقد مبادلة عقارين بين ملاك عمانيين وإصدار سندات الملكية الجديدة للطرفين.",
+                documents: [
+                    "أصل ونسخة سند الملكية والرسم المساحي للعقارين",
+                    "الإثباتات الشخصية لأطراف المعاملة",
+                    "البطاقة الشخصية للوكيل وأصل الوكالة الشرعية وبها ذكر (طلب إصدار سند ملكية بموجب عقد المبادلة) في حال وجود وكالة"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك من المدقق والتحقق من عدم وجود موانع قانونية ومراجعة المرفقات (30 دقيقة).",
+                    "مراجعة بيانات المعاملة والمستندات من المفوض وتحويل الطلب للموثق (30 دقيقة).",
+                    "حضور الأطراف إلى قاعة الخدمة الموحدة، استلام سندي الملكية للعقارين، دفع الرسوم المستحقة، توقيع عقد المبادلة أمام الموثق، وتسليم سندات الملكية الجديدة (15 دقيقة)."
+                ]
+            },
+            {
+                id: 53,
+                title: "طلب إصدار سند ملكية بموجب عقد المبادلة (أحد الملاك غير عماني)",
+                sector: "السجل العقاري",
+                department: "دائرة السجل العقاري / قسم التصرفات القانونية وقسم تملك الأجانب والخليجيين",
+                duration: "6 أيام عمل",
+                platforms: ["منصة أملاك", "قاعة الخدمة الموحدة"],
+                summary: "إجراءات مبادلة العقارات في حال كان أحد أطراف المبادلة غير عماني بعد استكمال الموافقات والتحقق الأمني لتملك أبناء مجلس التعاون والأجانب.",
+                documents: [
+                    "أصل ونسخة سند الملكية والرسم المساحي للعقارين",
+                    "الإثباتات الشخصية لأطراف المعاملة",
+                    "البطاقة الشخصية للوكيل وأصل الوكالة الشرعية وبها ذكر (طلب إصدار سند ملكية بموجب عقد المبادلة) إن وجد"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً بقسم تملك الأجانب والخليجيين وإجراء التحقق الأمني، ثم إرساله لقسم التصرفات القانونية بعد الموافقة المبدئية (6 أيام عمل).",
+                    "استلام الطلب من المدقق والتحقق من عدم وجود موانع قانونية ومراجعة المرفقات (30 دقيقة).",
+                    "مراجعة المعاملة من المفوض وتحويلها إلى الموثق لاستكمال الإجراءات (30 دقيقة).",
+                    "حضور الأطراف لقاعة الخدمة الموحدة، استلام ملكيات العقارين، دفع الرسوم، توقيع العقد أمام الموثق، وتسليم سند الملكية الجديد (15 دقيقة)."
+                ]
+            },
+            {
+                id: 54,
+                title: "طلب إصدار سند ملكية بدل فاقد",
+                sector: "السجل العقاري",
+                department: "دائرة السجل العقاري / قسم تسجيل الإجراءات العقارية",
+                duration: "40 دقيقة",
+                platforms: ["منصة أملاك", "قاعة الخدمة الموحدة"],
+                summary: "إصدار سند ملكية جديد (بدل فاقد) بعد مضي (30) يوماً على نشر إعلان الفقدان والتحقق من عدم وجود موانع قانونية.",
+                documents: [
+                    "نسخة من سند الملكية والرسم المساحي",
+                    "الإثباتات الشخصية لمقدم الطلب",
+                    "صورة من الإعلان المنشور الذي تم تقديم الطلب بموجبه قبل (30) يوماً موضحاً به التاريخ",
+                    "الإثباتات الشخصية للوكيل والموكل وسند التوكيل متضمناً التصرف المراد القيام به (في حال وجود وكالة)"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك من المدقق ومراجعة المرفقات وإعلان الفقدان والتحقق من عدم وجود موانع قانونية (15 دقيقة).",
+                    "مراجعة واعتماد الطلب من المفوض وتحويله للموثق مع إرسال إشعار لدفع رسوم الخدمة (15 دقيقة).",
+                    "التحقق من سداد الرسوم وحضور مقدم الطلب أمام الموثق لإصدار وتسليم سند الملكية الجديد (10 دقائق)."
+                ]
+            },
+            {
+                id: 55,
+                title: "طلب إصدار سند ملكية بدل تالف",
+                sector: "السجل العقاري",
+                department: "دائرة السجل العقاري / قسم تسجيل الإجراءات العقارية",
+                duration: "يوم عمل (40 دقيقة للإجراءات المباشرة)",
+                platforms: ["منصة أملاك", "قاعة الخدمة الموحدة"],
+                summary: "استبدال سند الملكية التالف وإصدار سند ملكية جديد بعد تسليم النسخة الأصلية التالفة.",
+                documents: [
+                    "أصل ونسخة سند الملكية التالف",
+                    "الرسم المساحي والإثباتات الشخصية لصاحب الطلب",
+                    "الإثباتات الشخصية للوكيل والموكل وسند التوكيل متضمناً التصرف المراد القيام به (في حال وجود وكالة)"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك من المدقق ومراجعة البيانات والمستندات والتحقق آلياً من عدم وجود موانع قانونية (15 دقيقة).",
+                    "مراجعة واعتماد الطلب من المفوض وتحويله للموثق مع إرسال إشعار لدفع رسوم الخدمة (15 دقيقة).",
+                    "حضور مقدم الطلب أمام الموثق، استلام أصل سند الملكية التالف، وإصدار وتسليم سند الملكية الجديد (10 دقائق)."
+                ]
+            },
+            {
+                id: 56,
+                title: "طلب إصدار سند ملكية (تصحيح الاسم)",
+                sector: "السجل العقاري",
+                department: "دائرة السجل العقاري / قسم تسجيل الإجراءات العقارية",
+                duration: "40 دقيقة",
+                platforms: ["منصة أملاك", "قاعة الخدمة الموحدة"],
+                summary: "تحديث وتصحيح اسم المالك في سند الملكية بموجب إفادة تغيير الاسم الصادرة من الأحوال المدنية.",
+                documents: [
+                    "أصل ونسخة سند الملكية والرسم المساحي",
+                    "الإثباتات الشخصية لصاحب الطلب",
+                    "إفادة تغيير الاسم (إثبات قيد من الأحوال المدنية)",
+                    "البطاقة الشخصية للوكيل وسند التوكيل متضمناً التصرف المراد القيام به (في حال وجود وكالة)"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك من المدقق ومراجعة المستندات وإفادة الأحوال المدنية والتحقق من عدم وجود موانع قانونية (15 دقيقة).",
+                    "مراجعة واعتماد الطلب من المفوض وتحويله للموثق مع إرسال إشعار لدفع رسوم الخدمة (15 دقيقة).",
+                    "حضور مقدم الطلب أمام الموثق، استلام أصل سند الملكية القديم، وإصدار وتسليم سند الملكية الجديد بالاسم المصحح (10 دقائق)."
+                ]
+            },
+            {
+                id: 57,
+                title: "طلب إصدار سند ملكية بموجب عقد (هبة)",
+                sector: "السجل العقاري",
+                department: "دائرة السجل العقاري / قسم التصرفات القانونية",
+                duration: "40 دقيقة",
+                platforms: ["منصة أملاك", "قاعة الخدمة الموحدة"],
+                summary: "توثيق عقد هبة العقار بين الأقارب وإصدار سند الملكية الجديد باسم الموهوب له.",
+                documents: [
+                    "أصل ونسخة سند الملكية والرسم المساحي",
+                    "ما يثبت صلة القرابة من الدرجة الأولى (عقد الزواج، شهادة الميلاد) - ولغير العمانيين يجب تصديق إثبات القرابة الصادر من الخارج من وزارة الخارجية",
+                    "الإثباتات الشخصية للطرفين (وسند التوكيل الصريح وبطاقة الوكيل في حال وجود وكالة)"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك من المدقق ومراجعة المستندات وإثبات صلة القرابة والتحقق آلياً من عدم وجود موانع قانونية (15 دقيقة).",
+                    "مراجعة واعتماد الطلب من المفوض وتحويله للموثق مع إرسال إشعار تلقائي بالحضور إلى قاعة الخدمة الموحدة (15 دقيقة).",
+                    "حضور الطرفين أمام الموثق، استلام الملكية القديمة، دفع رسوم الخدمة آلياً، توقيع عقد الهبة، وإصدار وتسليم سند الملكية الجديد (10 دقائق)."
+                ]
+            },
+            {
+                id: 58,
+                title: "طلب وثيقة من ملف العقار",
+                sector: "السجل العقاري",
+                department: "دائرة السجل العقاري / قسم الوثائق العقارية",
+                duration: "20 دقيقة",
+                platforms: ["منصة أملاك"],
+                summary: "خدمة إلكترونية بالكامل لاستخراج نسخة معتمدة من وثيقة محفوظة في ملف العقار عبر منصة أملاك دون الحاجة للحضور إلى قاعة الخدمة الموحدة.",
+                documents: [
+                    "نسخة الإثباتات الشخصية لمقدم الطلب",
+                    "في حال وجود وكالة: نسخة الإثباتات الشخصية للوكيل والموكل ونسخة الوكالة الشرعية وبها ذكر (طلب وثيقة من ملف العقار)",
+                    "في حال تقديم الطلب من شركة استشارية أو خبير منتدب: رسالة تفويض/تحويل صادرة من المحكمة وأصل البطاقة الشخصية أو بطاقة العمل"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك من المدقق ومراجعة البيانات والمرفقات والتحقق من عدم وجود موانع قانونية وتحويله للمفوض (10 دقائق).",
+                    "مراجعة واعتماد الطلب من المفوض وإرسال إشعار لمقدم الطلب لدفع الرسوم آلياً واستخراج الوثيقة المعتمدة من ملف العقار عبر المنصة إلكترونياً (10 دقائق)."
+                ]
+            },
+            {
+                id: 59,
+                title: "طلب تسجيل إقرار القسمة (القسمة الرضائية)",
+                sector: "السجل العقاري",
+                department: "دائرة السجل العقاري / قسم التصرفات القانونية",
+                duration: "40 دقيقة",
+                platforms: ["منصة أملاك", "قاعة الخدمة الموحدة"],
+                summary: "توثيق إقرار القسمة الرضائية للعقارات المشتركة بين الشركاء أو الورثة بالتراضي وإصدار سندات الملكية الجديدة.",
+                documents: [
+                    "أصل ونسخة سندات الملكية (عدد ملكيتين أو أكثر)",
+                    "الرسم المساحي والإثباتات الشخصية للشركاء",
+                    "الإثباتات الشخصية للوكيل وصاحب الطلب وسند التوكيل متضمناً (تسجيل إقرار القسمة) في حال وجود وكالة"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك من المدقق ومراجعة المستندات والتحقق آلياً من عدم وجود موانع قانونية (15 دقيقة).",
+                    "مراجعة واعتماد الطلب من المفوض وتحويله للموثق مع إرسال إشعار تلقائي لدفع الرسوم آلياً في المنصة والحضور لقاعة الخدمة الموحدة (15 دقيقة).",
+                    "حضور مقدم الطلب أمام الموثق، استلام الملكيات القديمة، توقيع عقد القسمة، وإصدار وتسليم سندات الملكية الجديدة (10 دقائق)."
+                ]
+            },
+            {
+                id: 60,
+                title: "طلب تسجيل إقرار القسمة (عن طريق المحكمة)",
+                sector: "السجل العقاري",
+                department: "دائرة السجل العقاري / قسم التصرفات القانونية",
+                duration: "40 دقيقة",
+                platforms: ["منصة أملاك", "قاعة الخدمة الموحدة"],
+                summary: "توثيق وتنفيذ إقرار قسمة العقارات الصادر بموجب قرار قضائي من المحكمة وإصدار سندات الملكية الجديدة.",
+                documents: [
+                    "أصل ونسخة سند الملكية والرسم المساحي",
+                    "القرار القضائي (موضح به ملاحظة: يعامل القرار معاملة القسمة)",
+                    "الإعلام الشرعي والإثباتات الشخصية للورثة",
+                    "سند التوكيل متضمناً (تسجيل إقرار القسمة) وإثباتات الوكيل في حال وجود وكالة"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك من المدقق ومراجعة القرار القضائي والمرفقات والتحقق من عدم وجود موانع قانونية (15 دقيقة).",
+                    "مراجعة واعتماد الطلب من المفوض وتحويله للموثق مع إرسال إشعار تلقائي لدفع الرسوم آلياً في المنصة والحضور لقاعة الخدمة الموحدة (15 دقيقة).",
+                    "حضور مقدم الطلب أمام الموثق، استلام الملكية القديمة، توقيع عقد القسمة، وإصدار وتسليم سند الملكية الجديد (10 دقائق)."
+                ]
+            },
+            {
+                id: 61,
+                title: "طلب تسجيل سند ملكية (الوقف)",
+                sector: "السجل العقاري",
+                department: "دائرة السجل العقاري / قسم التصرفات القانونية",
+                duration: "40 دقيقة",
+                platforms: ["منصة أملاك", "قاعة الخدمة الموحدة"],
+                summary: "تسجيل وقف العقار وإصدار سند ملكية الوقف بالتنسيق وبحضور المفوض عن وزارة الأوقاف والشؤون الدينية.",
+                documents: [
+                    "أصل ونسخة سند الملكية",
+                    "رسالة عدم ممانعة صادرة من وزارة الأوقاف والشؤون الدينية + رسالة تفويض باسم المفوض عن الوزارة",
+                    "الإثباتات الشخصية لصاحب العقار (وللوكيل مع أصل الوكالة الشرعية المتضمنة تسجيل الوقف إن وجد)"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك من المدقق والتحقق من عدم وجود موانع قانونية ومراجعة المرفقات (15 دقيقة).",
+                    "مراجعة بيانات المعاملة والمستندات من المفوض وتحويل الطلب إلى الموثق (15 دقيقة).",
+                    "حضور المفوض عن وزارة الأوقاف والشؤون الدينية أمام الموثق، استلام سند الملكية القديم، وإصدار وتسليم سند الملكية الجديد للوقف (10 دقائق)."
+                ]
+            },
+            {
+                id: 62,
+                title: "طلب تسجيل سند ملكية (الوصية)",
+                sector: "السجل العقاري",
+                department: "دائرة السجل العقاري / قسم التصرفات القانونية",
+                duration: "40 دقيقة",
+                platforms: ["منصة أملاك", "قاعة الخدمة الموحدة"],
+                summary: "تسجيل الوصية المعتمدة قضائياً أو من الكاتب بالعدل على العقار وإصدار سند الملكية الجديد للموصى لهم.",
+                documents: [
+                    "أصل ونسخة سند الملكية",
+                    "القرار القضائي المعتمد من المحكمة / كاتب العدل",
+                    "الإعلام الشرعي (في حال كان صاحب العقار متوفى)",
+                    "الإثباتات الشخصية لصاحب العقار وللموصى لهم (وأصل الوكالة الشرعية المتضمنة تسجيل الوصية في حال وجود وكيل)"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك من المدقق والتحقق من عدم وجود موانع قانونية ومراجعة القرار القضائي والمرفقات (15 دقيقة).",
+                    "مراجعة بيانات المعاملة والمستندات من المفوض وتحويل الطلب إلى الموثق (15 دقيقة).",
+                    "حضور مقدم الطلب أمام الموثق، استلام سند الملكية القديم، وإصدار وتسليم سند الملكية الجديد مدوناً به رقم القرار القضائي (10 دقائق)."
+                ]
+            },
+            {
+                id: 63,
+                title: "طلب إصدار سند ملكية بموجب عقد انتفاع",
+                sector: "السجل العقاري",
+                department: "دائرة السجل العقاري / قسم التصرفات القانونية",
+                duration: "40 دقيقة",
+                platforms: ["منصة أملاك", "قاعة الخدمة الموحدة"],
+                summary: "توثيق عقد الانتفاع العقاري الصادر من أحد مكاتب المحاماة المعتمدة بين المالك والمنتفع وإصدار سند الملكية.",
+                documents: [
+                    "أصل ونسخة سند الملكية",
+                    "أصل ونسخة عقد الانتفاع صادر من أحد مكاتب المحاماة المعتمدة",
+                    "الإثباتات الشخصية لأطراف المعاملة (المالك، المنتفع)",
+                    "نسخة من أصل السجل التجاري (إذا كان مقدم الطلب شركة)، وأصل الوكالة الشرعية المتضمنة (تسجيل عقد انتفاع) في حال وجود وكيل"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك من المدقق، والتحقق من عدم وجود موانع قانونية وصحة العقد قانونياً ومراجعة المرفقات (15 دقيقة).",
+                    "مراجعة المعاملة من المفوض وتحويل الطلب للموثق مع إرسال رسالة نصية لمقدم الطلب لدفع الرسوم (15 دقيقة).",
+                    "حضور أطراف المعاملة (المالك والمنتفع) أمام الموثق، استلام الملكية القديمة، توقيع عقد الانتفاع، وإصدار وتسليم سند الملكية الجديد (10 دقائق)."
+                ]
+            },
+            {
+                id: 64,
+                title: "طلب إصدار سند ملكية بموجب نقل عقد انتفاع",
+                sector: "السجل العقاري",
+                department: "دائرة السجل العقاري / قسم التصرفات القانونية",
+                duration: "40 دقيقة",
+                platforms: ["منصة أملاك", "قاعة الخدمة الموحدة"],
+                summary: "نقل حق الانتفاع بالعقار من المنتفع الحالي إلى منتفع جديد وتوثيق العقد وإصدار سند الملكية المحدث.",
+                documents: [
+                    "أصل ونسخة سند الملكية",
+                    "أصل ونسخة عقد الانتفاع صادر من أحد مكاتب المحاماة المعتمدة",
+                    "الإثباتات الشخصية لأطراف المعاملة (المالك، المنتفع الحالي، المنتفع الجديد)",
+                    "نسخة السجل التجاري للشركات، وأصل الوكالة الشرعية وبها ذكر (نقل عقد انتفاع) في حال وجود وكيل"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك من المدقق والتحقق من عدم وجود موانع قانونية وصحة العقد ومراجعة المرفقات (15 دقيقة).",
+                    "مراجعة المعاملة من المفوض وتحويلها للموثق مع إشعار مقدم الطلب برسالة نصية لدفع الرسوم (15 دقيقة).",
+                    "حضور أطراف المعاملة (المالك، المنتفع الحالي، المنتفع الجديد) أمام الموثق، استلام الملكية القديمة، توقيع العقد، وإصدار وتسليم سند الملكية الجديد (10 دقائق)."
+                ]
+            },
+            {
+                id: 65,
+                title: "طلب إصدار سند ملكية بموجب إلغاء عقد انتفاع",
+                sector: "السجل العقاري",
+                department: "دائرة السجل العقاري / قسم التصرفات القانونية",
+                duration: "40 دقيقة",
+                platforms: ["منصة أملاك", "قاعة الخدمة الموحدة"],
+                summary: "إنهاء وإلغاء عقد الانتفاع المسجل على العقار باتفاق المالك والمنتفع وإصدار سند الملكية الجديد.",
+                documents: [
+                    "أصل ونسخة سند الملكية",
+                    "أصل ونسخة عقد الانتفاع صادر من أحد مكاتب المحاماة المعتمدة",
+                    "الإثباتات الشخصية لأطراف المعاملة (المالك، المنتفع)",
+                    "نسخة السجل التجاري للشركات، وأصل الوكالة الشرعية وبها ذكر (إلغاء عقد انتفاع) في حال وجود وكيل"
+                ],
+                steps: [
+                    "استلام الطلب إلكترونياً في منصة أملاك من المدقق والتحقق من عدم وجود موانع قانونية وصحة العقد ومراجعة المرفقات (15 دقيقة).",
+                    "مراجعة المعاملة من المفوض وتحويلها للموثق مع إرسال رسالة نصية لمقدم الطلب لدفع الرسوم (15 دقيقة).",
+                    "حضور أطراف المعاملة (المالك والمنتفع) أمام الموثق، استلام الملكية القديمة، توقيع إلغاء عقد الانتفاع، وإصدار وتسليم سند الملكية الجديد (10 دقائق)."
+                ]
+            },
+            {
+                id: 66,
+                title: "طلب الحجز على العقار",
+                sector: "السجل العقاري",
+                department: "دائرة السجل العقاري / قسم التصرفات القانونية",
+                duration: "إلكتروني فوري (عبر الربط المباشر)",
+                platforms: ["الربط الإلكتروني مع المجلس الأعلى للقضاء"],
+                summary: "إدراج إشارة الحجز التحفظي أو التنفيذي على صحيفة العقار إلكترونياً عبر الربط المباشر مع المحاكم بالمجلس الأعلى للقضاء.",
+                documents: [
+                    "أمر أو قرار قضائي إلكتروني بالحجز وارد عبر نظام الربط المباشر مع المحاكم (المجلس الأعلى للقضاء)"
+                ],
+                steps: [
+                    "يتم الحجز على العقار آلياً وإلكترونياً عن طريق المحاكم (المجلس الأعلى للقضاء) عبر نظام الربط الإلكتروني المباشر ما بين الجهتين دون الحاجة لتقديم طلب ورقي."
+                ]
+            },
+            {
+                id: 67,
+                title: "طلب رفع الحجز عن العقار",
+                sector: "السجل العقاري",
+                department: "دائرة السجل العقاري / قسم التصرفات القانونية",
+                duration: "إلكتروني فوري (عبر الربط المباشر)",
+                platforms: ["الربط الإلكتروني مع المجلس الأعلى للقضاء"],
+                summary: "رفع وإلغاء إشارة الحجز المسجلة على العقار إلكترونياً عبر الربط المباشر مع المحاكم بالمجلس الأعلى للقضاء.",
+                documents: [
+                    "أمر أو قرار قضائي إلكتروني برفع الحجز وارد عبر نظام الربط المباشر مع المحاكم (المجلس الأعلى للقضاء)"
+                ],
+                steps: [
+                    "يتم رفع الحجز عن العقار آلياً وإلكترونياً عن طريق المحاكم (المجلس الأعلى للقضاء) عبر نظام الربط الإلكتروني المباشر ما بين الجهتين."
+                ]
+            }
+        ];
+
+        // معايير الاستبانة الخمسة المستخلصة من الملف رقم 2
+        const evaluationQuestions = [
+            { id: "q1", text: "1. لدي فهم واضح بإجراءات العمل المرتبطة بدوري في هذه الخدمة:" },
+            { id: "q2", text: "2. أستطيع تطبيق خطوات الإجراء التشغيلي لهذه الخدمة بسهولة في عملي:" },
+            { id: "q3", text: "3. أجد أن الإجراء التشغيلي يغطي أغلب الحالات التي أتعامل معها في هذه الخدمة:" },
+            { id: "q4", text: "4. خطوات العمل والمستندات والمدد الزمنية المذكورة واضحة ومفصلة بما يكفي:" },
+            { id: "q5", text: "5. الصلاحيات والأنظمة الإلكترونية المرتبطة بالخدمة تدعم انسيابية الإجراء دون تعليق:" }
+        ];
+
+        // خيارات التقييم الخماسي (مقياس ليكرت)
+        const likertOptions = [
+            { value: 5, label: "موافق بشدة (5)" },
+            { value: 4, label: "موافق (4)" },
+            { value: 3, label: "محايد (3)" },
+            { value: 2, label: "غير موافق (2)" },
+            { value: 1, label: "غير موافق بشدة (1)" }
+        ];
+
+        // قائمة التحديات المرصودة في الورشة التدريبية (الملف رقم 2)
+        const challengeCategories = [
+            "الحوكمة وتعدد أو غياب بعض الصلاحيات والمسارات بالنظام",
+            "بقاء المعاملة معلقة عند إجازة الموظف المخصص له الطلب",
+            "إشكاليات المرفقات (ظهورها بمسمى أخرى / عدم فتحها قبل التخصيص)",
+            "إشكاليات التوقيع الإلكتروني أو عدم ظهور الختم بالخرائط والمذكرات",
+            "عدم إمكانية تعديل أو حذف مسودة الاعتماد أو المذكرة التخطيطية",
+            "نقص ظهور بعض بيانات القطعة أو عدم احتساب بعض الرسوم آلياً",
+            "الحاجة لربط نظام المراسلات لمخاطبة الجهات الخارجية وحفظ المعاملة",
+            "نقص التوضيح لبعض الحالات الاستثنائية في الدليل التشغيلي"
+        ];
+
+        const STORAGE_KEY = "mohup_buraimi_sop_evaluations_v2";
+        const MERGED_STORAGE_KEY = "mohup_buraimi_sop_merged_list_v2";
+        const ADMIN_PIN_KEY = "mohup_buraimi_admin_pin";
+        const WEBHOOK_URL_KEY = "mohup_buraimi_webhook_url";
+        // ضع رابط Google Apps Script هنا بين علامتي التنصيص ليعمل تلقائياً لدى جميع الموظفين عند مشاركة الملف
+        const DEFAULT_WEBHOOK_URL = "";
+
+        let appState = {};
+        let mergedSubmissions = [];
+        let currentSector = "الكل";
+
+        function getActiveWebhookUrl() {
+            return (localStorage.getItem(WEBHOOK_URL_KEY) || DEFAULT_WEBHOOK_URL || "").trim();
+        }
+
+        // تحميل التقييمات المحفوظة في المتصفح
+        function loadState() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    appState = JSON.parse(saved);
+                }
+                const savedMerged = localStorage.getItem(MERGED_STORAGE_KEY);
+                if (savedMerged) {
+                    mergedSubmissions = JSON.parse(savedMerged);
+                }
+            } catch (err) {
+                console.error("خطأ في تحميل البيانات المحفوظة:", err);
+                appState = {};
+                mergedSubmissions = [];
+            }
+        }
+
+        // حفظ التقييمات في المتصفح
+        function saveState() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+                localStorage.setItem(MERGED_STORAGE_KEY, JSON.stringify(mergedSubmissions));
+            } catch (err) {
+                console.error("خطأ في حفظ البيانات:", err);
+            }
+        }
+
+        // الحصول على الرقم السري المعتمد للمشرف (الافتراضي 2025)
+        function getAdminPin() {
+            return localStorage.getItem(ADMIN_PIN_KEY) || "2025";
+        }
+
+        // طلب الدخول الحصري لصفحة ملخص التقييمات
+        function requestAdminAccess() {
+            const modal = document.getElementById("passwordModal");
+            const input = document.getElementById("adminPasswordInput");
+            const err = document.getElementById("passwordErrorMsg");
+            if (input) input.value = "";
+            if (err) err.classList.add("hidden");
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+            setTimeout(() => { if (input) input.focus(); }, 100);
+        }
+
+        function closePasswordModal() {
+            const modal = document.getElementById("passwordModal");
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+        }
+
+        function verifyAdminPassword() {
+            const input = document.getElementById("adminPasswordInput");
+            const err = document.getElementById("passwordErrorMsg");
+            const entered = (input.value || "").trim();
+
+            if (entered === getAdminPin()) {
+                closePasswordModal();
+                openReportModal();
+                showToast("تم التحقق من الرقم السري بنجاح. مرحباً بك في لوحة المشرف.", "success");
+            } else {
+                if (err) err.classList.remove("hidden");
+            }
+        }
+
+        function changeAdminPin() {
+            const input = document.getElementById("newAdminPinInput");
+            const newPin = (input.value || "").trim();
+            if (newPin.length < 3) {
+                showToast("يرجى إدخال رقم سري لا يقل عن 3 خانات.", "warning");
+                return;
+            }
+            localStorage.setItem(ADMIN_PIN_KEY, newPin);
+            input.value = "";
+            showToast("تم تحديث الرقم السري لصفحة ملخص التقييمات بنجاح!", "success");
+        }
+
+        function saveWebhookUrl() {
+            const input = document.getElementById("webhookUrlInput");
+            const url = (input.value || "").trim();
+            localStorage.setItem(WEBHOOK_URL_KEY, url);
+            showToast("تم حفظ رابط التجميع السحابي بنجاح!", "success");
+        }
+
+        // فتح نافذة إرسال التقييمات للمشارك
+        function openSubmitModal() {
+            const readCount = sopServices.filter(s => appState[s.id] && appState[s.id].readConfirmed).length;
+            const evalCount = sopServices.filter(s => appState[s.id] && appState[s.id].evaluated).length;
+
+            const statsBox = document.getElementById("participantStatsBox");
+            if (statsBox) {
+                statsBox.innerHTML = `
+                    <span><i class="fa-solid fa-circle-check ml-1.5 text-emerald-600"></i>إنجازك الحالي: اطلعت على <strong>(${readCount})</strong> خدمة، وقمت بتقييم <strong>(${evalCount})</strong> خدمة</span>
+                    <span class="text-xs bg-white px-2.5 py-1 rounded-lg border border-emerald-200 font-bold">${Math.round((evalCount / sopServices.length) * 100)}% مكتمل</span>
+                `;
+            }
+
+            const modal = document.getElementById("submitModal");
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+        }
+
+        function closeSubmitModal() {
+            const modal = document.getElementById("submitModal");
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+        }
+
+        // تجهيز حزمة تقييمات المشارك
+        function buildParticipantPayload() {
+            const name = (document.getElementById("participantNameGlobal").value || "").trim() || "مشارك";
+            const dept = (document.getElementById("participantDeptGlobal").value || "").trim() || "غير محدد";
+            const evaluatedEntries = {};
+
+            sopServices.forEach(s => {
+                if (appState[s.id] && (appState[s.id].readConfirmed || appState[s.id].evaluated)) {
+                    const st = appState[s.id];
+                    const r = st.ratings || {};
+                    const vals = Object.values(r).map(Number);
+                    const avg = vals.length ? Number((vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(2)) : "";
+
+                    evaluatedEntries[s.id] = {
+                        ...st,
+                        serviceId: s.id,
+                        serviceTitle: s.title,
+                        sector: s.sector,
+                        duration: s.duration,
+                        avgScore: avg,
+                        evaluatorName: st.evaluatorName || `${name} (${dept})`
+                    };
+                }
+            });
+
+            return {
+                participantName: name,
+                department: dept,
+                submittedAt: new Date().toLocaleString("ar-OM"),
+                evaluations: evaluatedEntries
+            };
+        }
+
+        // الطريقة 1: تنزيل ملف JSON للمشارك لإرساله للمشرف
+        // الطريقة 4: الإرسال السحابي المباشر (Google Sheets Webhook)
+        async function sendToCloudWebhook() {
+            const webhookUrl = getActiveWebhookUrl();
+            if (!webhookUrl) {
+                showToast("لم يتم ضبط رابط Google Apps Script بعد؛ يرجى إضافته من لوحة المشرف أو استخدام خيار تنزيل الملف.", "warning");
+                return;
+            }
+            const payload = buildParticipantPayload();
+            if (Object.keys(payload.evaluations).length === 0) {
+                showToast("يرجى تقييم خدمة واحدة على الأقل قبل الإرسال.", "warning");
+                return;
+            }
+
+            const btn = document.getElementById("cloudSubmitBtn");
+            const originalHtml = btn ? btn.innerHTML : "";
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>جاري الإرسال إلى Google Sheets...</span>`;
+            }
+
+            try {
+                // نستخدم text/plain لتجنب حظر CORS Preflight مع Google Apps Script
+                await fetch(webhookUrl, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify(payload)
+                });
+                showToast("تم إرسال تقييماتك وتسجيلها في جدول Google Sheets بنجاح!", "success");
+            } catch (e) {
+                showToast("تعذر الاتصال بـ Google Sheets، يرجى التحقق من الإنترنت أو استخدام خيار تنزيل الملف.", "warning");
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = originalHtml;
+                }
+            }
+        }
+
+        // جلب التقييمات المجمعة مباشرة من Google Sheets إلى لوحة المشرف
+        async function fetchFromGoogleSheets() {
+            const webhookUrl = getActiveWebhookUrl();
+            if (!webhookUrl) {
+                showToast("يرجى إدخال وحفظ رابط Google Apps Script أولاً.", "warning");
+                return;
+            }
+
+            const btn = document.getElementById("btnFetchCloud");
+            const originalHtml = btn ? btn.innerHTML : "";
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>جاري الجلب...</span>`;
+            }
+
+            try {
+                const response = await fetch(webhookUrl, { method: "GET" });
+                const data = await response.json();
+                if (Array.isArray(data.submissions) && data.submissions.length > 0) {
+                    mergedSubmissions = data.submissions;
+                    mergedSubmissions.forEach(sub => {
+                        Object.keys(sub.evaluations || {}).forEach(sId => {
+                            if (!appState[sId] || !appState[sId].evaluated) {
+                                appState[sId] = sub.evaluations[sId];
+                            }
+                        });
+                    });
+                    saveState();
+                    updateDashboardStats();
+                    renderServices();
+                    renderLiveEvaluationSummary();
+                    showToast(`تم جلب ودمج (${data.submissions.length}) حزمة تقييم من Google Sheets بنجاح!`, "success");
+                } else {
+                    showToast("الجدول متصل بنجاح، ولا توجد تقييمات مسجلة فيه حتى الآن.", "info");
+                }
+            } catch (err) {
+                showToast("تأكد من نشر السكربت بصلاحية (Anyone / أي شخص) لتتمكن من جلب البيانات.", "warning");
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = originalHtml;
+                }
+            }
+        }
+
+        // نسخ كود Google Apps Script الجاهز للحافظة
+        function copyGoogleAppsScriptCode() {
+            const gasCode = `// كود الربط التلقائي لمنصة تقييم دليل الإجراءات التشغيلية (SOP) - محافظة البريمي
+function doPost(e) {
+  var lock = LockService.getScriptLock();
+  lock.tryLock(10000);
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getSheetByName("التقييمات") || ss.insertSheet("التقييمات");
+    
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow([
+        "تاريخ الإرسال", "اسم الموظف المشارك", "الدائرة / القسم",
+        "رقم الخدمة", "اسم الخدمة", "القطاع", "الزمن الكلي",
+        "تم الاطلاع", "تم التقييم", "متوسط التقييم (من 5)",
+        "1. وضوح الدور", "2. سهولة التطبيق", "3. تغطية الحالات", "4. وضوح الخطوات", "5. كفاءة الأنظمة",
+        "التحديات المرصودة", "الآراء والمقترحات", "البيانات الخام (JSON)"
+      ]);
+      sheet.getRange(1, 1, 1, 18).setFontWeight("bold").setBackground("#163d61").setFontColor("#ffffff");
+      sheet.setRightToLeft(true);
+    }
+
+    var payload = JSON.parse(e.postData.contents);
+    var evaluations = payload.evaluations || {};
+    var keys = Object.keys(evaluations);
+
+    keys.forEach(function(sId, idx) {
+      var ev = evaluations[sId];
+      var r = ev.ratings || {};
+      sheet.appendRow([
+        payload.submittedAt || new Date().toLocaleString("ar-OM"),
+        payload.participantName || "",
+        payload.department || "",
+        ev.serviceId || sId,
+        ev.serviceTitle || "",
+        ev.sector || "",
+        ev.duration || "",
+        ev.readConfirmed ? "نعم" : "لا",
+        ev.evaluated ? "نعم" : "لا",
+        ev.avgScore || "",
+        r.q1 || "", r.q2 || "", r.q3 || "", r.q4 || "", r.q5 || "",
+        (ev.challenges || []).join(" | "),
+        ev.suggestions || "",
+        idx === 0 ? JSON.stringify(payload) : ""
+      ]);
+    });
+
+    return ContentService.createTextOutput(JSON.stringify({ status: "success", rowsAdded: keys.length }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: "error", message: err.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function doGet(e) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName("التقييمات");
+  var submissions = [];
+  if (sheet && sheet.getLastRow() > 1) {
+    var data = sheet.getRange(2, 18, sheet.getLastRow() - 1, 1).getValues();
+    data.forEach(function(row) {
+      if (row[0]) {
+        try { submissions.push(JSON.parse(row[0])); } catch (err) {}
+      }
+    });
+  }
+  return ContentService.createTextOutput(JSON.stringify({ submissions: submissions }))
+    .setMimeType(ContentService.MimeType.JSON);
+}`;
+
+            const temp = document.createElement("textarea");
+            temp.value = gasCode;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand("copy");
+            document.body.removeChild(temp);
+            showToast("تم نسخ كود Google Apps Script بالكامل إلى الحافظة! الصقه الآن في محرر Apps Script.", "success");
+        }
+
+        // استيراد ودمج كود التقييم الذكي من قبل المشرف
+        function importPastedCode() {
+            const input = document.getElementById("pasteEvalCodeInput");
+            const raw = (input.value || "").trim();
+            if (!raw.startsWith("SOP_EVAL_")) {
+                showToast("الكود المدخل غير صالح. تأكد من نسخ الكود الذي يبدأ بـ SOP_EVAL_", "warning");
+                return;
+            }
+            try {
+                const jsonStr = decodeURIComponent(escape(atob(raw.replace("SOP_EVAL_", ""))));
+                const payload = JSON.parse(jsonStr);
+                mergeParticipantPayload(payload);
+                input.value = "";
+            } catch (err) {
+                showToast("حدث خطأ أثناء قراءة كود التقييم.", "warning");
+            }
+        }
+
+        // استيراد ملف أو عدة ملفات JSON من الموظفين
+        function handleFileImport(event) {
+            const files = event.target.files;
+            if (!files || files.length === 0) return;
+
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const payload = JSON.parse(e.target.result);
+                        mergeParticipantPayload(payload);
+                    } catch (err) {
+                        showToast(`تعذر قراءة الملف: ${file.name}`, "warning");
+                    }
+                };
+                reader.readAsText(file);
+            });
+            event.target.value = "";
+        }
+
+        // دمج بيانات المشارك في سجل المشرف
+        function mergeParticipantPayload(payload) {
+            if (!payload || !payload.evaluations) {
+                showToast("ملف التقييم لا يحتوي على بيانات صالحة.", "warning");
+                return;
+            }
+            mergedSubmissions.push(payload);
+
+            // تحديث الحالة المحلية أيضاً للخدمات التي لم تكن مقيمة لعرضها في المؤشرات
+            Object.keys(payload.evaluations).forEach(serviceId => {
+                const incoming = payload.evaluations[serviceId];
+                if (!appState[serviceId] || !appState[serviceId].evaluated) {
+                    appState[serviceId] = incoming;
+                }
+            });
+
+            saveState();
+            updateDashboardStats();
+            renderServices();
+            renderLiveEvaluationSummary();
+            showToast(`تم دمج تقييمات المشارك "${payload.participantName}" بنجاح!`, "success");
+        }
+
+        // تغيير فلتر القطاع وتحديث الأزرار والبطاقات
+        function setSectorFilter(sector) {
+            currentSector = sector;
+            document.querySelectorAll(".sector-tab").forEach(btn => {
+                if (btn.getAttribute("data-sector") === sector) {
+                    btn.className = "sector-tab px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition bg-mohup-700 text-white shadow-sm";
+                } else {
+                    btn.className = "sector-tab px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition bg-slate-100 text-slate-700 hover:bg-slate-200";
+                }
+            });
+            renderServices();
+        }
+
+        // إظهار إشعار منبثق (Toast) بديل عن alert
+        function showToast(message, type = "info") {
+            const container = document.getElementById("toastContainer");
+            if (!container) return;
+
+            const styles = {
+                success: "bg-emerald-700 border-emerald-400 text-white",
+                info: "bg-mohup-800 border-gold-400 text-white",
+                warning: "bg-amber-600 border-amber-300 text-white"
+            };
+            const icons = {
+                success: "fa-circle-check text-emerald-300",
+                info: "fa-circle-info text-gold-400",
+                warning: "fa-triangle-exclamation text-amber-200"
+            };
+
+            const toast = document.createElement("div");
+            toast.className = `pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg border-r-4 ${styles[type] || styles.info} text-xs sm:text-sm font-semibold transition-all duration-300`;
+            toast.innerHTML = `
+                <i class="fa-solid ${icons[type] || icons.info} text-base shrink-0"></i>
+                <span class="leading-relaxed">${message}</span>
+            `;
+
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = "0";
+                toast.style.transform = "translateY(-8px)";
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        // لون شارة القطاع
+        function getSectorBadgeStyle(sector) {
+            switch (sector) {
+                case "الأراضي":
+                    return "bg-amber-100 text-amber-800 border-amber-200";
+                case "الإسكان الاجتماعي":
+                    return "bg-emerald-100 text-emerald-800 border-emerald-200";
+                case "التطوير العقاري":
+                    return "bg-purple-100 text-purple-800 border-purple-200";
+                case "الوساطة العقارية":
+                    return "bg-cyan-100 text-cyan-800 border-cyan-200";
+                case "التخطيط العمراني":
+                    return "bg-blue-100 text-blue-800 border-blue-200";
+                case "السجل العقاري":
+                    return "bg-indigo-100 text-indigo-800 border-indigo-200";
+                default:
+                    return "bg-slate-100 text-slate-800 border-slate-200";
+            }
+        }
+
+        // رسم بطاقات الخدمات
+        function renderServices() {
+            const container = document.getElementById("servicesContainer");
+            const searchQuery = document.getElementById("searchInput").value.trim().toLowerCase();
+            const statusFilter = document.getElementById("statusFilter").value;
+
+            const filtered = sopServices.filter(service => {
+                // فلتر القطاع
+                if (currentSector !== "الكل" && service.sector !== currentSector) return false;
+
+                // فلتر البحث
+                if (searchQuery) {
+                    const haystack = `${service.title} ${service.sector} ${service.department} ${service.summary} ${service.documents.join(" ")} ${service.steps.join(" ")}`.toLowerCase();
+                    if (!haystack.includes(searchQuery)) return false;
+                }
+
+                // فلتر الحالة
+                const state = appState[service.id] || {};
+                if (statusFilter === "unread" && state.readConfirmed) return false;
+                if (statusFilter === "read_not_eval" && (!state.readConfirmed || state.evaluated)) return false;
+                if (statusFilter === "evaluated" && !state.evaluated) return false;
+
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-white rounded-2xl p-10 text-center border border-slate-200 shadow-sm">
+                        <div class="w-16 h-16 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center text-2xl mx-auto mb-3">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-slate-700">لا توجد خدمات مطابقة لمعايير البحث أو التصفية</h3>
+                        <p class="text-xs text-slate-500 mt-1">جرب تغيير كلمة البحث أو اختيار قطاع آخر</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filtered.map(service => {
+                const state = appState[service.id] || {
+                    readConfirmed: false,
+                    evaluated: false,
+                    ratings: { q1: 5, q2: 5, q3: 4, q4: 4, q5: 4 },
+                    challenges: [],
+                    suggestions: "",
+                    evaluatorName: "",
+                    updatedAt: ""
+                };
+
+                const isRead = !!state.readConfirmed;
+                const isEvaluated = !!state.evaluated;
+
+                // حساب متوسط تقييم الخدمة إن وجد
+                let serviceAvg = 0;
+                if (isEvaluated && state.ratings) {
+                    const vals = Object.values(state.ratings).map(Number);
+                    serviceAvg = (vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(1);
+                }
+
+                return `
+                <article id="service-card-${service.id}" class="bg-white rounded-2xl shadow-sm border ${isEvaluated ? 'border-emerald-300 ring-1 ring-emerald-100' : isRead ? 'border-blue-300' : 'border-slate-200'} overflow-hidden transition print-break">
+                    
+                    <!-- رأس بطاقة الخدمة -->
+                    <div class="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-l ${isEvaluated ? 'from-emerald-50/50 via-white to-white' : 'from-slate-50/70 via-white to-white'} border-b border-slate-100">
+                        <div class="flex items-start gap-3.5">
+                            <div class="w-11 h-11 rounded-xl bg-mohup-700 text-gold-400 font-heading font-bold text-base flex items-center justify-center shrink-0 shadow-sm">
+                                ${service.id}
+                            </div>
+                            <div>
+                                <div class="flex flex-wrap items-center gap-2 mb-1">
+                                    <span class="px-2.5 py-0.5 text-xs font-bold rounded-full border ${getSectorBadgeStyle(service.sector)}">
+                                        ${service.sector}
+                                    </span>
+                                    <span class="text-xs text-slate-500 flex items-center gap-1 bg-slate-100 px-2.5 py-0.5 rounded-full">
+                                        <i class="fa-regular fa-clock text-mohup-600"></i>
+                                        <span>الزمن الكلي: <strong class="text-slate-700">${service.duration}</strong></span>
+                                    </span>
+                                    ${service.platforms.map(p => `
+                                        <span class="text-xs text-mohup-700 bg-mohup-50 border border-mohup-200 px-2 py-0.5 rounded-full font-semibold">${p}</span>
+                                    `).join("")}
+                                </div>
+                                <h3 class="text-base sm:text-lg font-bold text-mohup-900">
+                                    ${service.title}
+                                </h3>
+                                <p class="text-xs text-slate-500 mt-0.5">
+                                    <i class="fa-solid fa-sitemap ml-1 text-slate-400"></i>${service.department}
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- شارة حالة الخدمة وزر الطي/الفتح -->
+                        <div class="flex items-center justify-between sm:justify-end gap-2 shrink-0">
+                            <div id="status-badge-${service.id}">
+                                ${isEvaluated
+                                    ? `<span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                        <i class="fa-solid fa-circle-check text-emerald-600"></i>
+                                        <span>تم التقييم (${serviceAvg}/5)</span>
+                                       </span>`
+                                    : isRead
+                                    ? `<span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-blue-100 text-blue-800 border border-blue-200">
+                                        <i class="fa-solid fa-eye text-blue-600"></i>
+                                        <span>تم الاطلاع - بانتظار التقييم</span>
+                                       </span>`
+                                    : `<span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-600">
+                                        <i class="fa-regular fa-circle"></i>
+                                        <span>لم يتم الاطلاع بعد</span>
+                                       </span>`
+                                }
+                            </div>
+                            <button onclick="toggleCardBody(${service.id})" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold flex items-center gap-1.5 transition no-print">
+                                <span>التفاصيل والتقييم</span>
+                                <i id="card-chevron-${service.id}" class="fa-solid fa-chevron-up transition-transform"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- جسم بطاقة الخدمة -->
+                    <div id="card-body-${service.id}" class="p-4 sm:p-6 space-y-5">
+                        
+                        <!-- ملخص الخدمة -->
+                        <div class="bg-mohup-50/60 border border-mohup-100 rounded-xl p-3.5">
+                            <h4 class="text-xs font-bold text-mohup-800 mb-1 flex items-center gap-1.5">
+                                <i class="fa-solid fa-file-Waveform text-mohup-600"></i>
+                                <span>ملخص الهدف من الخدمة:</span>
+                            </h4>
+                            <p class="text-sm text-slate-700 leading-relaxed">${service.summary}</p>
+                        </div>
+
+                        <!-- المستندات المطلوبة وخطوات سير الإجراءات -->
+                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                            <!-- المستندات المطلوبة -->
+                            <div class="lg:col-span-5 bg-slate-50 rounded-xl p-4 border border-slate-200/80">
+                                <h4 class="text-sm font-bold text-mohup-800 mb-2.5 flex items-center gap-2">
+                                    <i class="fa-solid fa-folder-open text-gold-500"></i>
+                                    <span>المستندات والمتطلبات الأساسية:</span>
+                                </h4>
+                                <ul class="space-y-2 text-xs sm:text-sm text-slate-700">
+                                    ${service.documents.map(doc => `
+                                        <li class="flex items-start gap-2">
+                                            <i class="fa-solid fa-check text-emerald-600 mt-1 text-xs shrink-0"></i>
+                                            <span>${doc}</span>
+                                        </li>
+                                    `).join("")}
+                                </ul>
+                            </div>
+
+                            <!-- خطوات سير الإجراءات -->
+                            <div class="lg:col-span-7 bg-slate-50 rounded-xl p-4 border border-slate-200/80">
+                                <h4 class="text-sm font-bold text-mohup-800 mb-2.5 flex items-center gap-2">
+                                    <i class="fa-solid fa-route text-mohup-600"></i>
+                                    <span>ملخص سير الإجراءات وخطوات العمل (SOP):</span>
+                                </h4>
+                                <ol class="space-y-2.5 text-xs sm:text-sm text-slate-700">
+                                    ${service.steps.map((step, idx) => `
+                                        <li class="flex items-start gap-2.5">
+                                            <span class="w-5 h-5 rounded-full bg-mohup-700 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">${idx + 1}</span>
+                                            <span class="leading-relaxed">${step}</span>
+                                        </li>
+                                    `).join("")}
+                                </ol>
+                            </div>
+                        </div>
+
+                        <!-- شريط تأكيد الاطلاع المشروط (إلزامي لفتح التقييم والآراء والمقترحات) -->
+                        <div class="rounded-2xl p-4 border-2 transition ${isRead ? 'bg-emerald-50/70 border-emerald-400' : 'bg-amber-50/80 border-amber-300'}">
+                            <label for="confirm-read-${service.id}" class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 cursor-pointer select-none">
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" id="confirm-read-${service.id}" 
+                                        ${isRead ? 'checked' : ''} 
+                                        onchange="handleConfirmRead(${service.id})"
+                                        class="w-5 h-5 accent-emerald-600 rounded cursor-pointer shrink-0">
+                                    <div>
+                                        <span class="text-sm sm:text-base font-bold ${isRead ? 'text-emerald-900' : 'text-mohup-900'}">
+                                            أؤكد أنه تم الاطلاع على سير الإجراءات بخدمة "${service.title}"
+                                        </span>
+                                        <p class="text-xs ${isRead ? 'text-emerald-700' : 'text-amber-800'} mt-0.5">
+                                            ${isRead 
+                                                ? 'تم تأكيد اطلاعك بنجاح. يمكنك الآن تعبئة أو تحديث تقييم الخدمة وإضافة الآراء والمقترحات بالأسفل.' 
+                                                : 'يرجى وضع علامة التأكيد أعلاه بعد قراءة خطوات الخدمة لإظهار استمارة التقييم وإضافة الآراء والمقترحات.'}
+                                        </p>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-bold px-3 py-1.5 rounded-lg shrink-0 self-start sm:self-center ${isRead ? 'bg-emerald-600 text-white' : 'bg-amber-200 text-amber-900'}">
+                                    ${isRead ? '<i class="fa-solid fa-unlock ml-1"></i>التقييم متاح الآن' : '<i class="fa-solid fa-lock ml-1"></i>التقييم مقفل لحين التأكيد'}
+                                </span>
+                            </label>
+                        </div>
+
+                        <!-- قسم التقييم والآراء والمقترحات (يظهر فقط بعد تأكيد الاطلاع) -->
+                        <div id="eval-section-${service.id}" class="${isRead ? 'block' : 'hidden'} bg-white rounded-2xl border-2 border-mohup-200 p-4 sm:p-6 space-y-6 shadow-inner">
+                            
+                            <div class="border-b border-slate-200 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                                <div>
+                                    <h4 class="text-base font-bold text-mohup-800 flex items-center gap-2">
+                                        <i class="fa-solid fa-clipboard-question text-gold-500"></i>
+                                        <span>استمارة تقييم الخدمة: "${service.title}"</span>
+                                    </h4>
+                                    <p class="text-xs text-slate-500 mt-0.5">تقييم مبني على محاور استبانة قياس المعرفة والجاهزية والتحديات بدليل الإجراءات التشغيلية</p>
+                                </div>
+                                ${state.updatedAt ? `<span class="text-xs text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg font-semibold">آخر حفظ: ${state.updatedAt}</span>` : ''}
+                            </div>
+
+                            <!-- أولاً: جدول تقييم بنود الاستبانة -->
+                            <div class="space-y-4">
+                                <h5 class="text-sm font-bold text-mohup-700">أولاً: قياس مستوى وضوح وجاهزية الإجراء التشغيلي:</h5>
+                                <div class="space-y-3">
+                                    ${evaluationQuestions.map(q => {
+                                        const currentVal = (state.ratings && state.ratings[q.id]) ? Number(state.ratings[q.id]) : 5;
+                                        return `
+                                        <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+                                            <p class="text-xs sm:text-sm font-semibold text-slate-800">${q.text}</p>
+                                            <div class="grid grid-cols-2 sm:grid-cols-5 gap-1.5 shrink-0">
+                                                ${likertOptions.map(opt => `
+                                                    <label class="rating-btn cursor-pointer">
+                                                        <input type="radio" name="rating-${service.id}-${q.id}" value="${opt.value}" ${currentVal === opt.value ? 'checked' : ''} class="sr-only">
+                                                        <div class="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-700 text-xs font-semibold text-center transition hover:bg-slate-100">
+                                                            ${opt.label}
+                                                        </div>
+                                                    </label>
+                                                `).join("")}
+                                            </div>
+                                        </div>
+                                        `;
+                                    }).join("")}
+                                </div>
+                            </div>
+
+                            <!-- ثانياً: التحديات المرصودة في هذه الخدمة -->
+                            <div class="space-y-3">
+                                <h5 class="text-sm font-bold text-mohup-700">ثانياً: هل تواجه أياً من التحديات التالية في تطبيق هذا الإجراء؟ (اختيار متعدد - اختياري):</h5>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                                    ${challengeCategories.map((ch, idx) => {
+                                        const checked = Array.isArray(state.challenges) && state.challenges.includes(ch);
+                                        return `
+                                        <label class="challenge-chip cursor-pointer">
+                                            <input type="checkbox" name="challenge-${service.id}" value="${ch}" ${checked ? 'checked' : ''} class="sr-only">
+                                            <div class="p-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 text-xs flex items-center gap-2.5 transition hover:bg-slate-100">
+                                                <i class="fa-solid fa-triangle-exclamation text-amber-500 shrink-0"></i>
+                                                <span>${ch}</span>
+                                            </div>
+                                        </label>
+                                        `;
+                                    }).join("")}
+                                </div>
+                            </div>
+
+                            <!-- ثالثاً: الآراء والمقترحات التطويرية -->
+                            <div class="space-y-3">
+                                <h5 class="text-sm font-bold text-mohup-700">ثالثاً: الآراء والمقترحات لتحسين وتطوير خدمة "${service.title}":</h5>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                    <div class="md:col-span-2">
+                                        <label class="block text-xs font-semibold text-slate-600 mb-1">الملاحظات التفصيلية أو المقترحات التطويرية لسير الإجراء:</label>
+                                        <textarea id="suggestions-${service.id}" rows="3" placeholder="اكتب آراءك ومقترحاتك لتبسيط أو تحسين خطوات خدمة ${service.title}..."
+                                            class="w-full p-3 rounded-xl bg-slate-50 border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-mohup-500 focus:bg-white transition">${state.suggestions || ''}</textarea>
+                                    </div>
+                                    <div class="flex flex-col justify-between gap-3">
+                                        <div>
+                                            <label class="block text-xs font-semibold text-slate-600 mb-1">اسم الموظف / القسم المقيّم (اختياري):</label>
+                                            <input type="text" id="evaluator-${service.id}" value="${state.evaluatorName || ''}" placeholder="مثال: موظف خدمة موحدة / مهندس تخطيط"
+                                                class="w-full p-3 rounded-xl bg-slate-50 border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-mohup-500 focus:bg-white transition">
+                                        </div>
+                                        <button onclick="saveServiceEvaluation(${service.id})"
+                                            class="w-full py-3 px-4 bg-mohup-700 hover:bg-mohup-800 text-white font-bold rounded-xl shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 text-sm">
+                                            <i class="fa-solid fa-floppy-disk"></i>
+                                            <span>حفظ واعتماد تقييم الخدمة</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </article>
+                `;
+            }).join("");
+        }
+
+        // طي أو فتح تفاصيل بطاقة واحدة
+        function toggleCardBody(serviceId) {
+            const body = document.getElementById(`card-body-${serviceId}`);
+            const chevron = document.getElementById(`card-chevron-${serviceId}`);
+            if (!body) return;
+            body.classList.toggle("hidden");
+            if (chevron) {
+                chevron.classList.toggle("rotate-180");
+            }
+        }
+
+        // طي أو فتح جميع البطاقات
+        function expandAllCards(expand) {
+            sopServices.forEach(s => {
+                const body = document.getElementById(`card-body-${s.id}`);
+                const chevron = document.getElementById(`card-chevron-${s.id}`);
+                if (body) {
+                    if (expand) {
+                        body.classList.remove("hidden");
+                        if (chevron) chevron.classList.remove("rotate-180");
+                    } else {
+                        body.classList.add("hidden");
+                        if (chevron) chevron.classList.add("rotate-180");
+                    }
+                }
+            });
+        }
+
+        // معالجة تأكيد الاطلاع على سير الإجراءات بالخدمة
+        function handleConfirmRead(serviceId) {
+            const checkbox = document.getElementById(`confirm-read-${serviceId}`);
+            const evalSection = document.getElementById(`eval-section-${serviceId}`);
+            const service = sopServices.find(s => s.id === serviceId);
+
+            if (!appState[serviceId]) {
+                appState[serviceId] = {
+                    readConfirmed: false,
+                    evaluated: false,
+                    ratings: { q1: 5, q2: 5, q3: 4, q4: 4, q5: 4 },
+                    challenges: [],
+                    suggestions: "",
+                    evaluatorName: "",
+                    updatedAt: ""
+                };
+            }
+
+            appState[serviceId].readConfirmed = checkbox.checked;
+            saveState();
+            updateDashboardStats();
+
+            if (checkbox.checked) {
+                evalSection.classList.remove("hidden");
+                showToast(`تم تأكيد الاطلاع على سير الإجراءات بخدمة "${service.title}" وتفعيل التقييم.`, "info");
+            } else {
+                evalSection.classList.add("hidden");
+            }
+
+            // إعادة رسم لتحديث ألوان البطاقة وشاراتها
+            renderServices();
+        }
+
+        // حفظ تقييم الخدمة والآراء والمقترحات
+        function saveServiceEvaluation(serviceId) {
+            const service = sopServices.find(s => s.id === serviceId);
+            if (!service) return;
+
+            const ratings = {};
+            evaluationQuestions.forEach(q => {
+                const selected = document.querySelector(`input[name="rating-${serviceId}-${q.id}"]:checked`);
+                ratings[q.id] = selected ? Number(selected.value) : 5;
+            });
+
+            const challenges = [];
+            document.querySelectorAll(`input[name="challenge-${serviceId}"]:checked`).forEach(chk => {
+                challenges.push(chk.value);
+            });
+
+            const suggestions = document.getElementById(`suggestions-${serviceId}`).value.trim();
+            const evaluatorName = document.getElementById(`evaluator-${serviceId}`).value.trim();
+
+            const now = new Date();
+            const formattedDate = now.toLocaleDateString("ar-OM", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
+            });
+
+            appState[serviceId] = {
+                readConfirmed: true,
+                evaluated: true,
+                ratings,
+                challenges,
+                suggestions,
+                evaluatorName,
+                updatedAt: formattedDate
+            };
+
+            saveState();
+            updateDashboardStats();
+            renderServices();
+            showToast(`تم حفظ تقييم ومقترحات خدمة "${service.title}" بنجاح!`, "success");
+        }
+
+        // تحديث لوحة المؤشرات الإحصائية العلوية (KPIs)
+        function updateDashboardStats() {
+            const total = sopServices.length;
+            let readCount = 0;
+            let evaluatedCount = 0;
+            let totalScoreSum = 0;
+
+            sopServices.forEach(s => {
+                const st = appState[s.id];
+                if (st) {
+                    if (st.readConfirmed) readCount++;
+                    if (st.evaluated && st.ratings) {
+                        evaluatedCount++;
+                        const vals = Object.values(st.ratings).map(Number);
+                        if (vals.length > 0) {
+                            totalScoreSum += vals.reduce((a, b) => a + b, 0) / vals.length;
+                        }
+                    }
+                }
+            });
+
+            const readPercent = total > 0 ? Math.round((readCount / total) * 100) : 0;
+            const evalPercent = total > 0 ? Math.round((evaluatedCount / total) * 100) : 0;
+            const avgScore = evaluatedCount > 0 ? (totalScoreSum / evaluatedCount).toFixed(1) : "-";
+
+            const elTotal = document.getElementById("statTotalServices");
+            const elRead = document.getElementById("statReadServices");
+            const elReadPct = document.getElementById("statReadPercent");
+            const elEval = document.getElementById("statEvaluatedServices");
+            const elEvalPct = document.getElementById("statEvaluatedPercent");
+            const elAvg = document.getElementById("statAvgScore");
+
+            if (elTotal) elTotal.textContent = total;
+            if (elRead) elRead.textContent = readCount;
+            if (elReadPct) elReadPct.textContent = `${readPercent}%`;
+            if (elEval) elEval.textContent = evaluatedCount;
+            if (elEvalPct) elEvalPct.textContent = `${evalPercent}%`;
+            if (elAvg) elAvg.textContent = avgScore;
+        }
+
+        // فتح نافذة التقرير الشامل (بعد التحقق من الرقم السري)
+        function openReportModal() {
+            const savedWebhook = getActiveWebhookUrl();
+            const webhookInput = document.getElementById("webhookUrlInput");
+            if (webhookInput) webhookInput.value = savedWebhook;
+
+            renderLiveEvaluationSummary();
+            const modal = document.getElementById("reportModal");
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+        }
+
+        function closeReportModal() {
+            const modal = document.getElementById("reportModal");
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+        }
+
+        // بناء ملخص التقييمات المدخلة والمدمجة في النافذة المنبثقة
+        function renderLiveEvaluationSummary() {
+            const container = document.getElementById("liveEvaluationSummary");
+            const badge = document.getElementById("mergedParticipantsBadge");
+
+            // تجميع كافة السجلات (الجلسة الحالية + التقييمات المستوردة من الموظفين)
+            const allRows = [];
+
+            sopServices.forEach(s => {
+                const st = appState[s.id];
+                if (st && st.evaluated) {
+                    allRows.push({
+                        service: s,
+                        evalData: st,
+                        source: st.evaluatorName || "الجلسة الحالية"
+                    });
+                }
+            });
+
+            mergedSubmissions.forEach(sub => {
+                Object.keys(sub.evaluations || {}).forEach(sId => {
+                    const s = sopServices.find(item => item.id === Number(sId));
+                    const st = sub.evaluations[sId];
+                    if (s && st && st.evaluated) {
+                        allRows.push({
+                            service: s,
+                            evalData: st,
+                            source: `${sub.participantName} (${sub.department || ""})`
+                        });
+                    }
+                });
+            });
+
+            if (badge) {
+                badge.textContent = `إجمالي التقييمات المسجلة والمدمجة: ${allRows.length}`;
+            }
+
+            if (allRows.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-6 bg-white rounded-xl border border-dashed border-slate-300">
+                        <i class="fa-regular fa-clipboard text-2xl text-slate-400 mb-2"></i>
+                        <p class="text-sm font-semibold text-slate-600">لم يتم حفظ أو استيراد تقييم لأي خدمة حتى الآن.</p>
+                        <p class="text-xs text-slate-400 mt-1">قم بتقييم الخدمات أو استيراد ملفات تقييم الموظفين (.json) من الأعلى لتظهر المؤشرات التفصيلية هنا.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `
+                <div class="overflow-x-auto bg-white rounded-xl border border-slate-200">
+                    <table class="w-full text-right text-xs sm:text-sm">
+                        <thead class="bg-mohup-50 text-mohup-800 border-b border-slate-200">
+                            <tr>
+                                <th class="p-3">#</th>
+                                <th class="p-3">اسم الخدمة</th>
+                                <th class="p-3">القطاع</th>
+                                <th class="p-3">المقيّم / القسم</th>
+                                <th class="p-3">متوسط التقييم</th>
+                                <th class="p-3">التحديات المرصودة</th>
+                                <th class="p-3">الآراء والمقترحات</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+            `;
+
+            allRows.forEach(row => {
+                const s = row.service;
+                const st = row.evalData;
+                const vals = Object.values(st.ratings || {}).map(Number);
+                const avg = vals.length ? (vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(1) : "-";
+
+                html += `
+                    <tr class="hover:bg-slate-50">
+                        <td class="p-3 font-bold text-mohup-700">${s.id}</td>
+                        <td class="p-3 font-bold text-slate-800">${s.title}</td>
+                        <td class="p-3"><span class="px-2 py-0.5 rounded-full text-xs ${getSectorBadgeStyle(s.sector)}">${s.sector}</span></td>
+                        <td class="p-3 text-xs font-semibold text-mohup-700">${row.source}</td>
+                        <td class="p-3 font-bold text-emerald-700">${avg} / 5.0</td>
+                        <td class="p-3 text-xs text-slate-600">${(st.challenges && st.challenges.length) ? st.challenges.join(" ، ") : "لا يوجد"}</td>
+                        <td class="p-3 text-xs text-slate-700">${st.suggestions || "—"}</td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            container.innerHTML = html;
+        }
+
+        // نسخ ملخص التقرير النصي للحافظة
+        function copySummaryReport() {
+            const evaluatedServices = sopServices.filter(s => appState[s.id] && appState[s.id].evaluated);
+            const readServices = sopServices.filter(s => appState[s.id] && appState[s.id].readConfirmed);
+
+            let reportText = `تقرير استعراض وتقييم دليل الإجراءات التشغيلية القياسية (SOP)\n`;
+            reportText += `قسم الخدمة الموحدة بالمديرية العامة للاسكان والتخطيط العمراني بمحافظة البريمي\n`;
+            reportText += `========================================================\n`;
+            reportText += `• إجمالي الخدمات المسجلة: ${sopServices.length}\n`;
+            reportText += `• الخدمات التي تم الاطلاع عليها: ${readServices.length}\n`;
+            reportText += `• الخدمات التي تم تقييمها: ${evaluatedServices.length}\n\n`;
+
+            if (evaluatedServices.length > 0) {
+                reportText += `تفاصيل الخدمات المقيّمة:\n`;
+                evaluatedServices.forEach(s => {
+                    const st = appState[s.id];
+                    const vals = Object.values(st.ratings || {}).map(Number);
+                    const avg = (vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(1);
+                    reportText += `- [${s.id}] ${s.title} (${s.sector}) | التقييم: ${avg}/5\n`;
+                    if (st.challenges && st.challenges.length > 0) {
+                        reportText += `  التحديات: ${st.challenges.join(" | ")}\n`;
+                    }
+                    if (st.suggestions) {
+                        reportText += `  المقترحات: ${st.suggestions}\n`;
+                    }
+                });
+            }
+
+            const tempArea = document.createElement("textarea");
+            tempArea.value = reportText;
+            document.body.appendChild(tempArea);
+            tempArea.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempArea);
+
+            showToast("تم نسخ التقرير النصي إلى الحافظة بنجاح لمشاركته!", "success");
+        }
+
+        // تصدير جميع البيانات والتقييمات إلى ملف CSV يدعم اللغة العربية في Excel
+        function exportEvaluationsCSV() {
+            const headers = [
+                "رقم الخدمة",
+                "اسم الخدمة",
+                "القطاع",
+                "الدائرة / القسم",
+                "الزمن الكلي",
+                "تم الاطلاع على الإجراءات",
+                "تم التقييم",
+                "متوسط التقييم (من 5)",
+                "وضوح الدور (من 5)",
+                "سهولة التطبيق (من 5)",
+                "تغطية الحالات (من 5)",
+                "وضوح الخطوات (من 5)",
+                "كفاءة الأنظمة (من 5)",
+                "التحديات المرصودة",
+                "الآراء والمقترحات",
+                "اسم المقيّم",
+                "تاريخ التحديث"
+            ];
+
+            const rows = sopServices.map(s => {
+                const st = appState[s.id] || {};
+                const r = st.ratings || {};
+                const vals = Object.values(r).map(Number);
+                const avg = vals.length ? (vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(2) : "";
+
+                return [
+                    s.id,
+                    `"${s.title.replace(/"/g, '""')}"`,
+                    `"${s.sector}"`,
+                    `"${s.department.replace(/"/g, '""')}"`,
+                    `"${s.duration}"`,
+                    st.readConfirmed ? "نعم" : "لا",
+                    st.evaluated ? "نعم" : "لا",
+                    avg,
+                    r.q1 || "",
+                    r.q2 || "",
+                    r.q3 || "",
+                    r.q4 || "",
+                    r.q5 || "",
+                    `"${(st.challenges || []).join(" | ").replace(/"/g, '""')}"`,
+                    `"${(st.suggestions || "").replace(/"/g, '""')}"`,
+                    `"${(st.evaluatorName || "").replace(/"/g, '""')}"`,
+                    `"${st.updatedAt || ""}"`
+                ].join(",");
+            });
+
+            // إضافة BOM لدعم اللغة العربية في برنامج Excel
+            const csvContent = "\uFEFF" + headers.join(",") + "\n" + rows.join("\n");
+            const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", "تقييم_دليل_الإجراءات_التشغيلية_SOP_البريمي.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            showToast("تم تصدير ملف التقييمات (CSV/Excel) بنجاح!", "success");
+        }
+
+        // مسح جميع التقييمات المحفوظة
+        function clearAllEvaluations() {
+            appState = {};
+            mergedSubmissions = [];
+            saveState();
+            updateDashboardStats();
+            renderServices();
+            renderLiveEvaluationSummary();
+            showToast("تمت إعادة ضبط جميع التقييمات والبيانات المحفوظة.", "warning");
+        }
+
+        // تشغيل المنصة عند اكتمال تحميل الصفحة
+        window.addEventListener("DOMContentLoaded", () => {
+            loadState();
+            updateDashboardStats();
+            renderServices();
+        });
+    </script>
+</body>
+</html>
